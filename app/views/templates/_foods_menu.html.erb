@@ -1,0 +1,90 @@
+<h2 class="menu-label">THỰC ĐƠN</h2>
+<br>
+<div class="tabbable-panel">
+  <div class="tabbable-line">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <% @food_types.each_with_index do |type, index| %>
+      <li role="presentation" class="<%= 'active' if index == 0 %>">
+        <a href="#type-<%= type['id'] %>" aria-controls="type-<%= type['id'] %>" role="tab" data-toggle="tab">
+          <b><%= type['name'] %></b>
+        </a>
+      </li>
+      <% end %>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <br>
+      <% @food_types.each_with_index do |type, index| %>
+      <div role="tabpanel" class="tab-pane customer-tab <%= 'active' if index == 0 %>" id="type-<%= type['id'] %>">
+        <div class="row">
+          <% @foods.each do |food| %>
+          <% if food['type_id'] == type['id'] %>
+          <center>
+            <div class="col-lg-4 col-md-4 col-sm-6 customer-food">
+              <img class="customer-food-img" src="<%= food['image_url'] %>">
+              <br>
+              <div class='food-name'>
+                <i class='fa fa-plus'></i>
+                <h4>
+                  <%= food['name'] %>
+                </h4>
+              </div>
+              <div class="col-lg-12">
+                <h4 class='food-price'><%= number_with_delimiter(food['price']) %> đ</h4>
+              </div>
+            </div>
+          </center>
+          <% end %>
+          <% end %>
+          <br><br>
+        </div>
+      </div>
+      <% end %>
+      <center>
+        <div class='notice-customer-scroll'>
+          <i class='fa fa-angle-double-down'></i>
+        </div>
+      </center>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+setInterval(function(){
+  if(!check_scroll){
+    $(".notice-customer-scroll").fadeIn(1000)
+    setTimeout(function(){
+      $(".notice-customer-scroll").fadeOut(1000)
+    })
+  }
+}, 500)
+
+$(".customer-tab").niceScroll({horizrailenabled: false, cursorcolor:"rgba(0, 0, 0, 0.2)", cursorwidth: "9px"})
+
+check_scroll = false
+
+$(".notice-customer-scroll").click(function(){
+  $(".customer-tab").animate({scrollTop: 450},1000)
+})
+
+$('.customer-tab').bind("scroll", function(){
+  // if(!check_scroll){
+  //   $(".notice-customer-scroll").stop(true, true).fadeIn(700)
+  //   setTimeout(function(){
+  //     $(".notice-customer-scroll").fadeOut(1000)
+  //   })
+  // }
+  // check_scroll = true
+  height = $(".customer-tab").scrollTop();
+  if(height > 200){
+    $('.notice-customer-scroll').stop(true).fadeOut(800)
+    check_scroll = true
+  }
+  else{
+    console.log(height)
+    check_scroll = false
+    $('.notice-customer-scroll').fadeIn(800) 
+  }
+});
+</script>

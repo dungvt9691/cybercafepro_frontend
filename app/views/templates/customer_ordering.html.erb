@@ -1,0 +1,60 @@
+<div class="col-lg-2 col-md-2 customer-select">
+  <center>
+    <div class="customer-food-type customer-foods active" data-type="foods">
+
+      <h4 class="customer-food-label active">ĐỒ ĂN</h4>
+    </div>
+    <br>
+    <div class="customer-food-type customer-drinks" data-type="drinks">
+      <h4 class="customer-food-label">ĐỒ UỐNG</h4>
+    </div>
+    <br>
+    <div class="customer-food-type customer-services" data-type="services">
+      <h4 class="customer-food-label">DỊCH VỤ</h4>
+    </div>
+  </center>
+</div>
+<div class="col-lg-6 col-md-6 customer-menu">
+  <div class="menu-lists">
+    <%= render partial: 'foods_menu' %>
+  </div>
+</div>
+<div class="col-lg-4 col-md-4 customer-ordering">
+  <div class='row customer-order-tab'>
+    <div class="col-lg-6 col-md-6" style="border-right: 2px solid #fff">
+      <a href="javascript:;">
+        <h3>GỌI MÓN</h3>
+      </a>
+    </div>
+    <div class="col-lg-6 col-md-6">
+      <a href="javascript:;">
+        <h3>LỊCH SỬ</h3>
+      </a>
+    </div>
+  </div>
+  <br>
+  <div class="row customer-order">
+  </div>
+</div>
+
+<script type="text/javascript">
+$(".customer-food-type").click(function(){
+  $(".customer-food-type").removeClass("active")
+  $(this).addClass("active")
+  $(".customer-food-label").removeClass("active")
+  $(this).children(".customer-food-label").addClass("active")
+
+  data_type = $(this).attr("data-type")
+  
+  switch(data_type) {
+    case "foods":
+    $(".menu-lists").html("<%=j render partial: 'foods_menu' %>")
+    break;
+    case "drinks":
+    $(".menu-lists").html("<%=j render 'drinks_menu' %>")
+    break;
+    default:
+    $(".menu-lists").html("<%=j render 'services_menu' %>")
+  }
+})
+</script>
