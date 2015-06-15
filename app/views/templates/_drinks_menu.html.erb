@@ -15,7 +15,6 @@
 
     <!-- Tab panes -->
     <div class="tab-content">
-      <br>
       <% @drink_types.each_with_index do |type, index| %>
       <div role="tabpanel" class="tab-pane fade customer-tab <%= 'active in' if index == 0 %>" id="type-<%= type['id'] %>">
         <div class="row">
