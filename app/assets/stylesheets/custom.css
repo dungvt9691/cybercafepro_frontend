@@ -126,3 +126,32 @@ Licensed under MIT
   border-bottom: 1px solid #eee;
   padding-bottom: 15px;
 }
+
+footer{
+  position: absolute;
+  bottom: 0;
+  height: 30px;
+  border-top: 4px solid #d9534f;
+  background: #fff;
+  padding: 7px 15px;
+  width: 994px;
+  left: auto;
+  right: auto;
+}
+
+footer .page-contact{
+  font-size: 11px;
+}
+
+.adv-banner{
+  position: fixed;
+  top: 20px;
+}
+
+.adv-banner-left{
+  left: 10px;
+}
+
+.adv-banner-right{
+  right: 10px;
+}

@@ -1,8 +1,9 @@
-<div class='container'>
+<div class='container customer-wrapper'>
   <div class="col-lg-2 col-md-2 customer-select">
     <center>
+      <div class='logo'>
+      </div>
       <div class="customer-food-type customer-foods active" data-type="foods">
-
         <h4 class="customer-food-label active">ĐỒ ĂN</h4>
       </div>
       <div class="customer-food-type customer-drinks" data-type="drinks">
@@ -80,7 +81,7 @@ $(".customer-table").on("click", ".btn-minus-quantity", function(){
     $(this).parents(".row-service").remove()
   }
   $(this).parents(".order-service-quantity").children(".quantity-text").text(old_quantity - 1)
-
+  $('.customer-table table').bootstrapTable('resetView');
   check_count_service_order()
   get_total_price()
 })
