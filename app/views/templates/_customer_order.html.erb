@@ -1,0 +1,101 @@
+<div class="row customer-order">
+  <div class="tabbable-panel" id="customer-tabs">
+    <div class="tabbable-line">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active" style="width: 50%; margin-right: 0px">
+          <a href="#orders-tab" aria-controls="orders-tab" role="tab" data-toggle="tab">
+            <b>GỌI MÓN</b>
+          </a>
+        </li>
+        <li role="presentation" style="width: 50%; margin-right: 0px">
+          <a href="#histories-tab" aria-controls="histories-tab" role="tab" data-toggle="tab">
+            <b>LỊCH SỬ</b>
+          </a>
+        </li>
+      </ul>
+
+      <!-- Tab panes -->
+      <div class="tab-content" style="border-top: none">
+        <div role="tabpanel" class="tab-pane fade in active" id="orders-tab">
+          <div class="customer-table">
+            <table data-height="280" data-width="299">
+              <thead>
+                <tr>
+                  <th data-field="id" data-align="left">CÁC MÓN ĂN ĐÃ CHỌN&nbsp; &nbsp;</th>
+                  <th data-field="price" data-align="left">ĐƠN GIÁ&nbsp;</th>
+                  <th data-field="name" data-align="left">SL &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="no-choice">
+                  <td colspan="3">Chưa chọn món</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <br>
+          <div style="padding: 15px">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class='pull-right' style="margin-right: 3px">
+                  <h3>Tổng: <span class='total-price'>0</span> đ</h3>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-lg-12">
+                <h4 style='font-size: 17px;'>Ghi chú:</h4>
+                <textarea class='form-control' style="height: 100px; resize: none;"></textarea>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-lg-12">
+                <button class='btn btn-block btn-danger btn-lg'>
+                  <i class='fa fa-fax' style="margin-right: 10px; font-size: 20px"></i> GỌI THANH TOÁN
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="histories-tab">
+          <div class="customer-table">
+            <table data-height="280" data-width="299">
+              <thead>
+                <tr>
+                  <th data-field="id" data-align="left">CÁC MÓN ĂN ĐÃ GỌI&nbsp; &nbsp;</th>
+                  <th data-field="price" data-align="left">ĐƠN GIÁ&nbsp;</th>
+                  <th data-field="name" data-align="left">SL &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="no-choice">
+                  <td colspan="3">Chưa chọn món</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(".show-orders").click(function(){
+  $('a[href="#orders-tab"]').tab('show')
+})
+
+$(".show-histories").click(function(){
+  $('a[href="#histories-tab"]').tab('show')
+})
+
+$('.customer-table table').bootstrapTable();
+
+// $(".fixed-table-body").niceScroll({horizrailenabled: false, cursorcolor:"rgba(0, 0, 0, 0.2)", cursorwidth: "9px"})
+
+$(window).resize(function () {
+  $('.customer-table table').bootstrapTable('resetView');
+});
+</script>

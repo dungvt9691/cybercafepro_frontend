@@ -20,21 +20,7 @@
   </div>
 </div>
 <div class="col-lg-4 col-md-4 customer-ordering">
-  <div class='row customer-order-tab'>
-    <div class="col-lg-6 col-md-6" style="border-right: 2px solid #fff">
-      <a href="javascript:;">
-        <h3>GỌI MÓN</h3>
-      </a>
-    </div>
-    <div class="col-lg-6 col-md-6">
-      <a href="javascript:;">
-        <h3>LỊCH SỬ</h3>
-      </a>
-    </div>
-  </div>
-  <br>
-  <div class="row customer-order">
-  </div>
+  <%= render 'customer_order' %>
 </div>
 
 <script type="text/javascript">
@@ -57,4 +43,60 @@ $(".customer-food-type").click(function(){
     $(".menu-lists").html("<%=j render 'services_menu' %>")
   }
 })
+
+$(".customer-menu").on("click", ".customer-service", function(){
+  service_name = $(this).attr("data-service-name")
+  service_id = $(this).attr("data-service-id")
+  service_price = $(this).attr("data-service-price")
+  service_price_format = $(this).attr("data-service-price-format")
+  service_type  = $(this).attr("data-service-type")
+
+  element = $("#row-service-"+service_type+"-"+service_id)
+  if(element.length == 0 ){
+    $("#no-choice").fadeOut(100)
+    append_row = "<tr id='row-service-"+service_type+"-"+service_id+"' class='row-service'><td class='order-service-name'><b>"+ service_name +"</b></td><td class='order-service-price' data-price='"+service_price+"'>"+ service_price_format +"</td><td class='order-service-quantity'><span class='quantity-text'>1</span><div class='btn-group-vertical pull-right'><button type='button' class='btn-add-quantity btn btn-primary btn-xs'><i class='fa fa-plus'></i></button><button type='button' class='btn btn-danger btn-minus-quantity btn-xs'><i class='fa fa-minus'></i></button></div></td></tr>"
+    $("#no-choice").before(append_row)
+    $('.customer-table table').bootstrapTable('resetView');
+  }
+  else{
+    quantity = parseInt(element.children(".order-service-quantity").children('.quantity-text').text()) + 1
+    element.children(".order-service-quantity").children('.quantity-text').text(quantity)
+  }
+  get_total_price()
+})
+
+$(".customer-table").on("click", ".btn-add-quantity", function(){
+  old_quantity = parseInt($(this).parents(".order-service-quantity").children(".quantity-text").text())
+  $(this).parents(".order-service-quantity").children(".quantity-text").text(old_quantity + 1)
+  get_total_price()
+})
+
+$(".customer-table").on("click", ".btn-minus-quantity", function(){
+  old_quantity = parseInt($(this).parents(".order-service-quantity").children(".quantity-text").text())
+  if((old_quantity - 1) == 0){
+    $(this).parents(".row-service").remove()
+  }
+  $(this).parents(".order-service-quantity").children(".quantity-text").text(old_quantity - 1)
+
+  check_count_service_order()
+  get_total_price()
+})
+
+function get_total_price(){
+  sum = 0;
+  $(".order-service-price").each(function(){
+    quantity = parseInt($(this).siblings('.order-service-quantity').children('.quantity-text').text())
+    price = parseInt($(this).attr("data-price")) * quantity 
+    sum += price
+  })
+  $(".total-price").text(number_format(sum))
+}
+
+
+function check_count_service_order(){
+  if($(".row-service").length == 0)
+    $("#no-choice").fadeIn(100)
+  else
+    $("#no-choice").fadeOut(100)
+}
 </script>
