@@ -101,11 +101,11 @@ body.customer-ordering {
 }
 
 .customer-service .customer-service-img{
-  border: 3px solid #ccc;
+  border: 2px solid #ccc;
   width: 100%;
   height: auto;
   margin-bottom: 20px;
-  border-radius: 50%;
+  /*border-radius: 50%;*/
 }
 
 .customer-service{

@@ -42,7 +42,7 @@ Licensed under MIT
   border-bottom: 4px solid #fbcdcf;
 
   color: #fff;
-  background: #f3565d;
+  background: #d9534f;
 }
 
 .tabbable-line .nav-tabs>li.active>a,
@@ -62,7 +62,7 @@ Licensed under MIT
   margin-top: 0px;
 }
 .tabbable-line > .nav-tabs > li.active {
-  border-bottom: 4px solid #f3565d;
+  border-bottom: 4px solid #d9534f;
   position: relative;
 }
 .tabbable-line > .nav-tabs > li.active > a {
@@ -70,7 +70,7 @@ Licensed under MIT
   color: #fff;
   border-radius: 0;
   cursor: pointer;
-  background: #f3565d;
+  background: #d9534f;
 }
 
 .tabbable-line > .nav-tabs > li.active > a:hover {
@@ -78,7 +78,7 @@ Licensed under MIT
   color: #fff;
   border-radius: 0;
   cursor: pointer;
-  background: #f3565d;
+  background: #d9534f;
 }
 
 .tabbable-line > .nav-tabs > li > a:hover {
@@ -118,7 +118,7 @@ Licensed under MIT
 .tabbable-line.tabs-below > .nav-tabs > li.active {
   margin-bottom: -2px;
   border-bottom: 0;
-  border-top: 4px solid #f3565d;
+  border-top: 4px solid #d9534f;
 }
 .tabbable-line.tabs-below > .tab-content {
   margin-top: -10px;
