@@ -16,17 +16,33 @@ Licensed under MIT
 .tabbable-line > .nav-tabs > li {
   margin-right: 2px;
 }
+
 .tabbable-line > .nav-tabs > li > a {
   border: 0;
   margin-right: 0;
   color: #737373;
 }
+
+.customer-order .tabbable-line > .nav-tabs > li > a {
+  border: 0;
+  margin-right: 0;
+  border: 0;
+  color: #fff;
+  border-radius: 0;
+  cursor: pointer;
+  color: #333333;
+  background: #fff;
+  border-bottom: 4px solid #fbcdcf;
+}
+
 .tabbable-line > .nav-tabs > li > a > i {
   color: #a6a6a6;
 }
 .tabbable-line > .nav-tabs > li.open, .tabbable-line > .nav-tabs > li:hover {
   border-bottom: 4px solid #fbcdcf;
 
+  color: #fff;
+  background: #f3565d;
 }
 
 .tabbable-line .nav-tabs>li.active>a,
@@ -37,8 +53,6 @@ Licensed under MIT
 
 .tabbable-line > .nav-tabs > li.open > a, .tabbable-line > .nav-tabs > li:hover > a {
   border: 0;
-  color: #333333;
-  background: #fff;
 }
 .tabbable-line > .nav-tabs > li.open > a > i, .tabbable-line > .nav-tabs > li:hover > a > i {
   color: #a6a6a6;
@@ -53,8 +67,29 @@ Licensed under MIT
 }
 .tabbable-line > .nav-tabs > li.active > a {
   border: 0;
-  color: #333333;
+  color: #fff;
+  border-radius: 0;
+  cursor: pointer;
+  background: #f3565d;
 }
+
+.tabbable-line > .nav-tabs > li.active > a:hover {
+  border: 0;
+  color: #fff;
+  border-radius: 0;
+  cursor: pointer;
+  background: #f3565d;
+}
+
+.tabbable-line > .nav-tabs > li > a:hover {
+  border: 0;
+  color: #fff;
+  border-radius: 0;
+  cursor: pointer;
+  color: #333333;
+  background: #fff;
+}
+
 .tabbable-line > .nav-tabs > li.active > a > i {
   color: #404040;
 }

@@ -17,22 +17,22 @@
     <div class="tab-content">
       <br>
       <% @food_types.each_with_index do |type, index| %>
-      <div role="tabpanel" class="tab-pane customer-tab <%= 'active' if index == 0 %>" id="type-<%= type['id'] %>">
+      <div role="tabpanel" class="tab-pane fade customer-tab <%= 'active in' if index == 0 %>" id="type-<%= type['id'] %>">
         <div class="row">
           <% @foods.each do |food| %>
           <% if food['type_id'] == type['id'] %>
           <center>
-            <div class="col-lg-4 col-md-4 col-sm-6 customer-food">
-              <img class="customer-food-img" src="<%= food['image_url'] %>">
+            <div class="col-lg-4 col-md-4 col-sm-6 customer-service" data-service-name="<%= food['name'] %>" data-service-id="<%= food['id'] %>" data-service-price="<%= food['price'] %>" data-service-type="food" data-service-price-format="<%= number_with_delimiter(food['price']) %>">
+              <img class="customer-service-img" src="<%= food['image_url'] %>">
               <br>
-              <div class='food-name'>
+              <div class='service-name'>
                 <i class='fa fa-plus'></i>
                 <h4>
                   <%= food['name'] %>
                 </h4>
               </div>
               <div class="col-lg-12">
-                <h4 class='food-price'><%= number_with_delimiter(food['price']) %> đ</h4>
+                <h4 class='service-price'><%= number_with_delimiter(food['price']) %> đ</h4>
               </div>
             </div>
           </center>
