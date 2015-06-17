@@ -15,6 +15,7 @@
 //= require turbolinks
 //= require bootstrap.min
 //= require_tree .
+//= require websocket_rails/main
 
 function number_format(number, decimals, dec_point, thousands_sep)
 {
@@ -42,3 +43,4 @@ function number_format(number, decimals, dec_point, thousands_sep)
 }
 return s.join(dec);
 }
+

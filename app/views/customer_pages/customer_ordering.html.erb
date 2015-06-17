@@ -19,11 +19,11 @@
   </div>
   <div class="col-lg-6 col-md-6 customer-menu">
     <div class="menu-lists">
-      <%= render partial: 'foods_menu' %>
+      <%= render 'customer_ordering/foods_menu' %>
     </div>
   </div>
   <div class="col-lg-4 col-md-4 customer-ordering">
-    <%= render 'customer_order' %>
+    <%= render 'customer_ordering/customer_order' %>
   </div>
 </div>
 
@@ -35,16 +35,16 @@ $(".customer-food-type").click(function(){
   $(this).children(".customer-food-label").addClass("active")
 
   data_type = $(this).attr("data-type")
-  
+
   switch(data_type) {
     case "foods":
-    $(".menu-lists").html("<%=j render partial: 'foods_menu' %>")
+    $(".menu-lists").html("<%=j render partial: 'customer_ordering/foods_menu' %>")
     break;
     case "drinks":
-    $(".menu-lists").html("<%=j render 'drinks_menu' %>")
+    $(".menu-lists").html("<%=j render 'customer_ordering/drinks_menu' %>")
     break;
     default:
-    $(".menu-lists").html("<%=j render 'services_menu' %>")
+    $(".menu-lists").html("<%=j render 'customer_ordering/services_menu' %>")
   }
 })
 
@@ -90,7 +90,7 @@ function get_total_price(){
   sum = 0;
   $(".order-service-price").each(function(){
     quantity = parseInt($(this).siblings('.order-service-quantity').children('.quantity-text').text())
-    price = parseInt($(this).attr("data-price")) * quantity 
+    price = parseInt($(this).attr("data-price")) * quantity
     sum += price
   })
   $(".total-price").text(number_format(sum))
@@ -103,4 +103,9 @@ function check_count_service_order(){
   else
     $("#no-choice").fadeOut(100)
 }
+
+pub_channel.bind('create_sale',function(data) {
+    alert("vodoi");
+    console.log(data);
+})
 </script>
