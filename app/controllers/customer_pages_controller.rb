@@ -1,5 +1,7 @@
-class TemplatesController < ApplicationController
+class CustomerPagesController < ApplicationController
   layout "customer_layout"
+
+  append_view_path(File.join(Rails.root,"app/views/customer_pages"))
 
   def customer_ordering
     @food_types = []
@@ -56,7 +58,7 @@ class TemplatesController < ApplicationController
       food['price'] = rand(10...20) * 10000
       @foods << food
 
-      
+
     end
 
     28.times do |i|
@@ -96,4 +98,25 @@ class TemplatesController < ApplicationController
     end
 
   end
+
+  def create_sale
+    #TODO
+    WebsocketRails[:events].trigger 'create_sale',"test"
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def edit_sale
+    #TODO
+  end
+
+  def delete_sale
+    #TODO
+  end
+
+  def history_sale
+    #TODO
+  end
+
 end

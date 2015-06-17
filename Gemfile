@@ -42,6 +42,14 @@ gem "font-awesome-rails"
 # gem 'capistrano-rails', group: :development
 gem 'ckfapi',:git => "https://github.com/kienbd/ckfapi.git"
 
+gem 'sidekiq'
+
+gem 'websocket-rails',:git => "https://github.com/kienbd/websocket-rails.git"
+gem 'hiredis'
+gem 'redis', require: ['redis', 'redis/connection/hiredis']
+
+gem 'sinatra', :require => nil
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
