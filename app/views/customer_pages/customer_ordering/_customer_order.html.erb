@@ -52,9 +52,9 @@
             <br>
             <div class="row">
               <div class="col-lg-12">
-                <a href="<%= create_sale_customer_pages_path %>" data-method="post" data-remote='true' class='btn btn-block btn-danger btn-lg'>
+                <button id="order-now" class='btn btn-block btn-danger btn-lg'>
                   <i class='fa fa-fax' style="margin-right: 10px; font-size: 20px"></i> GỌI THANH TOÁN
-                </a>
+                </button>
               </div>
             </div>
           </div>
@@ -91,6 +91,29 @@ $(".show-histories").click(function(){
 })
 
 $('.customer-table table').bootstrapTable();
+
+$('#order-now').click(function(){
+  var menu_item_params = { menu_items: [] }
+  $('[id*=row-service]').each(function(){
+    menu_item_params.menu_items.push(
+      {
+        id: $(this).attr('menu-item-id'),
+        quantity: parseInt($(this).find('.order-service-quantity .quantity-text').text())
+      }
+    )
+  })
+  console.log(menu_item_params);
+  $.ajax({
+    method: "POST",
+    url: "<%= create_sale_customer_pages_path %>",
+    dataType: "json",
+    data: { menu_items: menu_item_params},
+    success: function(data){
+
+    }
+  })
+
+});
 
 // $(".fixed-table-body").niceScroll({horizrailenabled: false, cursorcolor:"rgba(0, 0, 0, 0.2)", cursorwidth: "9px"})
 
