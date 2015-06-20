@@ -17,9 +17,12 @@ class CustomerPagesController < ApplicationController
 
   def create_sale
     #TODO
+    params["sale"]["sale_menu_items_attributes"] = params["sale"]["sale_menu_items_attributes"].values
+    @sale = Ckfapi::API::Sale.create(params["sale"])
     WebsocketRails[:events].trigger 'create_sale',"test"
     respond_to do |format|
       format.js
+      format.json { render :json => { sale: @sale} }
     end
   end
 

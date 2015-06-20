@@ -93,23 +93,25 @@ $(".show-histories").click(function(){
 $('.customer-table table').bootstrapTable();
 
 $('#order-now').click(function(){
-  var menu_item_params = { menu_items: [] }
+  var sale_params = {
+    comment: "",
+    sale_menu_items_attributes: []
+  }
   $('[id*=row-service]').each(function(){
-    menu_item_params.menu_items.push(
+    sale_params.sale_menu_items_attributes.push(
       {
-        id: $(this).attr('menu-item-id'),
+        menu_item_id: $(this).attr('menu-item-id'),
         quantity: parseInt($(this).find('.order-service-quantity .quantity-text').text())
       }
     )
   })
-  console.log(menu_item_params);
   $.ajax({
     method: "POST",
     url: "<%= create_sale_customer_pages_path %>",
     dataType: "json",
-    data: { menu_items: menu_item_params},
+    data: { sale: sale_params},
     success: function(data){
-
+      console.log(data);
     }
   })
 
