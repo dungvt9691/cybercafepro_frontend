@@ -1,0 +1,50 @@
+<table class="table table-bordered">
+  <thead>
+      <tr>
+          <th id="num" scope="col">
+              #
+          </th>
+          <th id="com" scope="col">
+              <abbr title="Computer Number">Com</abbr>
+          </th>
+          <th id="State" scope="col">
+              Items
+          </th>
+          <th id="villa" scope="col">
+              In charge
+          </th>
+      </tr>
+  </thead>
+  <tbody>
+    <% @sale.each_with_index do |sale,index| %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= sale['customer_id']%></td>
+        <td>
+          <table class="table table-striped">
+            <% sale['sale_menu_items_details'].each_with_index do |item| %>
+              <tr>
+                <td><%= item['name']%></td>
+                <td><%= item['description']%></td>
+                <td><%= item['quantity']%></td>
+                <td><%= item['sum']%></td>
+                <td>
+                  <button type="button" class="btn btn-sm btn-primary" disabled>Đi lấy tiền</button>
+                  <button type="button" class="btn btn-sm btn-danger">Bắt đầu làm</button>
+                  <button type="button" class="btn btn-sm btn-info">Bắt đầu giao</button>
+                  <button type="button" class="btn btn-sm btn-success">Xong</button>
+                </td>
+              </tr>
+            <% end %>
+          </table>
+        </td>
+        <td>
+          <button type="button" class="btn btn-sm btn-primary" disabled>Đi lấy tiền</button>
+          <button type="button" class="btn btn-sm btn-danger">Bắt đầu làm</button>
+          <button type="button" class="btn btn-sm btn-info">Bắt đầu giao</button>
+          <button type="button" class="btn btn-sm btn-success">Xong</button>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

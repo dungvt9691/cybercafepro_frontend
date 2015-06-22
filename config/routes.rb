@@ -12,6 +12,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :waiter_pages,only: [] do
+    collection do
+      get "sale_list"
+    end
+  end
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
