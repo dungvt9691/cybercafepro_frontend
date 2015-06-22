@@ -6,8 +6,8 @@
     <ul class="nav nav-tabs" role="tablist">
       <% @drink_types.each_with_index do |type, index| %>
       <li role="presentation" class="<%= 'active' if index == 0 %>">
-        <a href="#type-<%= type['id'] %>" aria-controls="type-<%= type['id'] %>" role="tab" data-toggle="tab">
-          <b><%= type['name'] %></b>
+        <a href="#type-<%= type.gsub(/\s/, '-') %>" aria-controls="type-<%= type.gsub(/\s/, '-') %>" role="tab" data-toggle="tab">
+          <b><%= type %></b>
         </a>
       </li>
       <% end %>
@@ -16,13 +16,13 @@
     <!-- Tab panes -->
     <div class="tab-content">
       <% @drink_types.each_with_index do |type, index| %>
-      <div role="tabpanel" class="tab-pane fade customer-tab <%= 'active in' if index == 0 %>" id="type-<%= type['id'] %>">
+      <div role="tabpanel" class="tab-pane fade customer-tab <%= 'active in' if index == 0 %>" id="type-<%= type.gsub(/\s/, '-') %>">
         <div class="row">
-          <% @drinks.each do |drink| %>
-          <% if drink['type_id'] == type['id'] %>
+          <% @drinks['menu_items'].each do |drink| %>
+          <% if drink['mtype'] == type %>
           <center>
-          <div class="col-lg-4 col-md-4 col-sm-6 customer-service" data-service-name="<%= drink['name'] %>" data-service-id="<%= drink['id'] %>" data-service-price="<%= drink['price'] %>" data-service-type="drink" data-service-price-format="<%= number_with_delimiter(drink['price']) %>">
-              <img class="customer-service-img" src="<%= drink['image_url'] %>">
+          <div class="col-lg-4 col-md-4 col-sm-6 customer-service" data-service-name="<%= drink['name'] %>" data-service-id="<%= drink['id'] %>" data-service-price="<%= drink['unit_price'] %>" data-service-type="drink" data-service-price-format="<%= number_with_delimiter(drink['unit_price']) %>">
+              <img class="customer-service-img" src="<%= drink['image']['url'] %>">
               <br>
               <div class='service-name'>
                 <i class='fa fa-plus'></i>
@@ -31,7 +31,7 @@
                 </h4>
               </div>
               <div class="col-lg-12">
-                <h4 class='service-price'><%= number_with_delimiter(drink['price']) %> đ</h4>
+                <h4 class='service-price'><%= number_with_delimiter(drink['unit_price']) %> đ</h4>
               </div>
             </div>
           </center>
@@ -83,7 +83,7 @@ $('.customer-tab').bind("scroll", function(){
   else{
     console.log(height)
     check_scroll = false
-    $('.notice-customer-scroll').fadeIn(800) 
+    $('.notice-customer-scroll').fadeIn(800)
   }
 });
 </script>

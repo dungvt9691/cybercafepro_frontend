@@ -58,7 +58,7 @@ $(".customer-menu").on("click", ".customer-service", function(){
   element = $("#row-service-"+service_type+"-"+service_id)
   if(element.length == 0 ){
     $("#no-choice").fadeOut(100)
-    append_row = "<tr id='row-service-"+service_type+"-"+service_id+"' class='row-service'><td class='order-service-name'><b>"+ service_name +"</b></td><td class='order-service-price' data-price='"+service_price+"'>"+ service_price_format +"</td><td class='order-service-quantity'><span class='quantity-text'>1</span><div class='btn-group-vertical pull-right'><button type='button' class='btn-add-quantity btn btn-primary btn-xs'><i class='fa fa-plus'></i></button><button type='button' class='btn btn-danger btn-minus-quantity btn-xs'><i class='fa fa-minus'></i></button></div></td></tr>"
+    append_row = "<tr id='row-service-"+service_type+"-"+service_id+"' menu-item-id='"+service_id+"' class='row-service'><td class='order-service-name'><b>"+ service_name +"</b></td><td class='order-service-price' data-price='"+service_price+"'>"+ service_price_format +"</td><td class='order-service-quantity'><span class='quantity-text'>1</span><div class='btn-group-vertical pull-right'><button type='button' class='btn-add-quantity btn btn-primary btn-xs'><i class='fa fa-plus'></i></button><button type='button' class='btn btn-danger btn-minus-quantity btn-xs'><i class='fa fa-minus'></i></button></div></td></tr>"
     $("#no-choice").before(append_row)
     $('.customer-table table').bootstrapTable('resetView');
   }
