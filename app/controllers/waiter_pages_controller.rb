@@ -18,11 +18,13 @@ class WaiterPagesController < ApplicationController
   def go_for_payment
     if !params[:sale_id].blank?
       @sale = update_next_state_sale(params[:sale_id],"pending")
+      WebsocketRails[:staff].trigger 'next_state_sale',@sale
       respond_to do |format|
         format.js
       end
-    elsif !params[:sale_menu_id.blank?]
+    elsif !params[:sale_menu_id].blank?
       @sale_menu_item =  update_next_state_sale_menu_item(params[:sale_menu_id],"pending")
+      WebsocketRails[:staff].trigger 'next_state_sale_menu_item',@sale_menu_item
       respond_to do |format|
         format.js
       end
@@ -33,11 +35,13 @@ class WaiterPagesController < ApplicationController
   def verify_payment
     if !params[:sale_id].blank?
       @sale = update_next_state_sale(params[:sale_id],"processing")
+      WebsocketRails[:staff].trigger 'next_state_sale',@sale
       respond_to do |format|
         format.js
       end
-    elsif !params[:sale_menu_id.blank?]
+    elsif !params[:sale_menu_id].blank?
       @sale_menu_item =  update_next_state_sale_menu_item(params[:sale_menu_id],"processing")
+      WebsocketRails[:staff].trigger 'next_state_sale_menu_item',@sale_menu_item
       respond_to do |format|
         format.js
       end
@@ -48,11 +52,30 @@ class WaiterPagesController < ApplicationController
   def go_deliver
     if !params[:sale_id].blank?
       @sale = update_next_state_sale(params[:sale_id],"delivering")
+      WebsocketRails[:staff].trigger 'next_state_sale',@sale
       respond_to do |format|
         format.js
       end
-    elsif !params[:sale_menu_id.blank?]
+    elsif !params[:sale_menu_id].blank?
       @sale_menu_item =  update_next_state_sale_menu_item(params[:sale_menu_id],"delivering")
+      WebsocketRails[:staff].trigger 'next_state_sale_menu_item',@sale_menu_item
+      respond_to do |format|
+        format.js
+      end
+    end
+    #TODO
+  end
+
+  def done_deliver
+    if !params[:sale_id].blank?
+      @sale = update_next_state_sale(params[:sale_id],"delivered")
+      WebsocketRails[:staff].trigger 'next_state_sale',@sale
+      respond_to do |format|
+        format.js
+      end
+    elsif !params[:sale_menu_id].blank?
+      @sale_menu_item =  update_next_state_sale_menu_item(params[:sale_menu_id],"delivered")
+      WebsocketRails[:staff].trigger 'next_state_sale_menu_item',@sale_menu_item
       respond_to do |format|
         format.js
       end
@@ -65,7 +88,7 @@ class WaiterPagesController < ApplicationController
       respond_to do |format|
         format.js
       end
-    elsif !params[:sale_menu_id.blank?]
+    elsif !params[:sale_menu_id].blank?
       respond_to do |format|
         format.js
       end
