@@ -48,6 +48,8 @@ $(".customer-food-type").click(function(){
   }
 })
 
+var order_row = 0;
+
 $(".customer-menu").on("click", ".customer-service", function(){
   service_name = $(this).attr("data-service-name")
   service_id = $(this).attr("data-service-id")
@@ -58,15 +60,19 @@ $(".customer-menu").on("click", ".customer-service", function(){
   element = $("#row-service-"+service_type+"-"+service_id)
   if(element.length == 0 ){
     $("#no-choice").fadeOut(100)
-    append_row = "<tr id='row-service-"+service_type+"-"+service_id+"' menu-item-id='"+service_id+"' class='row-service'><td class='order-service-name'><b>"+ service_name +"</b></td><td class='order-service-price' data-price='"+service_price+"'>"+ service_price_format +"</td><td class='order-service-quantity'><span class='quantity-text'>1</span><div class='btn-group-vertical pull-right'><button type='button' class='btn-add-quantity btn btn-primary btn-xs'><i class='fa fa-plus'></i></button><button type='button' class='btn btn-danger btn-minus-quantity btn-xs'><i class='fa fa-minus'></i></button></div></td></tr>"
+    append_row = "<tr id='row-service-"+service_type+"-"+service_id+"' menu-item-id='"+service_id+"' class='row-service'><td class='order-service-name'><b>"+ service_name +"</b><br><p class='note-for-service' data-placement='left' style='font-size: 10px; margin-bottom: 3px'></p><a style='font-size: 10px' href='javascript:;' class='add-note-service'><i class='fa fa-pencil' style='margin-right: 3px'></i> Ghi chú</a></td><td class='order-service-price' data-price='"+service_price+"'>"+ service_price_format +"</td><td class='order-service-quantity'><span class='quantity-text'>1</span><div class='btn-group-vertical pull-right'><button type='button' class='btn-add-quantity btn btn-primary btn-xs'><i class='fa fa-plus'></i></button><button type='button' class='btn btn-danger btn-minus-quantity btn-xs'><i class='fa fa-minus'></i></button></div></td></tr>"
     $("#no-choice").before(append_row)
     $('.customer-table table').bootstrapTable('resetView');
+    order_row += 1
   }
   else{
     quantity = parseInt(element.children(".order-service-quantity").children('.quantity-text').text()) + 1
     element.children(".order-service-quantity").children('.quantity-text').text(quantity)
   }
   get_total_price()
+  if(order_row == 5){
+    $("#orders-tab .customer-table .bootstrap-table").css("box-shadow", "0 9px 9px -6px rgba(0,0,0,0.5)")
+  }
 })
 
 $(".customer-table").on("click", ".btn-add-quantity", function(){
@@ -75,15 +81,31 @@ $(".customer-table").on("click", ".btn-add-quantity", function(){
   get_total_price()
 })
 
+$(".customer-table").on("click", ".add-note-service", function(){
+  $('.launch-modal').html("<%=j render 'modal_note_for_service' %>")
+  $("#modal-note-for-service").modal({
+    keyboard: true,
+    backdrop: 'static'
+  })
+  note_service_id = $(this).parents(".row-service").attr("menu-item-id")
+  note_text = $(this).siblings(".note-for-service").attr("data-original-title")
+  $(".note-for-service-text").val(note_text)
+  $(".note-for-service-text").attr("service-id", note_service_id)
+})
+
 $(".customer-table").on("click", ".btn-minus-quantity", function(){
   old_quantity = parseInt($(this).parents(".order-service-quantity").children(".quantity-text").text())
   if((old_quantity - 1) == 0){
     $(this).parents(".row-service").remove()
+    order_row -= 1
   }
   $(this).parents(".order-service-quantity").children(".quantity-text").text(old_quantity - 1)
   $('.customer-table table').bootstrapTable('resetView');
   check_count_service_order()
   get_total_price()
+  if(order_row < 5){
+    $("#orders-tab .customer-table .bootstrap-table").css("box-shadow", "0 9px 9px -6px rgba(0,0,0,0.0)")
+  }
 })
 
 function get_total_price(){

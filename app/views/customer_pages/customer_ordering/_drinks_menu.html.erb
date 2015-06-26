@@ -21,8 +21,8 @@
           <% @drinks['menu_items'].each do |drink| %>
           <% if drink['mtype'] == type %>
           <center>
-          <div class="col-lg-4 col-md-4 col-sm-6 customer-service" data-service-name="<%= drink['name'] %>" data-service-id="<%= drink['id'] %>" data-service-price="<%= drink['unit_price'] %>" data-service-type="drink" data-service-price-format="<%= number_with_delimiter(drink['unit_price']) %>">
-              <img class="customer-service-img" src="<%= drink['image']['url'] %>">
+            <div class="col-lg-4 col-md-4 col-sm-6 customer-service" data-service-name="<%= drink['name'] %>" data-service-id="<%= drink['id'] %>" data-service-price="<%= drink['unit_price'] %>" data-service-type="drink" data-service-price-format="<%= number_with_delimiter(drink['unit_price']) %>">
+              <div class="customer-service-img" style="background: url('<%= drink['image']['url'] %>') no-repeat center center; background-color: #fff; background-size: 100%;"></div>
               <br>
               <div class='service-name'>
                 <i class='fa fa-plus'></i>
@@ -31,7 +31,7 @@
                 </h4>
               </div>
               <div class="col-lg-12">
-                <h4 class='service-price'><%= number_with_delimiter(drink['unit_price']) %> đ</h4>
+                <h4 class='service-price'><%= number_with_delimiter(drink['unit_price'].to_i) %> đ</h4>
               </div>
             </div>
           </center>

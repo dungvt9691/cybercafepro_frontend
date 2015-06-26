@@ -1,0 +1,36 @@
+<div class="modal fade" id="modal-note-for-service" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <textarea class="note-for-service-text form-control" style="height: 100px; resize: none;" placeholder="Viết yêu cầu của bạn vào đây"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">
+          <i class="fa fa-times-circle">
+          </i>
+          Huỷ bỏ
+        </button>
+        <button id="btn-add-note" data-dismiss="modal" type="button" class="btn btn-primary">
+          <i class="fa fa-pencil" style="margin-right: 5px"></i> Thêm ghi chú
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script type="text/javascript">
+$('#modal-note-for-service').on('shown.bs.modal', function (e) {
+  $(".note-for-service-text").select();
+})
+$("#btn-add-note").click(function(){
+  note_text = $(".note-for-service-text").val()
+  note_id   = $(".note-for-service-text").attr("service-id")
+  console.log(note_text)
+  $("tr[menu-item-id="+note_id+"]").children(".order-service-name").children(".note-for-service").text(truncate(note_text, 20))
+  $("tr[menu-item-id="+note_id+"]").children(".order-service-name").children(".note-for-service").attr("data-original-title", note_text)
+  $("tr[menu-item-id="+note_id+"]").children(".order-service-name").children(".note-for-service").tooltip()
+})
+</script>
