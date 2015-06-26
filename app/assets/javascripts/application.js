@@ -49,3 +49,31 @@ function truncate (string, length) {
   return string.substring(0, length) + "...";
 }
 
+function pop_notify(options) {
+  var defaults = {
+    width: "250px",
+    delay: 50000,
+    styling: "fontawesome",
+    buttons: {sticker: false, closer_hover: false},
+    mouse_reset: false
+  }
+  var settings = $.extend({},defaults,options);
+  var notice = new PNotify(settings);
+  return notice;
+}
+
+function pop_desktop_notify(options) {
+  var defaults = {
+    animate_speed: "fast",
+    type: 'success',
+    hide: false,
+    mouse_reset: false,
+    desktop: {
+      desktop: true
+    }
+  };
+  var settings = $.extend({},defaults,options);
+  var notice = new PNotify(settings);
+  var desktop_notice = new PNotify(settings);
+  return desktop_notice;
+}

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  <div id='side-nav-mg' class="col-md-4">
+    <ul class="nav nav-pills nav-stacked">
+      <li class="<%= 'active' if @mg_page == 'sale' rescue ''%> "> Doanh số ban hàng</li>
+      <li class="<%= 'active' if @mg_page == 'staff' rescue ''%> "> Nhân viên</li>
+      <li class="<%= 'active' if @mg_page == 'blabla' rescue ''%> "> Chưa nghĩ ra</li>
+    </ul>
+  </div>
+  <div id='mg-content' class="col-md-8">
+    <%= yield %>
+  </div>
+</body>
+</html>

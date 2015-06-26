@@ -18,7 +18,7 @@
     </thead>
     <tbody>
       <% @sale.each_with_index do |sale,index| %>
-        <tr>
+        <tr id="sale-<%=sale['id']%>">
           <td><%= index + 1 %></td>
           <td><%= sale['customer_id']%></td>
           <td>
@@ -66,76 +66,65 @@ var stack_context = {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1
 PNotify.desktop.permission();
 
 staff_channel.bind("create_sale",function(data) {
-  $(function(){
-    var notice = new PNotify({
-        title: "test",
-        text: "Order mới từ máy " + data['sale']['customer_id'],
-        animate_speed: "fast",
-        width: "250px",
-        delay: 500000,
-        type: 'success',
-        styling: "fontawesome",
-        buttons: {sticker: false, closer_hover: false},
-        stack: stack_context,
-    });
-    notice.get().click(function(e) {
+  var notice = pop_notify({
+      title: "test",
+      text: "Order mới từ máy " + data['sale']['customer_id'],
+      type: "success",
+      stack: stack_context,
+  });
+  notice.get().click(function(e) {
       notice.remove();
-    });
-    var desktop_notice = new PNotify({
-        title: "test",
-        text: "Order mới",
-        animate_speed: "fast",
-        type: 'success',
-        hide: false,
-        desktop: {
-          desktop: true
-        }
-    });
-    desktop_notice.get().click(function(e) {
-      alert('124');
-    });
+    //move to element
+  });
+  var desktop_notice = pop_desktop_notify({
+      title: "test",
+      text: "Order mới từ máy " + data['sale']['customer_id'],
+  });
+  desktop_notice.get().click(function(e) {
+    //move to element;
+    console.log('123');
   });
 });
+
 staff_channel.bind("next_state_sale",function(data) {
   if(data['sale']['state'] == "done") {
     $(function(){
-      var notice = new PNotify({
+      var notice = pop_notify({
           title: "test",
           text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "làm xong",
-          animate_speed: "fast",
-          width: "250px",
-          delay: 500000,
-          type: 'success',
-          styling: "fontawesome",
-          buttons: {sticker: false, closer_hover: false},
           stack: stack_context,
       });
       notice.get().click(function(e) {
         notice.remove();
+        //move to element
       });
-      var desktop_notice = new PNotify({
+      var desktop_notice = pop_desktop_notify({
           title: "test",
           text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "làm xong",
-          animate_speed: "fast",
-          type: 'warning',
-          hide: false,
-          desktop: {
-            desktop: true
-          }
       });
       desktop_notice.get().click(function(e) {
-        alert('124');
+        //move to element
       });
     });
   }
-  else if(data['sale']['state'] == "start_delivering") {
+  else if(data['sale']['state'] == "delivering") {
     $(function(){
       //Delete from others's wait_to_deliver table
+      if (true) // test if this is current_user
+        $("#sale-" + data['sale']['id']).remove();
+      else
+        // Đổi status nút
+        console.log("đổi nút");
     });
   }
-  else if(data['sale']['state'] == "done_delivering") {
+  else if(data['sale']['state'] == "delivered") {
     $(function(){
       //Delete from others's wait_to_deliver table
+      if (false) // test if this is current_user
+        $("#sale-" + data['sale']['id']).remove();
+      else
+        // Đổi status nút
+        console.log("đổi nút");
     });
   }
 });

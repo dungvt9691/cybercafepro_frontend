@@ -20,7 +20,7 @@
     </thead>
     <tbody>
       <% @start_cookings.each_with_index do |sale,index| %>
-        <tr>
+        <tr id="sale-start-<%= sale['id']%>">
           <td><%= index + 1 %></td>
           <td><%= sale['customer_id'] rescue 0%></td>
           <td>
@@ -68,7 +68,7 @@
     </thead>
     <tbody>
       <% @done_cookings.each_with_index do |sale,index| %>
-        <tr>
+        <tr id="sale-done-<%= sale['id']%>">
           <td><%= index + 1 %></td>
           <td><%= sale['customer_id'] rescue 0%></td>
           <td>
@@ -104,51 +104,38 @@ PNotify.desktop.permission();
 staff_channel.bind("next_state_sale",function(data) {
   if(data['sale']['state'] == 'processing') {
     $(function(){
-      var notice = new PNotify({
+      var notice = pop_notify({
           title: "test",
           text: "Order mới từ máy " + data['sale']['customer_id'],
-          animate_speed: "fast",
-          width: "250px",
-          delay: 500000,
           type: 'info',
-          styling: "fontawesome",
-          buttons: {sticker: false, closer_hover: false},
           stack: stack_context,
       });
       notice.get().click(function(e) {
         notice.remove();
+        //move to element
       });
       $("#queue-cooking").html(parseInt($("#queue-cooking").html()) +1);
-      var desktop_notice = new PNotify({
+      var desktop_notice = pop_desktop_notify({
           title: "test",
-          text: "Order mới",
-          animate_speed: "fast",
-          hide: false,
-          desktop: {
-            desktop: true
-          }
+          text: "Order mới từ máy " + data['sale']['customer_id'],
       });
       desktop_notice.get().click(function(e) {
-        alert('124');
+        //move to element
+        console.log("123");
       });
     });
   }
   else if(data['sale']['state'] == "cooking") {
     $(function(){
-      var notice = new PNotify({
+      var notice = pop_notify({
           title: "test",
           text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "đang được làm",
-          animate_speed: "fast",
-          width: "250px",
-          delay: 500000,
-          type: 'danger',
-          styling: "fontawesome",
-          buttons: {sticker: false, closer_hover: false},
           stack: stack_context,
       });
       notice.get().click(function(e) {
         notice.remove();
       });
+      $("#sale-start-" + data['sale']['id']).remove();
       // Move from queue-cooking -> cooking table
       $("#queue-cooking").html(parseInt($("#queue-cooking").html()) - 1);
       $("#cooking").html(parseInt($("#cooking").html()) + 1);
@@ -156,21 +143,17 @@ staff_channel.bind("next_state_sale",function(data) {
   }
   else if(data['sale']['state'] == "done") {
     $(function(){
-      var notice = new PNotify({
+      var notice = pop_notify({
           title: "test",
           text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "làm xong",
-          animate_speed: "fast",
-          width: "250px",
-          delay: 500000,
           type: 'success',
-          styling: "fontawesome",
-          buttons: {sticker: false, closer_hover: false},
           stack: stack_context,
       });
       notice.get().click(function(e) {
         notice.remove();
       });
       // Move from cooking -> history table
+      $("#sale-done-" + data['sale']['id']).remove();
       $("#cooking").html(parseInt($("#cooking").html()) - 1);
     });
   }

@@ -16,6 +16,7 @@
 !/log/.keep
 /tmp
 
+config/initializers/ckfapi.rb
 config/database.yml
 config/config.yml
 public/images/*
