@@ -26,3 +26,12 @@
   };
 
 })(jQuery);
+
+
+jQuery.scrollToElement = function(params) {
+  var defaults = {speed: 1000};
+  var settings = $.extend({},defaults,params);
+  $('html, body').animate({
+    scrollTop: $(settings["to"]).offset().top
+  }, settings["speed"]);
+}

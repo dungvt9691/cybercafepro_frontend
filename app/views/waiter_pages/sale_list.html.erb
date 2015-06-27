@@ -16,10 +16,10 @@
             </th>
         </tr>
     </thead>
-    <tbody>
+    <tbody class="table_body">
       <% @sale.each_with_index do |sale,index| %>
         <tr id="sale-<%=sale['id']%>">
-          <td><%= index + 1 %></td>
+          <td><%= sale['id'] %></td>
           <td><%= sale['customer_id']%></td>
           <td>
             <table class="table table-striped">
@@ -63,26 +63,31 @@
 <script>
 var staff_channel = dispatcher.subscribe('staff');
 var stack_context = {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 5, "spacing2": 5,"context": $("#notify-list")}
-PNotify.desktop.permission();
 
 staff_channel.bind("create_sale",function(data) {
+    console.log('123');
   var notice = pop_notify({
       title: "test",
       text: "Order mới từ máy " + data['sale']['customer_id'],
       type: "success",
       stack: stack_context,
   });
+  push_data_to_table("#waiter_sale_list",data);
   notice.get().click(function(e) {
+      if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
+        return;
+      $.scrollToElement({to: "#sale-" + data['sale']['id']});
       notice.remove();
     //move to element
   });
-  var desktop_notice = pop_desktop_notify({
+  var desktop_notice = (pop_desktop_notify({
       title: "test",
       text: "Order mới từ máy " + data['sale']['customer_id'],
-  });
-  desktop_notice.get().click(function(e) {
+  })).get().click(function(e) {
     //move to element;
-    console.log('123');
+    //$.scrollToElement({to: "#sale-" + data['sale']['id']});
+    alert("124");
+    return ;
   });
 });
 
@@ -98,11 +103,10 @@ staff_channel.bind("next_state_sale",function(data) {
         notice.remove();
         //move to element
       });
-      var desktop_notice = pop_desktop_notify({
+      var desktop_notice = (pop_desktop_notify({
           title: "test",
           text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "làm xong",
-      });
-      desktop_notice.get().click(function(e) {
+      })).get().click(function(e) {
         //move to element
       });
     });
@@ -128,5 +132,17 @@ staff_channel.bind("next_state_sale",function(data) {
     });
   }
 });
+
+function push_data_to_table(tableId,data) {
+  $table = $(tableId);
+  html = "<tr id='sale-" + data['sale']['id'] +  "'>";
+  html += "<td>" + data['sale']['id']  + "</td>";
+  html += "<td>" + data['sale']['customer_id'] + "</td> ";
+  html += "<td>" + "latter" + "</td> ";
+  html += "<td>" + data['sale']['state']+ "</td> ";
+  html += "</tr>";
+
+  $table.find("tbody.table_body").append(html);
+}
 
 </script>

@@ -63,10 +63,8 @@ function pop_notify(options) {
 }
 
 function pop_desktop_notify(options) {
+  PNotify.desktop.permission();
   var defaults = {
-    animate_speed: "fast",
-    type: 'success',
-    hide: false,
     mouse_reset: false,
     desktop: {
       desktop: true
@@ -77,3 +75,4 @@ function pop_desktop_notify(options) {
   var desktop_notice = new PNotify(settings);
   return desktop_notice;
 }
+
