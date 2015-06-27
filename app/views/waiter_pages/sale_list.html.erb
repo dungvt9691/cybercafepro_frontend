@@ -1,65 +1,10 @@
-<div class="col-md-9">
-  <table class="table table-bordered" id="waiter_sale_list">
-    <thead>
-        <tr>
-            <th id="num" scope="col">
-                #
-            </th>
-            <th id="com" scope="col">
-                <abbr title="Computer Number">Com</abbr>
-            </th>
-            <th id="State" scope="col">
-                Items
-            </th>
-            <th id="villa" scope="col">
-                In charge
-            </th>
-        </tr>
-    </thead>
-    <tbody class="table_body">
-      <% @sale.each_with_index do |sale,index| %>
-        <tr id="sale-<%=sale['id']%>">
-          <td><%= sale['id'] %></td>
-          <td><%= sale['customer_id']%></td>
-          <td>
-            <table class="table table-striped">
-              <tr>
-                <th>Tên</th>
-                <th><Description/th>
-                <th>Số lượng</th>
-                <th>Tổng tiền</th>
-                <th>Trạng thai</th>
-              </tr>
-              <% sale['sale_menu_items_details'].each_with_index do |item| %>
-                <tr>
-                  <td><%= item['name']%></td>
-                  <td><%= item['description']%></td>
-                  <td><%= item['quantity']%></td>
-                  <td><%= item['sum']%></td>
-                  <td><%= item['state']%></td>
-                </tr>
-              <% end %>
-              <tr>
-                <td colspan='3'> Tổng tiền :</td>
-                <th> <%= sale['sale_menu_items_details'].inject(0) {|sum,m| sum += m['sum'].to_f} %> </th>
-            </table>
-          </td>
-          <td>
-            <a href="<%= go_for_payment_waiter_pages_path + '/?sale_id=' + sale['id'].to_s%>" data-remote= "true" type="button" class="btn btn-sm btn-primary">Đi lấy tiền</a>
-            <a href="<%= verify_payment_waiter_pages_path + '/?sale_id=' + sale['id'].to_s%>" data-remote= "true" type="button" class="btn btn-sm btn-danger">Đã lấy tiền</a>
-            <a href="<%= go_deliver_waiter_pages_path + '/?sale_id=' + sale['id'].to_s%>" data-remote= "true" type="button" class="btn btn-sm btn-info">Bắt đầu giao</a>
-            <a href="<%= done_deliver_waiter_pages_path + '/?sale_id=' + sale['id'].to_s%>" data-remote= "true" type="button" class="btn btn-sm btn-success">Xong</a>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
-<div class="col-md-3" >
-  <div id='notify-list' style="height: 1000px; position: relative; overflow: auto;">
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <div style="min-height: 1000px; background: red;"></div>
+    </div>
   </div>
 </div>
-
 <script>
 var staff_channel = dispatcher.subscribe('staff');
 var stack_context = {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 5, "spacing2": 5,"context": $("#notify-list")}

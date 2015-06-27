@@ -1,4 +1,5 @@
 class WaiterPagesController < ApplicationController
+  layout "waiter_layout"
 
   def sale_list
     @sale = Ckfapi::API::Sale.index(current_token, detail: true)['sales'] rescue []
