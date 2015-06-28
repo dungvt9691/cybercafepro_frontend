@@ -21,7 +21,7 @@
           <% @foods['menu_items'].each do |food| %>
           <% if food['mtype'] == type %>
           <center>
-            <div class="col-lg-4 col-md-4 col-sm-6 customer-service" data-service-name="<%= food['name'] %>" data-service-id="<%= food['id'] %>" data-service-price="<%= food['unit_price'] %>" data-service-type="food" data-service-price-format="<%= number_with_delimiter(food['unit_price']) %>">
+            <div class="col-lg-4 col-md-4 col-sm-6 customer-service" data-service-name="<%= food['name'] %>" data-service-id="<%= food['id'] %>" data-service-price="<%= food['unit_price'].to_i %>" data-service-type="food" data-service-price-format="<%= number_with_delimiter(food['unit_price'].to_i) %>">
               <div class="customer-service-img" style="background: url('<%= food['image']['url'] %>') no-repeat center center; background-color: #fff; background-size: 100%;"></div>
               <br>
               <div class='service-name'>

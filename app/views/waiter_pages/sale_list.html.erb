@@ -1,87 +1,74 @@
+<script type="text/javascript">
+var staff_channel = dispatcher.subscribe('staff');
+var stack_context = {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 5, "spacing2": 5,"context": $("#notify-list")}
+</script>
 <div class="container">
   <div class="row">
     <div class="col-sm-12">
-      <div style="min-height: 1000px; background: red;"></div>
+     <div class="waiter-pages">
+      <div class="row tabs-row">
+        <div class="col-sm-4 col-lg-4 col-md-4 col-xs-4 no-padding">
+          <div class="tab-list active" aria-control="tab-order-pending">
+            ORDER CẦN THU <label class="badge badge-danger" id=" notify-order-pending">3</label>
+          </div>
+        </div>
+        <div class="col-sm-4 col-lg-4 col-md-4 col-xs-4 no-padding">
+          <div class="tab-list" aria-control="tab-order-ready">
+            ORDER CẦN GIAO <label class="badge badge-danger" id="notify-order-ready">1</label>
+          </div>
+        </div>
+        <div class="col-sm-4 col-lg-4 col-md-4 col-xs-4 no-padding">
+          <div class="tab-list" aria-control="tab-histories">
+            LỊCH SỬ
+          </div>
+        </div>
+      </div>
+      <div class="row tabs-content">
+        <div class="col-sm-12">
+          <div class="marquee-notifications">
+            <div class="marquee-notifications-text">
+              <span class="notification-text">Máy 3 vừa có order, kiểm tra và thu tiền</span>
+              <span class="notification-text">Máy 1 vừa có order, kiểm tra và thu tiền</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <div class="tab-content" id="tab-order-pending">
+            <%= render 'order_pending' %>
+          </div>
+          <div class="tab-content" id="tab-order-ready">
+            <%= render 'order_ready' %>
+          </div>
+          <div class="tab-content" id="tab-histories">
+            <%= render 'order_histories' %>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+</div>
 <script>
-var staff_channel = dispatcher.subscribe('staff');
-var stack_context = {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 5, "spacing2": 5,"context": $("#notify-list")}
 
-staff_channel.bind("create_sale",function(data) {
-  $(function(){
-    var notice = pop_notify({
-        title: "test",
-        text: "Order mới từ máy " + data['sale']['customer_id'],
-        type: "success",
-        stack: stack_context,
-    });
-    push_data_to_table("#waiter_sale_list",data);
-    notice.get().click(function(e) {
-        if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
-          return;
-        $.scrollToElement({to: "#sale-" + data['sale']['id']});
-        notice.remove();
-      //move to element
-    });
-    var desktop_notice = pop_desktop_notify({
-        title: "test",
-        text: "Order mới từ máy " + data['sale']['customer_id'],
-    })
-  });
+var marquee = $('div.marquee-notifications');
+marquee.each(function() {
+  var mar = $(this),indent = mar.width();
+  mar.marquee = function() {
+    indent--;
+    mar.css('text-indent',indent);
+    if (indent < -1 * mar.children('div.marquee-notifications-text').width()) {
+      indent = mar.width();
+    }
+  };
+  mar.data('interval',setInterval(mar.marquee, 8));
 });
 
-staff_channel.bind("next_state_sale",function(data) {
-  if(data['sale']['state'] == "done") {
-    $(function(){
-      var notice = pop_notify({
-          title: "test",
-          text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "làm xong",
-          stack: stack_context,
-      });
-      notice.get().click(function(e) {
-        notice.remove();
-        //move to element
-      });
-      var desktop_notice = pop_desktop_notify({
-          title: "test",
-          text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "làm xong",
-      })
-    });
-  }
-  else if(data['sale']['state'] == "delivering") {
-    $(function(){
-      //Delete from others's wait_to_deliver table
-      if (true) // test if this is current_user
-        $("#sale-" + data['sale']['id']).remove();
-      else
-        // Đổi status nút
-        console.log("đổi nút");
-    });
-  }
-  else if(data['sale']['state'] == "delivered") {
-    $(function(){
-      //Delete from others's wait_to_deliver table
-      if (false) // test if this is current_user
-        $("#sale-" + data['sale']['id']).remove();
-      else
-        // Đổi status nút
-        console.log("đổi nút");
-    });
-  }
-});
-
-function push_data_to_table(tableId,data) {
-  $table = $(tableId);
-  html = "<tr id='sale-" + data['sale']['id'] +  "'>";
-  html += "<td>" + data['sale']['id']  + "</td>";
-  html += "<td>" + data['sale']['customer_id'] + "</td> ";
-  html += "<td>" + "latter" + "</td> ";
-  html += "<td>" + data['sale']['state']+ "</td> ";
-  html += "</tr>";
-
-  $table.find("tbody.table_body").append(html);
-}
+$(".tab-list").click(function(){
+  $(".tab-list").removeClass("active")
+  $(this).addClass("active")
+  tab_id = $(this).attr("aria-control")
+  $(".tab-content").fadeOut(0)
+  $("#"+tab_id).fadeIn(300)
+})
 
 </script>
