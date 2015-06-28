@@ -65,29 +65,25 @@ var staff_channel = dispatcher.subscribe('staff');
 var stack_context = {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 5, "spacing2": 5,"context": $("#notify-list")}
 
 staff_channel.bind("create_sale",function(data) {
-    console.log('123');
-  var notice = pop_notify({
-      title: "test",
-      text: "Order mới từ máy " + data['sale']['customer_id'],
-      type: "success",
-      stack: stack_context,
-  });
-  push_data_to_table("#waiter_sale_list",data);
-  notice.get().click(function(e) {
-      if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
-        return;
-      $.scrollToElement({to: "#sale-" + data['sale']['id']});
-      notice.remove();
-    //move to element
-  });
-  var desktop_notice = (pop_desktop_notify({
-      title: "test",
-      text: "Order mới từ máy " + data['sale']['customer_id'],
-  })).get().click(function(e) {
-    //move to element;
-    //$.scrollToElement({to: "#sale-" + data['sale']['id']});
-    alert("124");
-    return ;
+  $(function(){
+    var notice = pop_notify({
+        title: "test",
+        text: "Order mới từ máy " + data['sale']['customer_id'],
+        type: "success",
+        stack: stack_context,
+    });
+    push_data_to_table("#waiter_sale_list",data);
+    notice.get().click(function(e) {
+        if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
+          return;
+        $.scrollToElement({to: "#sale-" + data['sale']['id']});
+        notice.remove();
+      //move to element
+    });
+    var desktop_notice = pop_desktop_notify({
+        title: "test",
+        text: "Order mới từ máy " + data['sale']['customer_id'],
+    })
   });
 });
 
@@ -103,12 +99,10 @@ staff_channel.bind("next_state_sale",function(data) {
         notice.remove();
         //move to element
       });
-      var desktop_notice = (pop_desktop_notify({
+      var desktop_notice = pop_desktop_notify({
           title: "test",
           text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "làm xong",
-      })).get().click(function(e) {
-        //move to element
-      });
+      })
     });
   }
   else if(data['sale']['state'] == "delivering") {

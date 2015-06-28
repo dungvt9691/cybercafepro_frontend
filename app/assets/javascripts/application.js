@@ -58,8 +58,7 @@ function pop_notify(options) {
     mouse_reset: false
   }
   var settings = $.extend({},defaults,options);
-  var notice = new PNotify(settings);
-  return notice;
+  return (new PNotify(settings));
 }
 
 function pop_desktop_notify(options) {
@@ -71,8 +70,8 @@ function pop_desktop_notify(options) {
     }
   };
   var settings = $.extend({},defaults,options);
-  var notice = new PNotify(settings);
-  var desktop_notice = new PNotify(settings);
-  return desktop_notice;
+  return (new PNotify(settings)).get().click(function(e) {
+      if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target)) return;
+  });
 }
 

@@ -111,6 +111,8 @@ staff_channel.bind("next_state_sale",function(data) {
           stack: stack_context,
       });
       notice.get().click(function(e) {
+        if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
+          return;
         notice.remove();
         //move to element
       });
@@ -118,10 +120,6 @@ staff_channel.bind("next_state_sale",function(data) {
       var desktop_notice = pop_desktop_notify({
           title: "test",
           text: "Order mới từ máy " + data['sale']['customer_id'],
-      });
-      desktop_notice.get().click(function(e) {
-        //move to element
-        console.log("123");
       });
     });
   }

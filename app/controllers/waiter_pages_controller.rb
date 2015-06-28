@@ -1,7 +1,7 @@
 class WaiterPagesController < ApplicationController
 
   def sale_list
-    @sale = Ckfapi::API::Sale.index(detail: true)['sales'] rescue []
+    @sale = Ckfapi::API::Sale.index(detail: true,filter: {chef_id: 1})['sales'] rescue []
     respond_to do |format|
       format.html
     end
