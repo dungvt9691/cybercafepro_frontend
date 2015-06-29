@@ -9,11 +9,4 @@ module SessionsHelper
     session[:token]
   end
 
-  def current_user
-    session[:user] ||= Ckfapi::API::User.index(
-      current_token,
-      {email: current_token["user"]["email"] }
-    )["users"]
-  end
-
 end
