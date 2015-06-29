@@ -239,6 +239,8 @@ staff_channel.bind("next_state_sale",function(data) {
       var desktop_notice = pop_desktop_notify({
           title: "test",
           text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "làm xong",
+          type: "success",
+          stack: stack_context,
       })
     });
   }
