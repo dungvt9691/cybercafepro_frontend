@@ -44,3 +44,34 @@ function number_format(number, decimals, dec_point, thousands_sep)
 return s.join(dec);
 }
 
+function truncate (string, length) {
+  var length = length;
+  return string.substring(0, length) + "...";
+}
+
+function pop_notify(options) {
+  var defaults = {
+    width: "250px",
+    delay: 50000,
+    styling: "fontawesome",
+    buttons: {sticker: false, closer_hover: false},
+    mouse_reset: false
+  }
+  var settings = $.extend({},defaults,options);
+  return (new PNotify(settings));
+}
+
+function pop_desktop_notify(options) {
+  PNotify.desktop.permission();
+  var defaults = {
+    mouse_reset: false,
+    desktop: {
+      desktop: true
+    }
+  };
+  var settings = $.extend({},defaults,options);
+  return (new PNotify(settings)).get().click(function(e) {
+      if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target)) return;
+  });
+}
+

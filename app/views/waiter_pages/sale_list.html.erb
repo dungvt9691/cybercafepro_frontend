@@ -1,0 +1,142 @@
+<div class="col-md-9">
+  <table class="table table-bordered" id="waiter_sale_list">
+    <thead>
+        <tr>
+            <th id="num" scope="col">
+                #
+            </th>
+            <th id="com" scope="col">
+                <abbr title="Computer Number">Com</abbr>
+            </th>
+            <th id="State" scope="col">
+                Items
+            </th>
+            <th id="villa" scope="col">
+                In charge
+            </th>
+        </tr>
+    </thead>
+    <tbody class="table_body">
+      <% @sale.each_with_index do |sale,index| %>
+        <tr id="sale-<%=sale['id']%>">
+          <td><%= sale['id'] %></td>
+          <td><%= sale['customer_id']%></td>
+          <td>
+            <table class="table table-striped">
+              <tr>
+                <th>Tên</th>
+                <th><Description/th>
+                <th>Số lượng</th>
+                <th>Tổng tiền</th>
+                <th>Trạng thai</th>
+              </tr>
+              <% sale['sale_menu_items_details'].each_with_index do |item| %>
+                <tr>
+                  <td><%= item['name']%></td>
+                  <td><%= item['description']%></td>
+                  <td><%= item['quantity']%></td>
+                  <td><%= item['sum']%></td>
+                  <td><%= item['state']%></td>
+                </tr>
+              <% end %>
+              <tr>
+                <td colspan='3'> Tổng tiền :</td>
+                <th> <%= sale['sale_menu_items_details'].inject(0) {|sum,m| sum += m['sum'].to_f} %> </th>
+            </table>
+          </td>
+          <td>
+            <a href="<%= go_for_payment_waiter_pages_path + '/?sale_id=' + sale['id'].to_s%>" data-remote= "true" type="button" class="btn btn-sm btn-primary">Đi lấy tiền</a>
+            <a href="<%= verify_payment_waiter_pages_path + '/?sale_id=' + sale['id'].to_s%>" data-remote= "true" type="button" class="btn btn-sm btn-danger">Đã lấy tiền</a>
+            <a href="<%= go_deliver_waiter_pages_path + '/?sale_id=' + sale['id'].to_s%>" data-remote= "true" type="button" class="btn btn-sm btn-info">Bắt đầu giao</a>
+            <a href="<%= done_deliver_waiter_pages_path + '/?sale_id=' + sale['id'].to_s%>" data-remote= "true" type="button" class="btn btn-sm btn-success">Xong</a>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<div class="col-md-3" >
+  <div id='notify-list' style="height: 1000px; position: relative; overflow: auto;">
+  </div>
+</div>
+
+<script>
+var staff_channel = dispatcher.subscribe('staff');
+var stack_context = {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 5, "spacing2": 5,"context": $("#notify-list")}
+
+staff_channel.bind("create_sale",function(data) {
+  $(function(){
+    var notice = pop_notify({
+        title: "test",
+        text: "Order mới từ máy " + data['sale']['customer_id'],
+        type: "success",
+        stack: stack_context,
+    });
+    push_data_to_table("#waiter_sale_list",data);
+    notice.get().click(function(e) {
+        if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
+          return;
+        $.scrollToElement({to: "#sale-" + data['sale']['id']});
+        notice.remove();
+      //move to element
+    });
+    var desktop_notice = pop_desktop_notify({
+        title: "test",
+        text: "Order mới từ máy " + data['sale']['customer_id'],
+    })
+  });
+});
+
+staff_channel.bind("next_state_sale",function(data) {
+  if(data['sale']['state'] == "done") {
+    $(function(){
+      var notice = pop_notify({
+          title: "test",
+          text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "làm xong",
+          stack: stack_context,
+      });
+      notice.get().click(function(e) {
+        notice.remove();
+        //move to element
+      });
+      var desktop_notice = pop_desktop_notify({
+          title: "test",
+          text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "làm xong",
+      })
+    });
+  }
+  else if(data['sale']['state'] == "delivering") {
+    $(function(){
+      //Delete from others's wait_to_deliver table
+      if (true) // test if this is current_user
+        $("#sale-" + data['sale']['id']).remove();
+      else
+        // Đổi status nút
+        console.log("đổi nút");
+    });
+  }
+  else if(data['sale']['state'] == "delivered") {
+    $(function(){
+      //Delete from others's wait_to_deliver table
+      if (false) // test if this is current_user
+        $("#sale-" + data['sale']['id']).remove();
+      else
+        // Đổi status nút
+        console.log("đổi nút");
+    });
+  }
+});
+
+function push_data_to_table(tableId,data) {
+  $table = $(tableId);
+  html = "<tr id='sale-" + data['sale']['id'] +  "'>";
+  html += "<td>" + data['sale']['id']  + "</td>";
+  html += "<td>" + data['sale']['customer_id'] + "</td> ";
+  html += "<td>" + "latter" + "</td> ";
+  html += "<td>" + data['sale']['state']+ "</td> ";
+  html += "</tr>";
+
+  $table.find("tbody.table_body").append(html);
+}
+
+</script>

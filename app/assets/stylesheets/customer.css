@@ -121,8 +121,8 @@ body.customer-ordering .customer-wrapper{
 .customer-service .customer-service-img{
   border: 2px solid #ccc;
   width: 100%;
-  height: auto;
-  margin-bottom: 20px;
+  height: 125px;
+  /*margin-bottom: 20px;*/
   /*border-radius: 50%;*/
 }
 
@@ -136,7 +136,7 @@ body.customer-ordering .customer-wrapper{
   right: 15px;
   left: 15px;
   opacity: 0;
-  bottom: 20px;
+  bottom: 23px;
   cursor: pointer;
   padding: 30px 10px;
   background: rgba(48, 48, 48, 0.5);
@@ -162,15 +162,16 @@ body.customer-ordering .customer-wrapper{
 
 .customer-service .service-price{
   margin-top: -40px;
-  background: rgba(111, 111, 111, 0.7);
+  background: rgba(111, 111, 111, 0.8);
   color: #fff; 
-  padding: 6px 15px;
+  padding: 9px 15px;
   font-size: 13px;
   padding-top: 10px;
+  font-weight: 300;
 }
 
 .notice-customer-scroll{
-  margin-top: 480px;
+  margin-top: 470px;
   display: none;
   background: #666;
   color: #fff;
@@ -213,8 +214,15 @@ body.customer-ordering .customer-wrapper{
 
 .customer-table{
   padding: 12px;
+  padding-top: 0;
+  padding-bottom: 0;
   width: 100%;
 }
+
+.customer-table .bootstrap-table .fixed-table-body table{
+  box-shadow: 0 9px 9px -6px rgba(0,0,0,0.5);
+}
+
 .customer-order .nav-tabs li a{
   padding: 16px;
   font-size: 18px;

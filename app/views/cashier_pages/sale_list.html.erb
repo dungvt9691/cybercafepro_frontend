@@ -1,0 +1,95 @@
+<div class="col-md-9">
+  <table class="table table-bordered" id="waiter_sale_list">
+    <thead>
+        <tr>
+            <th id="num" scope="col">
+                #
+            </th>
+            <th id="com" scope="col">
+                <abbr title="Computer Number">Com</abbr>
+            </th>
+            <th id="State" scope="col">
+                Items
+            </th>
+            <th id="villa" scope="col">
+                In charge
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+      <% @sale.each_with_index do |sale,index| %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= sale['customer_id']%></td>
+          <td>
+            <table class="table table-striped">
+              <tr>
+                <th>Tên</th>
+                <th><Description/th>
+                <th>Số lượng</th>
+                <th>Tổng tiền</th>
+                <th>Trạng thai</th>
+              </tr>
+              <% sale['sale_menu_items_details'].each_with_index do |item| %>
+                <tr>
+                  <td><%= item['name']%></td>
+                  <td><%= item['description']%></td>
+                  <td><%= item['quantity']%></td>
+                  <td><%= item['sum']%></td>
+                  <td><%= item['state']%></td>
+                </tr>
+              <% end %>
+              <tr>
+                <td colspan='3'> Tổng tiền :</td>
+                <th> <%= sale['sale_menu_items_details'].inject(0) {|sum,m| sum += m['sum'].to_f} %> </th>
+            </table>
+          </td>
+          <td>
+            <a href="<%= save_sale_cashier_pages_path + '/?sale_id=' + sale['id'].to_s%>" data-remote= "true" type="button" class="btn btn-lg btn-block btn-success">Lưu</a>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<div class="col-md-3" >
+  <div id='notify-list' style="height: 1000px; position: relative; overflow: auto;">
+  </div>
+</div>
+
+
+<script>
+staff_channel.bind("next_state_sale",function(data) {
+  if(data['sale']['state'] == "delivered") {
+    $(function(){
+      var notice = new PNotify({
+          title: "test",
+          text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "làm xong",
+          animate_speed: "fast",
+          width: "250px",
+          delay: 500000,
+          type: 'success',
+          styling: "fontawesome",
+          buttons: {sticker: false, closer_hover: false},
+          stack: stack_context,
+      });
+      notice.get().click(function(e) {
+        notice.remove();
+      });
+      var desktop_notice = new PNotify({
+          title: "test",
+          text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "đã xong",
+          animate_speed: "fast",
+          type: 'warning',
+          hide: false,
+          desktop: {
+            desktop: true
+          }
+      });
+      desktop_notice.get().click(function(e) {
+        alert('124');
+      });
+    });
+  }
+});
+</script>

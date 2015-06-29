@@ -12,6 +12,32 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :waiter_pages,only: [] do
+    collection do
+      get "sale_list"
+      get "go_for_payment"
+      get "verify_payment"
+      get "go_deliver"
+      get "done_deliver"
+    end
+  end
+
+  resources :chief_pages,only: [] do
+    collection do
+      get "cooking_list"
+      get "start_cooking"
+      get "done_cooking"
+    end
+  end
+
+  resources :cashier_pages,only: [] do
+    collection do
+      get "sale_list"
+      get "save_sale"
+    end
+  end
+
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

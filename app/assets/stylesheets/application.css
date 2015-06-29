@@ -16,3 +16,14 @@
  *= require bootstrap-table
  *= require font-awesome
  */
+
+
+.alert {
+  margin-bottom: 0px !important;
+}
+.ui-pnotify  {
+  cursor: pointer;
+  position: initial;
+  margin: 0 auto;
+  margin-bottom: 5px;
+}
