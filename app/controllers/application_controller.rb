@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def authenticate_user!
-    if !current_token["user"].nil?
+    if !current_token.nil?
       return true
     else
       redirect_to new_sessions_path
