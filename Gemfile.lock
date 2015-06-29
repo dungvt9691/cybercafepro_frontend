@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/kienbd/ckfapi.git
-  revision: 9ea8fe57f5b088eb67562f3e3d7f53babcd56a0c
+  revision: 20cf475f3ae5d180ce67b12c7824e9ec72f3bfb1
   branch: authentication
   specs:
-    ckfapi (0.2.1)
+    ckfapi (0.3.0)
       activesupport
 
 GIT
