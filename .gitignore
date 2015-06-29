@@ -21,3 +21,4 @@ config/database.yml
 config/config.yml
 public/images/*
 public/assets/*
+Gemfile.lock
