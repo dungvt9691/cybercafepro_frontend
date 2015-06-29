@@ -4,7 +4,7 @@ class CustomerPagesController < ApplicationController
   append_view_path(File.join(Rails.root,"app/views/customer_pages"))
 
   def customer_ordering
-    @categories = Ckfapi::API::Category.index({detail: true})
+    @categories = Ckfapi::API::Category.index(current_token, {detail: true})
     @foods = @categories["categories"].find {|e| e["name"] == "Foods" }
     @food_types = @foods['menu_items'].map {|e| e['mtype']}.uniq
 
@@ -18,7 +18,7 @@ class CustomerPagesController < ApplicationController
   def create_sale
     #TODO
     params["sale"]["sale_menu_items_attributes"] = params["sale"]["sale_menu_items_attributes"].values
-    @sale = Ckfapi::API::Sale.create(params["sale"])
+    @sale = Ckfapi::API::Sale.create(current_token, params["sale"])
     WebsocketRails[:staff].trigger 'create_sale',@sale
     respond_to do |format|
       format.js
