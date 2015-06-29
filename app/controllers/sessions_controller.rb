@@ -6,10 +6,20 @@ class SessionsController < ApplicationController
 
   def create
     @token = get_token(params[:email], params[:password])
-    redirect_to root_path
+    if @token["user"]
+      redirect_to root_path
+    else
+      redirect_to new_sessions_path
+    end
   end
 
   def destroy
+    @dtoken = remove_token(current_token)
+    if !@dtoken
+      redirect_to new_sessions_path
+    else
+      redirect_to root_path
+    end
   end
 
 end
