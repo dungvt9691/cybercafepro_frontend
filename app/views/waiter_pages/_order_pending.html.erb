@@ -242,6 +242,8 @@ staff_channel.bind("create_sale",function(data) {
     var desktop_notice = pop_desktop_notify({
         title: "test",
         text: "Order mới từ máy " + data['sale']['customer_id'],
+        type: "success",
+        stack: stack_context,
     })
   });
 });

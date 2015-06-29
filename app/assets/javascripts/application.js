@@ -52,7 +52,7 @@ function truncate (string, length) {
 function pop_notify(options) {
   var defaults = {
     width: "250px",
-    delay: 50000,
+    delay: 5000,
     styling: "fontawesome",
     buttons: {sticker: false, closer_hover: false},
     mouse_reset: false
@@ -65,6 +65,12 @@ function pop_desktop_notify(options) {
   PNotify.desktop.permission();
   var defaults = {
     mouse_reset: false,
+    width: "250px",
+    delay: 5000,
+    styling: "fontawesome",
+    buttons: {sticker: false, closer_hover: false},
+    mouse_reset: false,
+    styling: "fontawesome",
     desktop: {
       desktop: true
     }
