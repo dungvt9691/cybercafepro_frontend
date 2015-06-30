@@ -114,7 +114,8 @@ $('#order-now').click(function(){
     sale_params.sale_menu_items_attributes.push(
       {
         menu_item_id: $(this).attr('menu-item-id'),
-        quantity: parseInt($(this).find('.order-service-quantity .quantity-text').text())
+        quantity: parseInt($(this).find('.order-service-quantity .quantity-text').text()),
+        description: $(this).find('.note-for-service').attr('data-original-title')
       }
     )
   })
