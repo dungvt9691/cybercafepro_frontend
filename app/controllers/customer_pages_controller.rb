@@ -14,7 +14,7 @@ class CustomerPagesController < ApplicationController
     @services = @categories["categories"].find {|e| e["name"] == "Game Service" }
     @service_types = @services['menu_items'].map {|e| e['mtype']}.uniq
   end
-
+  
   def create_sale
     #TODO
     params["sale"]["sale_menu_items_attributes"] = params["sale"]["sale_menu_items_attributes"].values

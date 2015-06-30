@@ -5,8 +5,8 @@
       <th style="width: 10%">
         <div style="font-size: 20px; padding-top: 1px"><i class="fa fa-desktop"></i></div>
       </th>
-      <th style="width: 50%">Khách gọi</th>
-      <th style="width: 40%">Trạng thái</th>
+      <th style="width: 55%">Khách gọi</th>
+      <th style="width: 35%">Trạng thái</th>
     </tr>
   </thead>
   <tbody>
@@ -205,22 +205,27 @@
         <button class="btn-delivered btn btn-primary disabled btn-block">Giao xong</button>
       </td>
     </tr>
+    <tr class="no-ready-orders no-orders">
+      <td colspan="4">
+        <div class="alert alert-warning">Tạm thời không có order mới.</div>
+      </td>
+    </tr>
   </tbody>
 </table>
 
 <script type="text/javascript">
 $('.table-order-ready .customer-table table').bootstrapTable();
 
-$(".table-order").on('click', '.btn-delivery', function(){
+$(".table-order-ready").on('click', '.btn-delivery', function(){
   $(this).addClass("disabled")
   $(this).siblings(".btn-delivered").removeClass("disabled")
 })
 
-$(".table-order").on('click', '.btn-delivered', function(){
+$(".table-order-ready").on('click', '.btn-delivered', function(){
   $(this).parents(".order-row").remove()
-  if($('.order-row').length == 0)
+  if($('.table-order-ready .order-row').length == 0)
   {
-    $(".no-pending-orders").fadeIn(100)
+    $(".no-ready-orders").fadeIn(100)
   }
 })
 

@@ -68,8 +68,11 @@
 .waiter-salelist .tab-list .badge-danger{
   font-size: 17px;
   margin-left: 8px;
-  display: inline-block;
   cursor: pointer;
+}
+
+.waiter-salelist .notify-order{
+  display: none
 }
 
 .waiter-salelist .tab-list .badge{
@@ -110,10 +113,10 @@ div.marquee-notifications > div.marquee-notifications-text > span.notification-t
 }
 
 div.marquee-notifications > div.marquee-notifications-text > span.notification-text:first-child{
-  -webkit-animation: glowing 400ms infinite;
-  -moz-animation: glowing 400ms infinite;
-  -o-animation: glowing 400ms infinite;
-  animation: glowing 400ms infinite;
+  -webkit-animation: glowing 800ms infinite;
+  -moz-animation: glowing 800ms infinite;
+  -o-animation: glowing 800ms infinite;
+  animation: glowing 800ms infinite;
 }
 
 .waiter-pages .tabs-content .tab-content{
@@ -128,7 +131,9 @@ div.marquee-notifications > div.marquee-notifications-text > span.notification-t
   border: none;
 }
 
-.waiter-pages .tabs-content .tab-content .table-order > thead th:first-child{
+.waiter-pages .tabs-content .tab-content .table-order > thead th:first-child,
+.waiter-pages .tabs-content .tab-content .table-order .order-row .order-number,
+.waiter-pages .tabs-content .tab-content .table-order .no-orders td{
   border-left: none;
 }
 
@@ -147,12 +152,10 @@ div.marquee-notifications > div.marquee-notifications-text > span.notification-t
   text-align: center;
 }
 
-.waiter-pages .tabs-content .tab-content .table-order .order-row .order-number{
-  border-left: none;
-}
-
 .waiter-pages .tabs-content .tab-content .table-order .order-row .label{
   font-size: 15px;
+  padding: 5px 20px;
+  padding-bottom: 8px;
 }
 
 .waiter-pages .tabs-content .tab-content .table-order .order-row > .order-status,
@@ -183,6 +186,11 @@ div.marquee-notifications > div.marquee-notifications-text > span.notification-t
 
 .waiter-pages .tabs-content .tab-content .table-order > tbody td.order-lists .customer-table .fixed-table-body table tbody tr td{
   border: none !important;
+  border-bottom: 1px solid #ccc !important;
+}
+
+.waiter-pages .tabs-content .tab-content .table-order > tbody td.order-lists .customer-table .fixed-table-body table tbody tr:last-child td{
+  border-bottom: none !important
 }
 
 .waiter-pages .tabs-content .tab-content .table-order > tbody td.order-lists .customer-table .fixed-table-body table tbody tr td:last-child{
@@ -197,6 +205,10 @@ div.marquee-notifications > div.marquee-notifications-text > span.notification-t
   background: #428bca
 }
 
+.waiter-pages .tabs-content .tab-content .table-order .customer-table table{
+  border-bottom: none;
+}
+
 .waiter-pages .tabs-content .tab-content .table-order .customer-table .order-service-quantity .quantity-text,
 .waiter-pages .tabs-content .tab-content .table-order .customer-table .order-service-price{
   color: #666;
@@ -205,4 +217,19 @@ div.marquee-notifications > div.marquee-notifications-text > span.notification-t
 .waiter-pages .tabs-content .tab-content .table-order h3{
    font-size: 17px;
    color: #333
+}
+
+.waiter-pages .table-order .row-service .order-service-name .note-for-service{
+  font-size: 12px;
+  margin-bottom: 3px;
+  width: 90%
+}
+
+.waiter-pages .table-order .row-service .order-service-price,
+.waiter-pages .table-order .row-service .order-service-quantity{
+  font-size: 16px;
+}
+
+.waiter-pages .table-order .row-service .order-service-name{
+  font-size: 16px;
 }
