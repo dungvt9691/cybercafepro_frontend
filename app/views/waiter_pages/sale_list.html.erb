@@ -5,50 +5,62 @@ var stack_context = {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1
 <div class="container">
   <div class="row">
     <div class="col-sm-12">
-     <div class="waiter-pages">
-      <div class="row tabs-row">
-        <div class="col-sm-4 col-lg-4 col-md-4 col-xs-4 no-padding">
-          <div class="tab-list active" aria-control="tab-order-pending">
-            ORDER CẦN THU <label class="badge badge-danger" id=" notify-order-pending">3</label>
+      <div class="waiter-pages">
+        <div class="row tabs-row">
+          <div class="col-sm-4 col-lg-4 col-md-4 col-xs-4 no-padding">
+            <div class="tab-list active" aria-control="tab-order-pending">
+              ORDER CẦN THU <label class="badge badge-danger notify-order-pending notify-order">0</label>
+            </div>
           </div>
-        </div>
-        <div class="col-sm-4 col-lg-4 col-md-4 col-xs-4 no-padding">
-          <div class="tab-list" aria-control="tab-order-ready">
-            ORDER CẦN GIAO <label class="badge badge-danger" id="notify-order-ready">1</label>
+          <div class="col-sm-4 col-lg-4 col-md-4 col-xs-4 no-padding">
+            <div class="tab-list" aria-control="tab-order-ready">
+              ORDER CẦN GIAO <label class="badge badge-danger notify-order-ready notify-order">0</label>
+            </div>
           </div>
-        </div>
-        <div class="col-sm-4 col-lg-4 col-md-4 col-xs-4 no-padding">
-          <div class="tab-list" aria-control="tab-histories">
-            LỊCH SỬ
-          </div>
-        </div>
-      </div>
-      <div class="row tabs-content">
-        <div class="col-sm-12">
-          <div class="marquee-notifications">
-            <div class="marquee-notifications-text">
-              <span class="notification-text">Máy 3 vừa có order, kiểm tra và thu tiền</span>
-              <span class="notification-text">Máy 1 vừa có order, kiểm tra và thu tiền</span>
+          <div class="col-sm-4 col-lg-4 col-md-4 col-xs-4 no-padding">
+            <div class="tab-list" aria-control="tab-histories">
+              LỊCH SỬ
             </div>
           </div>
         </div>
-        <div class="col-sm-12">
-          <div class="tab-content" id="tab-order-pending">
-            <%= render 'order_pending' %>
+        <div class="row tabs-content">
+          <div class="col-sm-12">
+            <div class="marquee-notifications">
+              <div class="marquee-notifications-text">
+              </div>
+            </div>
           </div>
-          <div class="tab-content" id="tab-order-ready">
-            <%= render 'order_ready' %>
-          </div>
-          <div class="tab-content" id="tab-histories">
-            <%= render 'order_histories' %>
+          <div class="col-sm-12">
+            <div class="tab-content" id="tab-order-pending">
+              <%= render 'order_pending' %>
+            </div>
+            <div class="tab-content" id="tab-order-ready">
+              <%= render 'order_ready' %>
+            </div>
+            <div class="tab-content" id="tab-histories">
+              <%= render 'order_histories' %>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+<div class='container copyright'>
+  <small>Copyright <i class='fa fa-copyright'></i> ABCDEF</small>
+</div>
+<div class="panel-notifications minimize">
+  <div class='panel-notification-heading'>
+    <label class="badge badge-danger notify-order notify-order-pending">0</label>
+    <span class="heading-title">Thông báo</span>
+    <i class="fa fa-caret-down"></i>
+  </div>
+  <div class="panel-notification-body">
+    
+  </div>
 </div>
 <script>
+$(".panel-notification-body").niceScroll({horizrailenabled: false, cursorcolor:"rgba(0, 0, 0, 0.5)", cursorwidth: "9px"})
 
 var marquee = $('div.marquee-notifications');
 marquee.each(function() {
@@ -69,6 +81,18 @@ $(".tab-list").click(function(){
   tab_id = $(this).attr("aria-control")
   $(".tab-content").fadeOut(0)
   $("#"+tab_id).fadeIn(300)
+})
+
+$(".panel-notification-heading").click(function(){
+  if($(this).parents(".panel-notifications").hasClass("minimize")){
+    $(this).children(".fa").addClass("fa-caret-down").removeClass("fa-caret-up")
+    $(this).parents('.panel-notifications').removeClass("minimize")
+  }
+  else{
+    $(".panel-notification-heading .fa").parents(".panel-notifications").addClass("minimize")
+    $(this).children(".fa").removeClass("fa-caret-down").addClass("fa-caret-up")
+    $(this).parents('.panel-notifications').addClass("minimize")
+  }
 })
 
 </script>
