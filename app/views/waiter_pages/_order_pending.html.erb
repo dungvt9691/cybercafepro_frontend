@@ -76,6 +76,29 @@ staff_channel.bind("create_sale",function(data) {
   });
 });
 
+staff_channel.bind("next_state_sale",function(data) {
+  if(data['sale']['state'] == "pending") {
+    $(function(){
+      var notice = pop_notify({
+          title: "test",
+          text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "đang được đi lấy tiền",
+          stack: stack_context,
+      });
+      //check data['sale']['pender_id'] vs current_user
+      notice.get().click(function(e) {
+        notice.remove();
+        //move to element
+      });
+      var desktop_notice = pop_desktop_notify({
+          title: "test",
+          text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "đang được đi lấy tiền",
+          type: "success",
+          stack: stack_context,
+      })
+    });
+  }
+});
+
 // {"sale"=>
 //   {"id"=>2,
 //    "invoice_number"=>"INV1435658662",
