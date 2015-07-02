@@ -273,3 +273,7 @@ body.customer-ordering .customer-wrapper{
   font-size: 12px;
   vertical-align: middle;
 }
+
+.table .table{
+  background: transparent !important;
+}
