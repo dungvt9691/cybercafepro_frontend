@@ -2,14 +2,29 @@ class WaiterPagesController < ApplicationController
   layout "waiter_layout"
 
   def sale_list
-    @sale = Ckfapi::API::Sale.index(current_token, detail: true)['sales'] rescue []
+    @sales = Ckfapi::API::Sale.index(current_token, detail: true)['sales'] rescue []
+    @sales = @sales.sort{|a, b| a['created_at'].to_datetime <=> b['created_at'].to_datetime}
+    @sales_pending = []
+    @sales_ready = []
+    @sales_delivered = []
+    @sales.each do |sale|
+      if ["init", "pending"].include?(sale['state'])
+        @sales_pending << sale if sale['state'] == "pending" && current_user['id'] == sale['pender_id']
+        @sales_pending << sale if sale['state'] == "init"
+      elsif ['done', 'delivering'].include?(sale['state'])
+        @sales_ready << sale if sale['state'] == "delivering" && current_user['id'] == sale['deliverer_id']
+        @sales_ready << sale if sale['state'] == "done"
+      else
+        @sales_delivered << sale
+      end
+    end
     respond_to do |format|
       format.html
     end
   end
 
   def init_sale_list
-    #TODO
+    #TODOt
   end
 
   def done_sale_list

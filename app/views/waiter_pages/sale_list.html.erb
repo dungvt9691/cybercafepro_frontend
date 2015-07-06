@@ -9,12 +9,12 @@ var stack_context = {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1
         <div class="row tabs-row">
           <div class="col-sm-4 col-lg-4 col-md-4 col-xs-4 no-padding">
             <div class="tab-list active" aria-control="tab-order-pending">
-              ORDER CẦN THU <label class="badge badge-danger notify-order-pending notify-order">0</label>
+              ORDER CẦN THU <label class="badge badge-danger notify-order-pending notify-order"><%= @sales_pending.count %></label>
             </div>
           </div>
           <div class="col-sm-4 col-lg-4 col-md-4 col-xs-4 no-padding">
             <div class="tab-list" aria-control="tab-order-ready">
-              ORDER CẦN GIAO <label class="badge badge-danger notify-order-ready notify-order">0</label>
+              ORDER CẦN GIAO <label class="badge badge-danger notify-order-ready notify-order"><%= @sales_ready.count %></label>
             </div>
           </div>
           <div class="col-sm-4 col-lg-4 col-md-4 col-xs-4 no-padding">
@@ -27,6 +27,22 @@ var stack_context = {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1
           <div class="col-sm-12">
             <div class="marquee-notifications">
               <div class="marquee-notifications-text">
+                <% @sales.each do |sale| %>
+                <% case sale['state'] %>
+                <% when "pending" %>
+                <% if current_user['id'] == sale['pender_id'] %>
+                <span sale-id="<%= sale['id'] %>" class="notification-text"><%= "Máy x" %> vừa có order, kiểm tra và thu tiền</span>
+                <% end %>
+                <% when "init" %>
+                <span sale-id="<%= sale['id'] %>" class="notification-text"><%= "Máy x" %> vừa có order, kiểm tra và thu tiền</span>
+                <% when "delivering" %>
+                <% if current_user['id'] == sale['delivering_id'] %>
+                <span sale-id="<%= sale['id'] %>" class="notification-text"><%= "Máy x" %> đã làm xong order, kiểm tra và mang lên cho khách</span>
+                <% end %>
+                <% when "done" %>
+                <span sale-id="<%= sale['id'] %>" class="notification-text"><%= "Máy x" %> đã làm xong order, kiểm tra và mang lên cho khách</span>
+                <% end %>
+                <% end %>
               </div>
             </div>
           </div>
@@ -51,12 +67,50 @@ var stack_context = {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1
 </div>
 <div class="panel-notifications minimize">
   <div class='panel-notification-heading'>
-    <label class="badge badge-danger notify-order notify-order-pending">0</label>
+    <label class="badge badge-danger notify-order notify-order-all"><%= @sales_ready.count + @sales_pending.count %></label>
     <span class="heading-title">Thông báo</span>
     <i class="fa fa-caret-down"></i>
   </div>
   <div class="panel-notification-body">
-    
+    <% @sales.each do |sale| %>
+    <% if ['init', 'pending'].include?(sale['state']) %>
+    <div sale-id='<%= sale['id'] %>' class='notification-content'>
+      <div class='row'>
+        <div class='col-lg-3 col-md-3 col-sm-3 no-padding'>
+          <center>
+            <i class='fa fa-desktop'></i>
+            <br>
+            <label class='label label-primary computer-name'><%= "Máy x" %>
+            </label>
+          </center>
+        </div>
+        <div class='col-lg-9 col-md-9 col-sm-9 no-padding'>
+          <div class='alert alert-info'>
+            Có <b>ORDER MỚI</b>, <b>kiểm tra và thu tiền</b> của khách.
+          </div>
+        </div>
+      </div>
+    </div>
+    <% elsif ['done', 'delivering'].include?(sale['state']) %>
+    <div sale-id='<%= sale['id'] %>' class='notification-content'>
+      <div class='row'>
+        <div class='col-lg-3 col-md-3 col-sm-3 no-padding'>
+          <center>
+            <i class='fa fa-desktop'></i>
+            <br>
+            <label class='label label-primary computer-name'><%= "Máy x" %>
+            </label>
+          </center>
+        </div>
+        <div class='col-lg-9 col-md-9 col-sm-9 no-padding'>
+          <div class='alert alert-danger'>
+            Đã <b>làm xong</b>, <b>kiểm tra và mang lên</b> cho khách.
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+    <% end %>
   </div>
 </div>
 <script>
