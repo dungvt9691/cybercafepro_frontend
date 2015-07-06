@@ -1,43 +1,68 @@
 <table class="table table-bordered table-order-histories table-order">
   <thead>
     <tr>
-      <th style="width: 5%">#</th>
-      <th style="width: 10%">
-        <div style="font-size: 20px; padding-top: 1px"><i class="fa fa-desktop"></i></div>
+      <th style="width: 15%">
+        Tên
       </th>
-      <th style="width: 55%">Khách gọi</th>
-      <th style="width: 35%">Quá trình</th>
+      <th style="width: 53%">Khách gọi</th>
+      <th style="width: 32%">Quá trình</th>
     </tr>
   </thead>
   <tbody>
-    <tr class="order-row">
-      <td class='order-number'>
-        1
+    <% @sales_delivered.each do |sale| %>
+    <tr class="order-row" sale-id='<%= sale['id'] %>' id="sale-<%= sale['id'] %>">
+      <td class="order-com">
+        <br>
+        <i class='fa fa-desktop' style="font-size: 50px"></i>
+        <br><br>
+        <label class="label label-primary">
+          Máy x
+        </label>
       </td>
-      <td class='order-com'>
-        <label class="label label-primary">Máy 1</label>
-      </td>
-      <td class='order-lists'>
-        <div class="customer-table">
-          <table data-height="230" data-width="100">
+      <td class="order-lists">
+        <div class='customer-table'>
+          <table>
             <thead>
               <tr>
-                <th data-field="id" data-align="left">MÓN ĂN&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</th>
-                <th data-field="price" data-align="left">ĐƠN GIÁ&nbsp; &nbsp; &nbsp;</th>
-                <th data-field="name" data-align="left">SL &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th data-field='id' data-align='left'>MÓN ĂN&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</th>
+                <th data-field='price' data-align='left'>ĐƠN GIÁ&nbsp; &nbsp; &nbsp;</th>
+                <th data-field='name' data-align='left'>SL &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
               </tr>
             </thead>
             <tbody>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
+              <% height = 36 %>
+              <% total_price = 0 %>
+              <% sale['sale_menu_items_details'].each do |data| %>
+              <% item_detail = data['menu_item_details'] %>
+              <% height += 59 %>
+              <% if height > 390 %>
+              <% height = 390 %>
+              <% end %>
+              <% total_price += data['sum'].to_i %>
+              <tr id="row-service-<%= data['id'] %>" menu-item-id="<%= data['id'] %>" class="row-service">
+                <td class="order-service-name">
+                  <b><%= item_detail['name'] %></b>
+                  <br>
+                  <p class="note-for-service">
+                    <%= data['description'] || "Không có" %>
+                  </p>
+                </td>
+                <td class='order-service-price' data-price='<%= item_detail['unit_price'] %>'>
+                  <%= number_with_delimiter(item_detail['unit_price'].to_i) %>
+                </td>
+                <td class='order-service-quantity'>
+                  <span class='quantity-text'>
+                    <%= data['quantity'].to_i %>
+                  </span>
+                </td>
+              </tr>
+              <% end %>
             </tbody>
           </table>
-        </div>
-        <div class="col-lg-12" style="border-top: 1px solid #ccc">
-          <div class='pull-right' style="margin-right: 3px">
-            <h3 style="margin-top: 10px">Tổng: <span class='total-price'>0</span> đ</h3>
+          <div class='col-lg-12' style='border-top: 1px solid #ccc'>
+            <div class='pull-right' style='margin-right: 3px'>
+              <h3 style='margin-top: 10px'>Tổng: <span class='total-price'><%= number_with_delimiter(total_price.to_i) %></span> đ</h3>
+            </div>
           </div>
         </div>
       </td>
@@ -56,194 +81,29 @@
         </p>
       </td>
     </tr>
-    <tr class="order-row">
-      <td class='order-number'>
-        1
-      </td>
-      <td class='order-com'>
-        <label class="label label-primary">Máy 1</label>
-      </td>
-      <td class='order-lists'>
-        <div class="customer-table">
-          <table data-height="230" data-width="100">
-            <thead>
-              <tr>
-                <th data-field="id" data-align="left">MÓN ĂN&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</th>
-                <th data-field="price" data-align="left">ĐƠN GIÁ&nbsp; &nbsp; &nbsp;</th>
-                <th data-field="name" data-align="left">SL &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="col-lg-12" style="border-top: 1px solid #ccc">
-          <div class='pull-right' style="margin-right: 3px">
-            <h3 style="margin-top: 10px">Tổng: <span class='total-price'>0</span> đ</h3>
-          </div>
-        </div>
-      </td>
-      <td class="order-step">
-        <p>
-          <b>Thu tiền:</b> 10h30'
-        </p>
-        <p>
-          <b>Thu xong:</b> 10h35'
-        </p>
-        <p>
-          <b>Mang cho khách:</b> 10h50'
-        </p>  
-        <p>
-          <b>Mang xong:</b> 10h55'
-        </p>
+    <script type="text/javascript">
+    $("#sale-<%= sale['id'] %> .customer-table table").bootstrapTable({
+      height: parseInt("<%= height %>")
+    });
+    </script>
+    <% end %>
+    <tr class="no-histories-orders no-orders">
+      <td colspan="3">
+        <div class="alert alert-warning">Tạm thời không có order mới.</div>
       </td>
     </tr>
-    <tr class="order-row">
-      <td class='order-number'>
-        1
-      </td>
-      <td class='order-com'>
-        <label class="label label-primary">Máy 1</label>
-      </td>
-      <td class='order-lists'>
-        <div class="customer-table">
-          <table data-height="230" data-width="100">
-            <thead>
-              <tr>
-                <th data-field="id" data-align="left">MÓN ĂN&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</th>
-                <th data-field="price" data-align="left">ĐƠN GIÁ&nbsp; &nbsp; &nbsp;</th>
-                <th data-field="name" data-align="left">SL &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="col-lg-12" style="border-top: 1px solid #ccc">
-          <div class='pull-right' style="margin-right: 3px">
-            <h3 style="margin-top: 10px">Tổng: <span class='total-price'>0</span> đ</h3>
-          </div>
-        </div>
-      </td>
-      <td class="order-step">
-        <p>
-          <b>Thu tiền:</b> 10h30'
-        </p>
-        <p>
-          <b>Thu xong:</b> 10h35'
-        </p>
-        <p>
-          <b>Mang cho khách:</b> 10h50'
-        </p>  
-        <p>
-          <b>Mang xong:</b> 10h55'
-        </p>
-      </td>
-    </tr>
-    <tr class="order-row">
-      <td class='order-number'>
-        1
-      </td>
-      <td class='order-com'>
-        <label class="label label-primary">Máy 1</label>
-      </td>
-      <td class='order-lists'>
-        <div class="customer-table">
-          <table data-height="230" data-width="100">
-            <thead>
-              <tr>
-                <th data-field="id" data-align="left">MÓN ĂN&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</th>
-                <th data-field="price" data-align="left">ĐƠN GIÁ&nbsp; &nbsp; &nbsp;</th>
-                <th data-field="name" data-align="left">SL &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="col-lg-12" style="border-top: 1px solid #ccc">
-          <div class='pull-right' style="margin-right: 3px">
-            <h3 style="margin-top: 10px">Tổng: <span class='total-price'>0</span> đ</h3>
-          </div>
-        </div>
-      </td>
-      <td class="order-step">
-        <p>
-          <b>Thu tiền:</b> 10h30'
-        </p>
-        <p>
-          <b>Thu xong:</b> 10h35'
-        </p>
-        <p>
-          <b>Mang cho khách:</b> 10h50'
-        </p>  
-        <p>
-          <b>Mang xong:</b> 10h55'
-        </p>
-      </td>
-    </tr>
-    <tr class="order-row">
-      <td class='order-number'>
-        1
-      </td>
-      <td class='order-com'>
-        <label class="label label-primary">Máy 1</label>
-      </td>
-      <td class='order-lists'>
-        <div class="customer-table">
-          <table data-height="230" data-width="100">
-            <thead>
-              <tr>
-                <th data-field="id" data-align="left">MÓN ĂN&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</th>
-                <th data-field="price" data-align="left">ĐƠN GIÁ&nbsp; &nbsp; &nbsp;</th>
-                <th data-field="name" data-align="left">SL &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="col-lg-12" style="border-top: 1px solid #ccc">
-          <div class='pull-right' style="margin-right: 3px">
-            <h3 style="margin-top: 10px">Tổng: <span class='total-price'>0</span> đ</h3>
-          </div>
-        </div>
-      </td>
-      <td class="order-step">
-        <p>
-          <b>Thu tiền:</b> 10h30'
-        </p>
-        <p>
-          <b>Thu xong:</b> 10h35'
-        </p>
-        <p>
-          <b>Mang cho khách:</b> 10h50'
-        </p>  
-        <p>
-          <b>Mang xong:</b> 10h55'
-        </p>
-      </td>
-    </tr>
-    
   </tbody>
 </table>
 
 <script type="text/javascript">
-$('.table-order-histories .customer-table table').bootstrapTable();
+$(document).ready(function () {
+  if($(".table-order-histories .order-row").length > 0){
+    $(".notify-order-histories").fadeIn(0)
+    $(".no-histories-orders").fadeOut(0)
+  }
+  else{
+    $(".notify-order-histories").fadeOut(0)
+    $(".no-histories-orders").fadeIn(0)
+  }
+});
 </script>
