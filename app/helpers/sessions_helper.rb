@@ -28,7 +28,7 @@ module SessionsHelper
     elsif user['role'] == "Employee"
       case user['duty_type']
       when "Waiter"
-        redirect_to sale_list_waiter_pages_path
+        sale_list_waiter_pages_path
       when "Cashier"
         sale_list_cashier_pages_path
       when "Chef"
