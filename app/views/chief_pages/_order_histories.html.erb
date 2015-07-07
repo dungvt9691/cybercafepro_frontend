@@ -4,12 +4,12 @@
       <th style="width: 15%">
         Tên
       </th>
-      <th style="width: 57%">Khách gọi</th>
-      <th style="width: 28%">Quá trình</th>
+      <th style="width: 53%">Khách gọi</th>
+      <th style="width: 32%">Quá trình</th>
     </tr>
   </thead>
   <tbody>
-    <% @sales_delivered.each do |sale| %>
+    <% @sales_done.each do |sale| %>
     <tr class="order-row" sale-id='<%= sale['id'] %>' id="sale-<%= sale['id'] %>">
       <td class="order-com">
         <br>
@@ -18,15 +18,16 @@
         <label class="label label-primary">
           Máy x
         </label>
+        <br><br><br>
       </td>
       <td class="order-lists">
         <div class='customer-table'>
           <table>
             <thead>
               <tr>
-                <th data-class="btable-id" data-field='id' data-align='left'>MÓN ĂN</th>
-                <th data-class="btable-price" data-field='price' data-align='left'>ĐƠN GIÁ</th>
-                <th data-class="btable-quantity" data-field='quantity' data-align='left'>SL</th>
+                <th data-field='id' data-align='left'>MÓN ĂN&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</th>
+                <th data-field='price' data-align='left'>ĐƠN GIÁ&nbsp; &nbsp; &nbsp;</th>
+                <th data-field='name' data-align='left'>SL &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
               </tr>
             </thead>
             <tbody>
@@ -67,16 +68,16 @@
         </div>
       </td>
       <td class="order-step">
-        <p style="width: 100%">
+        <p>
           <b>Thu tiền:</b> 10h30'
         </p>
-        <p style="width: 100%">
+        <p>
           <b>Thu xong:</b> 10h35'
         </p>
-        <p style="width: 100%">
+        <p>
           <b>Mang cho khách:</b> 10h50'
         </p>  
-        <p style="width: 100%">
+        <p>
           <b>Mang xong:</b> 10h55'
         </p>
       </td>
@@ -98,9 +99,11 @@
 <script type="text/javascript">
 $(document).ready(function () {
   if($(".table-order-histories .order-row").length > 0){
+    $(".notify-order-histories").fadeIn(0)
     $(".no-histories-orders").fadeOut(0)
   }
   else{
+    $(".notify-order-histories").fadeOut(0)
     $(".no-histories-orders").fadeIn(0)
   }
 });

@@ -65,7 +65,7 @@ var stack_context = {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1
 <div class='container copyright'>
   <small>Copyright <i class='fa fa-copyright'></i> ABCDEF</small>
 </div>
-<div class="panel-notifications minimize">
+<div class="panel-notifications %= 'active' if @sales_pending.count + @sales_ready.count > 0 %> <%= 'minimize' if @sales_pending.count + @sales_ready.count == 0 %>">
   <div class='panel-notification-heading'>
     <label class="badge badge-danger notify-order notify-order-all"><%= @sales_ready.count + @sales_pending.count %></label>
     <span class="heading-title">Thông báo</span>
@@ -114,6 +114,15 @@ var stack_context = {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1
   </div>
 </div>
 <script>
+$(document).ready(function () {
+  if($(".table-order-pending .order-row").length + $(".table-order-ready .order-row").length > 0){
+    $(".notify-order-all").fadeIn(0)
+  }
+  else{
+    $(".notify-order-all").fadeOut(0)
+  }
+});
+
 $(".panel-notification-body").niceScroll({horizrailenabled: false, cursorcolor:"rgba(0, 0, 0, 0.5)", cursorwidth: "9px"})
 
 var marquee = $('div.marquee-notifications');

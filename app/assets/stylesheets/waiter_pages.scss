@@ -180,6 +180,14 @@ div.marquee-notifications > div.marquee-notifications-text > span.notification-t
   padding: 0px;
 }
 
+.waiter-pages .tabs-content .tab-content .table-order > tbody td.order-lists{
+  width: 300px;
+}
+
+.waiter-pages .tabs-content .tab-content .table-order > tbody td.order-lists .customer-table{
+  width: 100%;
+}
+
 .waiter-pages .tabs-content .tab-content .table-order > tbody td.order-lists .customer-table .bootstrap-table .fixed-table-body table{
   box-shadow: 0 9px 9px -6px rgba(0,0,0,0.0);
 }
@@ -232,4 +240,16 @@ div.marquee-notifications > div.marquee-notifications-text > span.notification-t
 
 .waiter-pages .table-order .row-service .order-service-name{
   font-size: 16px;
+}
+
+.btable-id{
+  width: 60%;
+}
+
+.btable-price{
+  width: 20%;
+}
+
+.btable-quantity{
+  width: 20%;
 }
