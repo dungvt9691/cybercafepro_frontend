@@ -1,10 +1,13 @@
 class ChiefPagesController < ApplicationController
+  layout "chef_layout"
 
   def cooking_list
     #TODO
     @sales = Ckfapi::API::Sale.index(current_token, detail: true)['sales']
-    @start_cookings = @sales.select{|m| m['next_state'] == 'cooking'}
-    @done_cookings = @sales.select{|m| m['next_state'] == 'done'}
+    @sales_processing = @sales.select{|m| m['state'] == 'processing'}
+    @sales_cooking = @sales.select{|m| m['state'] == 'cooking'}
+    @sales_done = @sales.select{|m| m['state'] == 'done'}
+    binding.pry
     respond_to do |format|
       format.html
     end
