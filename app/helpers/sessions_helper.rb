@@ -27,4 +27,24 @@ module SessionsHelper
       {email: current_token["user"]["email"] }
       )["users"][0] rescue nil
   end
+
+  def get_root_path user
+    if user['role'] == "Customer"
+      customer_ordering_customer_pages_path
+    elsif user['role'] == "Employee"
+      case user['duty_type']
+      when "Waiter"
+        sale_list_waiter_pages_path
+      when "Cashier"
+        sale_list_cashier_pages_path
+      when "Chef"
+        cooking_list_chief_pages_path
+      when "Manager"
+        customer_ordering_customer_pages_path
+      else
+        customer_ordering_customer_pages_path
+      end
+    end
+  end
+
 end

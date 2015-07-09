@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   resources :customer_pages,only: [] do
     collection do
+      get  "customer_ordering"
       post "create_sale"
     end
   end
