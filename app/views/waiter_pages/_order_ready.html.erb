@@ -1,210 +1,76 @@
 <table class="table table-bordered table-order-ready table-order">
   <thead>
     <tr>
-      <th style="width: 5%">#</th>
-      <th style="width: 10%">
-        <div style="font-size: 20px; padding-top: 1px"><i class="fa fa-desktop"></i></div>
+      <th style="width: 15%">
+        Tên
       </th>
-      <th style="width: 55%">Khách gọi</th>
-      <th style="width: 35%">Trạng thái</th>
+      <th style="width: 57%">Khách gọi</th>
+      <th style="width: 28%">Trạng thái</th>
     </tr>
   </thead>
   <tbody>
-    <tr class="order-row">
-      <td class='order-number'>
-        1
+    <% @sales_ready.each do |sale| %>
+    <tr class="order-row" sale-id='<%= sale['id'] %>' id="sale-<%= sale['id'] %>">
+      <td class="order-com">
+        <br>
+        <i class='fa fa-desktop' style="font-size: 50px"></i>
+        <br><br>
+        <label class="label label-primary">
+          Máy <%= sale['customer_id'] %>
+        </label>
       </td>
-      <td class='order-com'>
-        <label class="label label-primary">Máy 1</label>
-      </td>
-      <td class='order-lists'>
-        <div class="customer-table">
-          <table data-height="230" data-width="100">
+      <td class="order-lists">
+        <div class='customer-table'>
+          <table>
             <thead>
               <tr>
-                <th data-field="id" data-align="left">MÓN ĂN&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</th>
-                <th data-field="price" data-align="left">ĐƠN GIÁ&nbsp; &nbsp; &nbsp;</th>
-                <th data-field="name" data-align="left">SL &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th data-class="btable-id" data-field='id' data-align='left'>MÓN ĂN</th>
+                <th data-class="btable-price" data-field='price' data-align='left'>ĐƠN GIÁ</th>
+                <th data-class="btable-quantity" data-field='quantity' data-align='left'>SL</th>
               </tr>
             </thead>
             <tbody>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-          <div class="col-lg-12" style="border-top: 1px solid #ccc">
-            <div class='pull-right' style="margin-right: 3px">
-              <h3 style="margin-top: 10px">Tổng: <span class='total-price'>0</span> đ</h3>
-            </div>
-        </div>
-      </td>
-      <td class="order-status">
-        <button class="btn-delivery btn btn-primary btn-block">Bắt đầu giao</button>
-        <center>
-          <i class='fa fa-caret-down' style="font-size: 30px"></i>
-        </center>
-        <button class="btn-delivered btn btn-primary disabled btn-block">Giao xong</button>
-      </td>
-    </tr>
-    <tr class="order-row">
-      <td class='order-number'>
-        1
-      </td>
-      <td class='order-com'>
-        <label class="label label-primary">Máy 1</label>
-      </td>
-      <td class='order-lists'>
-        <div class="customer-table">
-          <table data-height="230" data-width="100">
-            <thead>
-              <tr>
-                <th data-field="id" data-align="left">MÓN ĂN&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</th>
-                <th data-field="price" data-align="left">ĐƠN GIÁ&nbsp; &nbsp; &nbsp;</th>
-                <th data-field="name" data-align="left">SL &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+              <% total_price = 0 %>
+              <% sale['sale_menu_items_details'].each do |data| %>
+              <% item_detail = data['menu_item_details'] %>
+              <% total_price += data['sum'].to_i %>
+              <tr id="row-service-<%= data['id'] %>" menu-item-id="<%= data['id'] %>" class="row-service">
+                <td class="order-service-name">
+                  <b><%= item_detail['name'] %></b>
+                  <br>
+                  <p class="note-for-service">
+                    <%= data['description'] || "Không có" %>
+                  </p>
+                </td>
+                <td class='order-service-price' data-price='<%= item_detail['unit_price'] %>'>
+                  <%= number_with_delimiter(item_detail['unit_price'].to_i) %>
+                </td>
+                <td class='order-service-quantity'>
+                  <span class='quantity-text'>
+                    <%= data['quantity'].to_i %>
+                  </span>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
+              <% end %>
             </tbody>
           </table>
-        </div>
-          <div class="col-lg-12" style="border-top: 1px solid #ccc">
-            <div class='pull-right' style="margin-right: 3px">
-              <h3 style="margin-top: 10px">Tổng: <span class='total-price'>0</span> đ</h3>
+          <div class='col-lg-12' style='border-top: 1px solid #ccc'>
+            <div class='pull-right' style='margin-right: 3px'>
+              <h3 style='margin-top: 10px'>Tổng: <span class='total-price'><%= number_with_delimiter(total_price.to_i) %></span> đ</h3>
             </div>
+          </div>
         </div>
       </td>
       <td class="order-status">
-        <button class="btn-delivery btn btn-primary btn-block">Bắt đầu giao</button>
-        <center>
-          <i class='fa fa-caret-down' style="font-size: 30px"></i>
-        </center>
-        <button class="btn-delivered btn btn-primary disabled btn-block">Giao xong</button>
+        <a href='<%= go_deliver_waiter_pages_path(sale_id: sale['id'].to_s)%>' data-remote='true' class='btn-delivering <%= 'disabled' if sale['state'] == 'delivering' %> btn btn-primary btn-block'>Bắt đầu giao</a>
+        <center><i class='fa fa-caret-down' style='font-size: 30px'></i></center>
+        <a href='<%= done_deliver_waiter_pages_path(sale_id: sale['id'].to_s)%>' data-remote='true' class='btn-delivered btn btn-primary <%= 'disabled' if sale['state'] == 'done' %> btn-block'>Giao xong</a>
       </td>
     </tr>
-    <tr class="order-row">
-      <td class='order-number'>
-        1
-      </td>
-      <td class='order-com'>
-        <label class="label label-primary">Máy 1</label>
-      </td>
-      <td class='order-lists'>
-        <div class="customer-table">
-          <table data-height="230" data-width="100">
-            <thead>
-              <tr>
-                <th data-field="id" data-align="left">MÓN ĂN&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</th>
-                <th data-field="price" data-align="left">ĐƠN GIÁ&nbsp; &nbsp; &nbsp;</th>
-                <th data-field="name" data-align="left">SL &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-          <div class="col-lg-12" style="border-top: 1px solid #ccc">
-            <div class='pull-right' style="margin-right: 3px">
-              <h3 style="margin-top: 10px">Tổng: <span class='total-price'>0</span> đ</h3>
-            </div>
-        </div>
-      </td>
-      <td class="order-status">
-        <button class="btn-delivery btn btn-primary btn-block">Bắt đầu giao</button>
-        <center>
-          <i class='fa fa-caret-down' style="font-size: 30px"></i>
-        </center>
-        <button class="btn-delivered btn btn-primary disabled btn-block">Giao xong</button>
-      </td>
-    </tr>
-    <tr class="order-row">
-      <td class='order-number'>
-        1
-      </td>
-      <td class='order-com'>
-        <label class="label label-primary">Máy 1</label>
-      </td>
-      <td class='order-lists'>
-        <div class="customer-table">
-          <table data-height="230" data-width="100">
-            <thead>
-              <tr>
-                <th data-field="id" data-align="left">MÓN ĂN&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</th>
-                <th data-field="price" data-align="left">ĐƠN GIÁ&nbsp; &nbsp; &nbsp;</th>
-                <th data-field="name" data-align="left">SL &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-          <div class="col-lg-12" style="border-top: 1px solid #ccc">
-            <div class='pull-right' style="margin-right: 3px">
-              <h3 style="margin-top: 10px">Tổng: <span class='total-price'>0</span> đ</h3>
-            </div>
-        </div>
-      </td>
-      <td class="order-status">
-        <button class="btn-delivery btn btn-primary btn-block">Bắt đầu giao</button>
-        <center>
-          <i class='fa fa-caret-down' style="font-size: 30px"></i>
-        </center>
-        <button class="btn-delivered btn btn-primary disabled btn-block">Giao xong</button>
-      </td>
-    </tr>
-    <tr class="order-row">
-      <td class='order-number'>
-        1
-      </td>
-      <td class='order-com'>
-        <label class="label label-primary">Máy 1</label>
-      </td>
-      <td class='order-lists'>
-        <div class="customer-table">
-          <table data-height="230" data-width="100">
-            <thead>
-              <tr>
-                <th data-field="id" data-align="left">MÓN ĂN&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</th>
-                <th data-field="price" data-align="left">ĐƠN GIÁ&nbsp; &nbsp; &nbsp;</th>
-                <th data-field="name" data-align="left">SL &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-              <tr id="row-service-food-4" menu-item-id="4" class="row-service"><td class="order-service-name"><b>Banh my pate</b><br><p class="note-for-service" data-placement="left" style="font-size: 10px; margin-bottom: 3px; width: 90%" data-original-title="1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cáu không">1 cái có ớt, 2 cái không ớt, cái có ớt không ăn rau, 2 cái không ớt 1 cái có rau 1 cái không rau.</p></td><td class="order-service-price" data-price="10000">10,000</td><td class="order-service-quantity"><span class="quantity-text">1</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-          <div class="col-lg-12" style="border-top: 1px solid #ccc">
-            <div class='pull-right' style="margin-right: 3px">
-              <h3 style="margin-top: 10px">Tổng: <span class='total-price'>0</span> đ</h3>
-            </div>
-        </div>
-      </td>
-      <td class="order-status">
-        <button class="btn-delivery btn btn-primary btn-block">Bắt đầu giao</button>
-        <center>
-          <i class='fa fa-caret-down' style="font-size: 30px"></i>
-        </center>
-        <button class="btn-delivered btn btn-primary disabled btn-block">Giao xong</button>
-      </td>
-    </tr>
+    <script type="text/javascript">
+    $("#sale-<%= sale['id'] %> .customer-table table").bootstrapTable();
+    </script>
+    <% end %>
     <tr class="no-ready-orders no-orders">
       <td colspan="4">
         <div class="alert alert-warning">Tạm thời không có order mới.</div>
@@ -214,15 +80,30 @@
 </table>
 
 <script type="text/javascript">
-$('.table-order-ready .customer-table table').bootstrapTable();
+$(document).ready(function () {
+  if($(".table-order-ready .order-row").length > 0){
+    $(".notify-order-ready").fadeIn(0)
+    $(".no-ready-orders").fadeOut(0)
+  }
+  else{
+    $(".notify-order-ready").fadeOut(0)
+    $(".no-ready-orders").fadeIn(0)
+  }
+});
 
-$(".table-order-ready").on('click', '.btn-delivery', function(){
+$(".table-order-ready").on('click', '.btn-delivering', function(){
   $(this).addClass("disabled")
   $(this).siblings(".btn-delivered").removeClass("disabled")
 })
 
 $(".table-order-ready").on('click', '.btn-delivered', function(){
+  sale_id = $(this).parents(".order-row").attr("sale-id")
+  $(".notification-text[sale-id="+sale_id+"]").remove()
+  $(".notification-content[sale-id="+sale_id+"]").remove()
   $(this).parents(".order-row").remove()
+  set_notifications_number()
+  set_display_stack_notifications()
+  $(".notification-content[sale-id="+sale_id+"]").remove()
   if($('.table-order-ready .order-row').length == 0)
   {
     $(".no-ready-orders").fadeIn(100)
@@ -233,41 +114,60 @@ staff_channel.bind("next_state_sale",function(data) {
   if(data['sale']['state'] == "done") {
     $(function(){
       var notice = pop_notify({
-          title: "test",
-          text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "làm xong",
-          stack: stack_context,
+        title: "test",
+        text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "làm xong",
+        stack: stack_context,
       });
       notice.get().click(function(e) {
         notice.remove();
         //move to element
       });
       var desktop_notice = pop_desktop_notify({
-          title: "test",
-          text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "làm xong",
-          type: "success",
-          stack: stack_context,
+        title: "test",
+        text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "làm xong",
+        type: "success",
+        stack: stack_context,
       })
+
+      append_ready_order_row(data)
+      set_notifications_number()
+      set_marquee_notifications_ready(data)
+      set_stack_notifications(data, "ready")
+      set_display_stack_notifications()
     });
   }
   else if(data['sale']['state'] == "delivering") {
     $(function(){
-      //Delete from others's wait_to_deliver table
-      if (true) // test if this is current_user
-        $("#sale-" + data['sale']['id']).remove();
-      else
-        // Đổi status nút
-        console.log("đổi nút");
     });
   }
   else if(data['sale']['state'] == "delivered") {
     $(function(){
-      //Delete from others's wait_to_deliver table
-      if (false) // test if this is current_user
-        $("#sale-" + data['sale']['id']).remove();
-      else
-        // Đổi status nút
-        console.log("đổi nút");
     });
   }
 });
+
+function append_ready_order_row(params){
+  element = $(".no-ready-orders")
+  element.before("<tr class='order-row' sale-id='"+params['sale']['id']+"' id='sale-"+params['sale']['id']+"'></tr>")
+
+  row_element = $("#sale-"+params['sale']['id'])
+  row_element.append("<td class='order-com'><br><i class='fa fa-desktop' style='font-size: 50px'></i><br><br><label class='label label-primary'>Máy "+ params['sale']['customer_id'] +"</label></td>")
+  row_element.append("<td class='order-lists'></td>")
+  append_order_list(row_element.children('.order-lists'), params)
+
+  row_element.append("<td class='order-status'></td>")
+
+  order_status_cell = row_element.children(".order-status")
+
+  order_status_cell.append("<a data-remote='true' href='<%= go_deliver_waiter_pages_path %>?sale_id="+params['sale']['id']+"' class='btn-delivering btn btn-primary btn-block'>Bắt đầu giao</a>")
+  order_status_cell.append("<center><i class='fa fa-caret-down' style='font-size: 30px'></i></center>")
+  order_status_cell.append("<a data-remote='true' href='<%= done_deliver_waiter_pages_path %>?sale_id="+params['sale']['id']+"' class='btn-delivered btn btn-primary disabled btn-block'>Giao xong</a>")
+
+  $(".table-order-ready .no-orders").fadeOut(0)
+}
+
+function set_marquee_notifications_ready(params){
+  marquee_text = '<span sale-id="'+ params['sale']['id'] +'" class="notification-text">Máy '+ params['sale']['customer_id'] +' đã làm xong order, kiểm tra và mang lên cho khách</span>'
+  $('.marquee-notifications-text').append(marquee_text)
+}
 </script>

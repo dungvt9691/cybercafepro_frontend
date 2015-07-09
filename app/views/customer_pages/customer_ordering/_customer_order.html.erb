@@ -49,9 +49,14 @@
               </div>
             </div>
             <div class="row" style="margin-top: 15px">
-              <div class="col-lg-12">
-                <button id="order-now" class='btn btn-block btn-danger btn-lg'>
-                  <i class='fa fa-fax' style="margin-right: 10px; font-size: 20px"></i> GỌI THANH TOÁN
+              <div class="col-lg-6">
+                <button id="order-now" class='btn btn-block btn-primary btn-sm'>
+                  <i class='fa fa-fax' style="margin-right: 7px; font-size: 18px"></i> THANH TOÁN
+                </button>
+              </div>
+              <div class="col-lg-6">
+                <button id="reset-order" class='btn btn-block btn-danger btn-sm'>
+                  <i class='fa fa-ban' style="margin-right: 7px; font-size: 18px"></i> CHỌN LẠI
                 </button>
               </div>
             </div>
@@ -106,31 +111,44 @@ $(".show-histories").click(function(){
 $('.customer-table table').bootstrapTable();
 
 $('#order-now').click(function(){
-  var sale_params = {
-    comment: "",
-    sale_menu_items_attributes: []
-  }
-  $('[id*=row-service]').each(function(){
-    sale_params.sale_menu_items_attributes.push(
+  if(confirm("Cảm ơn quý khách đã sử dụng dịch vụ, nhân viên của chúng tôi sẽ kiểm tra và tiến hành thu tiền dịch vụ tại chỗ.\nNhấn 'OK' để thực hiện xác nhận.")){
+    var sale_params = {
+      comment: "",
+      sale_menu_items_attributes: []
+    }
+    $('[id*=row-service]').each(function(){
+      sale_params.sale_menu_items_attributes.push(
       {
         menu_item_id: $(this).attr('menu-item-id'),
         quantity: parseInt($(this).find('.order-service-quantity .quantity-text').text()),
         description: $(this).find('.note-for-service').attr('data-original-title')
       }
-    )
-  })
-  $.ajax({
-    method: "POST",
-    url: "<%= create_sale_customer_pages_path %>",
-    dataType: "json",
-    data: { sale: sale_params},
-    success: function(data){
-      console.log(data);
-    }
-  })
-
+      )
+    })
+    $.ajax({
+      method: "POST",
+      url: "<%= create_sale_customer_pages_path %>",
+      dataType: "json",
+      data: { sale: sale_params},
+      success: function(data){
+        console.log(data);
+      }
+    })
+    resetOrder()
+  }
 });
 
+
+$("#reset-order").click(function(){
+  resetOrder()
+})
+
+function resetOrder(){
+  $('[id*=row-service]').each(function(){
+    $(this).remove()
+    $("#no-choice").fadeIn(100)
+  })
+}
 // $(".fixed-table-body").niceScroll({horizrailenabled: false, cursorcolor:"rgba(0, 0, 0, 0.2)", cursorwidth: "9px"})
 
 $(window).resize(function () {

@@ -2,13 +2,75 @@
   <thead>
     <tr>
       <th style="width: 15%">
-        <div style="font-size: 20px; padding-top: 1px"><i class="fa fa-desktop"></i></div>
+        Tên
       </th>
       <th style="width: 57%">Khách gọi</th>
-      <th style="width: 48%">Trạng thái</th>
+      <th style="width: 28%">Trạng thái</th>
     </tr>
   </thead>
   <tbody>
+    <% @sales_pending.each do |sale| %>
+    <tr class="order-row" sale-id='<%= sale['id'] %>' id="sale-<%= sale['id'] %>">
+      <td class="order-com">
+        <br>
+        <i class='fa fa-desktop' style="font-size: 50px"></i>
+        <br><br>
+        <label class="label label-primary">
+          Máy <%= sale['customer_id'] %>
+        </label>
+      </td>
+      <td class="order-lists">
+        <div class='customer-table'>
+          <table>
+            <thead>
+              <tr>
+                <th data-class="btable-id" data-field='id' data-align='left'>MÓN ĂN</th>
+                <th data-class="btable-price" data-field='price' data-align='left'>ĐƠN GIÁ</th>
+                <th data-class="btable-quantity" data-field='quantity' data-align='left'>SL</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% total_price = 0 %>
+              <% sale['sale_menu_items_details'].each do |data| %>
+              <% item_detail = data['menu_item_details'] %>
+              <% total_price += data['sum'].to_i %>
+              <tr id="row-service-<%= data['id'] %>" menu-item-id="<%= data['id'] %>" class="row-service">
+                <td class="order-service-name">
+                  <b><%= item_detail['name'] %></b>
+                  <br>
+                  <p class="note-for-service">
+                    <%= data['description'] || "Không có" %>
+                  </p>
+                </td>
+                <td class='order-service-price' data-price='<%= item_detail['unit_price'] %>'>
+                  <%= number_with_delimiter(item_detail['unit_price'].to_i) %>
+                </td>
+                <td class='order-service-quantity'>
+                  <span class='quantity-text'>
+                    <%= data['quantity'].to_i %>
+                  </span>
+                </td>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <div class='col-lg-12' style='border-top: 1px solid #ccc'>
+            <div class='pull-right' style='margin-right: 3px'>
+              <h3 style='margin-top: 10px'>Tổng: <span class='total-price'><%= number_with_delimiter(total_price.to_i) %></span> đ</h3>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td class="order-status">
+        <a href='<%= go_for_payment_waiter_pages_path(sale_id: sale['id'].to_s) %>' data-remote='true' class='btn-retrieve <%= 'disabled' if sale['state'] == 'pending' %> btn btn-primary btn-block'>Đi lấy tiền</a>
+        <center><i class='fa fa-caret-down' style='font-size: 30px'></i></center>
+        <a href='<%= verify_payment_waiter_pages_path(sale_id: sale['id'].to_s) %>' data-remote='true' class='btn-retrieved btn btn-primary <%= 'disabled' if sale['state'] == 'init' %> btn-block'>Đã lấy tiền</a>
+      </td>
+    </tr>
+    <script type="text/javascript">
+    $("#sale-<%= sale['id'] %> .customer-table table").bootstrapTable();
+    </script>
+    <% end %>
     <tr class="no-pending-orders no-orders">
       <td colspan="3">
         <div class="alert alert-warning">Tạm thời không có order mới.</div>
@@ -40,7 +102,8 @@ $(".table-order-pending").on('click', '.btn-retrieved', function(){
   $(".notification-content[sale-id="+sale_id+"]").remove()
   $(this).parents(".order-row").remove()
   set_notifications_number()
-  set_stack_notifications()
+  set_display_stack_notifications()
+  $(".notification-content[sale-id="+sale_id+"]").remove()
   if($('.table-order-pending .order-row').length == 0)
   {
     $(".no-pending-orders").fadeIn(100)
@@ -71,8 +134,9 @@ staff_channel.bind("create_sale",function(data) {
 
     append_pending_order_row(data)
     set_notifications_number()
-    set_marquee_notifications(data)
-    set_stack_notifications()
+    set_marquee_notifications_pending(data)
+    set_stack_notifications(data, "pending")
+    set_display_stack_notifications()
   });
 });
 
@@ -80,9 +144,9 @@ staff_channel.bind("next_state_sale",function(data) {
   if(data['sale']['state'] == "pending") {
     $(function(){
       var notice = pop_notify({
-          title: "test",
-          text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "đang được đi lấy tiền",
-          stack: stack_context,
+        title: "test",
+        text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "đang được đi lấy tiền",
+        stack: stack_context,
       });
       //check data['sale']['pender_id'] vs current_user
       notice.get().click(function(e) {
@@ -90,13 +154,28 @@ staff_channel.bind("next_state_sale",function(data) {
         //move to element
       });
       var desktop_notice = pop_desktop_notify({
-          title: "test",
-          text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "đang được đi lấy tiền",
-          type: "success",
-          stack: stack_context,
+        title: "test",
+        text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + " đang được đi lấy tiền",
+        type: "success",
+        stack: stack_context,
       })
+
+      user_id = "<%= current_user['id'] %>"
+      if(user_id != data['sale']['pender_id']){
+        sale_id = data['sale']['id']
+        $(".notification-text[sale-id="+sale_id+"]").remove()
+        $(".notification-content[sale-id="+sale_id+"]").remove()
+        $(".order-row[sale-id="+sale_id+"]").remove()
+        set_notifications_number()
+        $(".notification-content[sale-id="+sale_id+"]").remove()
+        set_display_stack_notifications()
+        if($('.table-order-pending .order-row').length == 0)
+        {
+          $(".no-pending-orders").fadeIn(100)
+        }
+      }
     });
-  }
+}
 });
 
 // {"sale"=>
@@ -175,12 +254,11 @@ staff_channel.bind("next_state_sale",function(data) {
 //    "next_state"=>"pending"}}
 
 function append_pending_order_row(params){
-  params['sale']['com_name'] = "Máy 1"
   element = $(".no-pending-orders")
   element.before("<tr class='order-row' sale-id='"+params['sale']['id']+"' id='sale-"+params['sale']['id']+"'></tr>")
 
   row_element = $("#sale-"+params['sale']['id'])
-  row_element.append("<td class='order-com'><label class='label label-danger'>"+ params['sale']['com_name'] +"</label></td>")
+  row_element.append("<td class='order-com'><br><i class='fa fa-desktop' style='font-size: 50px'></i><br><br><label class='label label-primary'>Máy "+ params['sale']['customer_id'] +"</label></td>")
   row_element.append("<td class='order-lists'></td>")
   append_order_list(row_element.children('.order-lists'), params)
 
@@ -188,9 +266,9 @@ function append_pending_order_row(params){
 
   order_status_cell = row_element.children(".order-status")
 
-  order_status_cell.append("<button class='btn-retrieve btn btn-primary btn-block'>Đi lấy tiền</button>")
+  order_status_cell.append("<a data-remote='true' href='<%= go_for_payment_waiter_pages_path %>?sale_id="+params['sale']['id']+"' class='btn-retrieve btn btn-primary btn-block'>Đi lấy tiền</a>")
   order_status_cell.append("<center><i class='fa fa-caret-down' style='font-size: 30px'></i></center>")
-  order_status_cell.append("<button class='btn-retrieved btn btn-primary disabled btn-block'>Đã lấy tiền</button>")
+  order_status_cell.append("<a data-remote='true' href='<%= verify_payment_waiter_pages_path %>?sale_id="+params['sale']['id']+"' class='btn-retrieved btn btn-primary disabled btn-block'>Đã lấy tiền</a>")
 
   $(".table-order-pending .no-orders").fadeOut(0)
 }
@@ -200,60 +278,83 @@ function append_order_list(element, params){
   table = "<table><thead><tr><th data-field='id' data-align='left'>MÓN ĂN&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</th><th data-field='price' data-align='left'>ĐƠN GIÁ&nbsp; &nbsp; &nbsp;</th><th data-field='name' data-align='left'>SL &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th></tr></thead><tbody></tbody></table>"
   element.children(".customer-table").append(table)
 
-  height = 36;
   total_price = 0;
   params['sale']['sale_menu_items_details'].forEach(function(data){
     menu_item = data['menu_item_details']
-    height = height + 59;
-    if(height > 390)
-      height = 390
     total_price += parseInt(data['sum'])
     append_data = "<tr id='row-service-"+data['id']+"' menu-item-id='"+data['id']+"' class='row-service'><td class='order-service-name'><b>"+ menu_item['name'] +"</b><br><p class='note-for-service'>"+data['description']+"</p></td><td class='order-service-price' data-price='"+parseInt(menu_item['unit_price'])+"'>"+ number_format(menu_item['unit_price']) +"</td><td class='order-service-quantity'><span class='quantity-text'>"+parseInt(data['quantity'])+"</span></td></tr>"
     element.children(".customer-table").children("table").children("tbody").append(append_data)
   })
 
-  element.children(".customer-table").children("table").bootstrapTable({
-    height: height
-  });
+  element.children(".customer-table").children("table").bootstrapTable();
 
   element.append("<div class='col-lg-12' style='border-top: 1px solid #ccc'><div class='pull-right' style='margin-right: 3px'><h3 style='margin-top: 10px'>Tổng: <span class='total-price'>"+number_format(total_price)+"</span> đ</h3></div></div>")
 }
 
-function set_marquee_notifications(params){
-  params['sale']['com_name'] = "Máy 1"
-  marquee_text = '<span sale-id="'+ params['sale']['id'] +'" class="notification-text">'+ params['sale']['com_name'] +' vừa có order, kiểm tra và thu tiền</span>'
+function set_marquee_notifications_pending(params){
+  marquee_text = '<span sale-id="'+ params['sale']['id'] +'" class="notification-text"> Máy '+ params['sale']['customer_id'] +' vừa có order, kiểm tra và thu tiền</span>'
   $('.marquee-notifications-text').append(marquee_text)
 }
 
 function set_notifications_number(){
-  notifications_number = $(".table-order-pending .order-row").length
-  if(notifications_number > 0)
+  notifications_pending_number = $(".table-order-pending .order-row").length
+
+  notifications_ready_number = $(".table-order-ready .order-row").length
+
+  notifications_number = notifications_pending_number + notifications_ready_number
+
+  if(notifications_pending_number > 0)
   {
     $(".notify-order-pending").fadeIn(0)
-    $(".notify-order-pending").text(notifications_number)
+    $(".notify-order-pending").text(notifications_pending_number)
   }
   else{
     $(".notify-order-pending").fadeOut(0)
   }
-}
 
-function set_stack_notifications(){
-  notifications_number = $(".table-order-pending .order-row").length
+  if(notifications_ready_number > 0)
+  {
+    $(".notify-order-ready").fadeIn(0)
+    $(".notify-order-ready").text(notifications_ready_number)
+  }
+  else{
+    $(".notify-order-ready").fadeOut(0)
+  }
+
   if(notifications_number > 0)
   {
-    $(".panel-notification-body").html("")
+    $(".notify-order-all").fadeIn(0)
+    $(".notify-order-all").text(notifications_number)
+  }
+  else{
+    $(".notify-order-all").fadeOut(0)
+  }
+}
+
+function set_display_stack_notifications(){
+  notifications_number = $(".table-order-pending .order-row").length + $(".table-order-ready .order-row").length
+  if(notifications_number > 0)
+  {
     $(".panel-notifications").removeClass("minimize")
     $(".panel-notifications").addClass("active")
-    $(".table-order-pending .order-row").each(function(){
-      com_name = $(this).children(".order-com").children("label").text()
-      sale_id  = $(this).attr("sale_id")
-      append_data = "<div sale-id='"+sale_id+"' class='notification-content'><div class='row'><div class='col-lg-3 col-md-3 col-sm-3 no-padding'><center><i class='fa fa-desktop'></i><br><label class='label label-primary computer-name'>"+ com_name +"</label></center></div><div class='col-lg-9 col-md-9 col-sm-9 no-padding'><div class='alert alert-info'>Có <b>ORDER MỚI</b>, kiểm tra và <b>thu tiền</b> của khách.</div></div></div></div>"
-      $(".panel-notification-body").append(append_data)
-    })
   }
   else{
     $(".panel-notifications").addClass("minimize")
     $(".panel-notifications").removeClass("active")
   }
+}
+
+function set_stack_notifications(params, type){
+  com_name = "Máy " + params['sale']['customer_id']
+  sale_id  = params['sale']['id']
+  if(type == "pending"){
+    append_data = "<div sale-id='"+sale_id+"' class='notification-content'><div class='row'><div class='col-lg-3 col-md-3 col-sm-3 no-padding'><center><i class='fa fa-desktop'></i><br><label class='label label-primary computer-name'>"+ com_name +"</label></center></div><div class='col-lg-9 col-md-9 col-sm-9 no-padding'><div class='alert alert-info'>Có <b>ORDER MỚI</b>, <b>kiểm tra và thu tiền</b> của khách.</div></div></div></div>"
+    $(".panel-notification-body").append(append_data)
+  }
+  else{
+    append_data = "<div sale-id='"+sale_id+"' class='notification-content'><div class='row'><div class='col-lg-3 col-md-3 col-sm-3 no-padding'><center><i class='fa fa-desktop'></i><br><label class='label label-primary computer-name'>"+ com_name +"</label></center></div><div class='col-lg-9 col-md-9 col-sm-9 no-padding'><div class='alert alert-danger'>Đã <b>làm xong</b>, <b>kiểm tra và mang lên</b> cho khách.</div></div></div></div>"
+    $(".panel-notification-body").append(append_data)
+  }
+  
 }
 </script>
