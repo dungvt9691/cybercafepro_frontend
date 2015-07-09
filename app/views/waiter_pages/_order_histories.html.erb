@@ -16,7 +16,7 @@
         <i class='fa fa-desktop' style="font-size: 50px"></i>
         <br><br>
         <label class="label label-primary">
-          Máy x
+          Máy <%= sale['customer_id'] %>
         </label>
       </td>
       <td class="order-lists">
@@ -30,14 +30,9 @@
               </tr>
             </thead>
             <tbody>
-              <% height = 36 %>
               <% total_price = 0 %>
               <% sale['sale_menu_items_details'].each do |data| %>
               <% item_detail = data['menu_item_details'] %>
-              <% height += 59 %>
-              <% if height > 390 %>
-              <% height = 390 %>
-              <% end %>
               <% total_price += data['sum'].to_i %>
               <tr id="row-service-<%= data['id'] %>" menu-item-id="<%= data['id'] %>" class="row-service">
                 <td class="order-service-name">
@@ -82,9 +77,7 @@
       </td>
     </tr>
     <script type="text/javascript">
-    $("#sale-<%= sale['id'] %> .customer-table table").bootstrapTable({
-      height: parseInt("<%= height %>")
-    });
+    $("#sale-<%= sale['id'] %> .customer-table table").bootstrapTable();
     </script>
     <% end %>
     <tr class="no-histories-orders no-orders">

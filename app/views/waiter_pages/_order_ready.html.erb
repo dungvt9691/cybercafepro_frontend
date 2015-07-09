@@ -16,7 +16,7 @@
         <i class='fa fa-desktop' style="font-size: 50px"></i>
         <br><br>
         <label class="label label-primary">
-          Máy x
+          Máy <%= sale['customer_id'] %>
         </label>
       </td>
       <td class="order-lists">
@@ -30,14 +30,9 @@
               </tr>
             </thead>
             <tbody>
-              <% height = 36 %>
               <% total_price = 0 %>
               <% sale['sale_menu_items_details'].each do |data| %>
               <% item_detail = data['menu_item_details'] %>
-              <% height += 59 %>
-              <% if height > 390 %>
-              <% height = 390 %>
-              <% end %>
               <% total_price += data['sum'].to_i %>
               <tr id="row-service-<%= data['id'] %>" menu-item-id="<%= data['id'] %>" class="row-service">
                 <td class="order-service-name">
@@ -67,15 +62,13 @@
         </div>
       </td>
       <td class="order-status">
-        <a href='<%= go_deliver_waiter_pages_path + '/?sale_id=' + sale['id'].to_s%>' data-remote='true' class='btn-delivering <%= 'disabled' if sale['state'] == 'delivering' %> btn btn-primary btn-block'>Bắt đầu giao</a>
+        <a href='<%= go_deliver_waiter_pages_path(sale_id: sale['id'].to_s)%>' data-remote='true' class='btn-delivering <%= 'disabled' if sale['state'] == 'delivering' %> btn btn-primary btn-block'>Bắt đầu giao</a>
         <center><i class='fa fa-caret-down' style='font-size: 30px'></i></center>
-        <a href='<%= done_deliver_waiter_pages_path + '/?sale_id=' + sale['id'].to_s%>' data-remote='true' class='btn-delivered btn btn-primary <%= 'disabled' if sale['state'] == 'done' %> btn-block'>Giao xong</a>
+        <a href='<%= done_deliver_waiter_pages_path(sale_id: sale['id'].to_s)%>' data-remote='true' class='btn-delivered btn btn-primary <%= 'disabled' if sale['state'] == 'done' %> btn-block'>Giao xong</a>
       </td>
     </tr>
     <script type="text/javascript">
-    $("#sale-<%= sale['id'] %> .customer-table table").bootstrapTable({
-      height: parseInt("<%= height %>")
-    });
+    $("#sale-<%= sale['id'] %> .customer-table table").bootstrapTable();
     </script>
     <% end %>
     <tr class="no-ready-orders no-orders">
@@ -154,12 +147,11 @@ staff_channel.bind("next_state_sale",function(data) {
 });
 
 function append_ready_order_row(params){
-  params['sale']['com_name'] = "Máy 1"
   element = $(".no-ready-orders")
   element.before("<tr class='order-row' sale-id='"+params['sale']['id']+"' id='sale-"+params['sale']['id']+"'></tr>")
 
   row_element = $("#sale-"+params['sale']['id'])
-  row_element.append("<td class='order-com'><br><i class='fa fa-desktop' style='font-size: 50px'></i><br><br><label class='label label-primary'>"+ params['sale']['com_name'] +"</label></td>")
+  row_element.append("<td class='order-com'><br><i class='fa fa-desktop' style='font-size: 50px'></i><br><br><label class='label label-primary'>Máy "+ params['sale']['customer_id'] +"</label></td>")
   row_element.append("<td class='order-lists'></td>")
   append_order_list(row_element.children('.order-lists'), params)
 
@@ -175,8 +167,7 @@ function append_ready_order_row(params){
 }
 
 function set_marquee_notifications_ready(params){
-  params['sale']['com_name'] = "Máy 1"
-  marquee_text = '<span sale-id="'+ params['sale']['id'] +'" class="notification-text">'+ params['sale']['com_name'] +' đã làm xong order, kiểm tra và mang lên cho khách</span>'
+  marquee_text = '<span sale-id="'+ params['sale']['id'] +'" class="notification-text">Máy '+ params['sale']['customer_id'] +' đã làm xong order, kiểm tra và mang lên cho khách</span>'
   $('.marquee-notifications-text').append(marquee_text)
 }
 </script>

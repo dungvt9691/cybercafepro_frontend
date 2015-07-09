@@ -22,60 +22,47 @@
   100% { color: orange; }
 }
 
-.chef-salelist{
+@-webkit-keyframes glowing-background {
+  70% { background-color: #FFCFCD; }
+}
+@-moz-keyframes glowing-background {
+  70% { background-color: #FFCFCD; }
+}
+@-o-keyframes glowing-background {
+  70% { background-color: #FFCFCD; }
+}
+@keyframes glowing-background {
+  70% { background-color: #FFCFCD; }
+}
+
+.chef-cookinglist{
   background-color: rgb(233, 233, 233);
 }
 
-.chef-salelist .container{
+.chef-cookinglist .container{
   padding-left: 0px;
   background: #fff;
   padding-right: 0px;
 }
 
-.chef-salelist .chef-pages{
+.chef-cookinglist .chef-pages{
   min-height: 1000px;
+  padding-bottom: 100px;
   box-shadow: 0 1px 1px rgba(169,169,169,0.75);
 
 }
 
-.chef-salelist .tab-list{
-  height: 100px;
-  line-height: 100px;
-  border-right: 2px solid rgba(66, 139, 202, 0.4);
-  font-size: 18px;
-  cursor: pointer;
-  text-align: center;
-}
-
-.chef-salelist .tab-list.active{
-  background: #428bca;
-  color: #fff;
-  border-color: #428bca;
-}
-
-.chef-salelist .tabs-row .no-padding:first-child{
-  padding-left: 15px !important;
-}
-
-.chef-salelist .tabs-row .no-padding:last-child{
-  padding-right: 15px !important;
-}
-
-.chef-salelist .tabs-row .no-padding:last-child .tab-list:last-child{
-  border-right: none;
-}
-
-.chef-salelist .tab-list .badge-danger{
+.chef-cookinglist .badge-danger{
   font-size: 17px;
   margin-left: 8px;
   cursor: pointer;
 }
 
-.chef-salelist .notify-order{
+.chef-cookinglist .notify-order{
   display: none
 }
 
-.chef-salelist .tab-list .badge{
+.chef-cookinglist .badge{
   padding: 5px 10px;
   padding-top: 5px;
   border-radius: 19px;
@@ -119,117 +106,113 @@ div.marquee-notifications > div.marquee-notifications-text > span.notification-t
   animation: glowing 800ms infinite;
 }
 
-.chef-pages .tabs-content .tab-content{
-  display: none;
+#pinBoot {
+  position: relative;
+  max-width: 100%;
+  width: 100%;
 }
 
-.chef-pages .tabs-content .tab-content:first-child{
-  display: block;
+.chef-cookinglist .order {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+  padding: 10px;
 }
 
-.chef-pages .tabs-content .tab-content .table-order{
-  border: none;
+.chef-cookinglist .order:hover {
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+  margin-top: -5px;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
-.chef-pages .tabs-content .tab-content .table-order > thead th:first-child,
-.chef-pages .tabs-content .tab-content .table-order .order-row .order-com,
-.chef-pages .tabs-content .tab-content .table-order .no-orders td{
-  border-left: none;
+.chef-cookinglist .order.order-cooking{
+  background: #F7F582;
 }
 
-.chef-pages .tabs-content .tab-content .table-order > thead th:last-child{
-  border-right: none;
+.chef-cookinglist .order.order-cooking.order-done{
+  -webkit-animation: glowing-background 1500ms infinite;
+  -moz-animation: glowing-background 1500ms infinite;
+  -o-animation: glowing-background 1500ms infinite;
+  animation: glowing-background 1500ms infinite;
 }
 
-.chef-pages .tabs-content .tab-content .table-order > thead th{
-  vertical-align: middle;
-  line-height: 40px;
-  text-align: center;
-  border-bottom-width: 1px;
+.chef-cookinglist .order-info{
 }
 
-.chef-pages .tabs-content .tab-content .table-order > tbody td{
-  text-align: center;
+.chef-cookinglist .order .fa-desktop{
+  margin-right: 8px;
+  font-size: 13px;
 }
 
-.chef-pages .tabs-content .tab-content .table-order .order-row .label{
-  font-size: 15px;
-  padding: 5px 20px;
-  padding-bottom: 8px;
+.chef-cookinglist .order .sale-name{
+  position: absolute;
+  margin-top: 4px;
+  font-size: 14px;
+  padding: 5px 10px;
+  font-weight: 300;
 }
 
-.chef-pages .tabs-content .tab-content .table-order .order-row > .order-status,
-.chef-pages .tabs-content .tab-content .table-order .order-row > .order-step{
-  vertical-align: middle !important;
-  padding: 40px;
+.chef-cookinglist .order .sale-code.sale-created-at{
+  font-size: 12px;
 }
 
-.chef-pages .tabs-content .tab-content .table-order .order-row > .order-step{
-  text-align: left;
-  padding: 15px;
-  vertical-align: top !important;
+.chef-cookinglist .order .services{
+  padding: 3px;
+  margin-top: 10px;
+  list-style: none;
+  color: #428bca;
+  min-height: 250px;
 }
 
-.chef-pages .tabs-content .tab-content .table-order .order-row .order-number,
-.chef-pages .tabs-content .tab-content .table-order .order-row .order-com{
-  padding-top: 15px;
+.chef-cookinglist .order .services > li{
+  border-bottom: 1px dotted #303030;
+  padding-bottom: 5px;
+  margin-top: 10px;
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
-.chef-pages .tabs-content .tab-content .table-order > tbody td.order-lists,
-.chef-pages .tabs-content .tab-content .table-order > tbody td.order-lists .customer-table{
-  padding: 0px;
-}
-
-.chef-pages .tabs-content .tab-content .table-order > tbody td.order-lists .customer-table .bootstrap-table .fixed-table-body table{
-  box-shadow: 0 9px 9px -6px rgba(0,0,0,0.0);
-}
-
-.chef-pages .tabs-content .tab-content .table-order > tbody td.order-lists .customer-table .fixed-table-body table tbody tr td{
-  border: none !important;
-  border-bottom: 1px solid #ccc !important;
-}
-
-.chef-pages .tabs-content .tab-content .table-order > tbody td.order-lists .customer-table .fixed-table-body table tbody tr:last-child td{
-  border-bottom: none !important
-}
-
-.chef-pages .tabs-content .tab-content .table-order > tbody td.order-lists .customer-table .fixed-table-body table tbody tr td:last-child{
-  border-right: none !important;
-}
-
-.chef-pages .tabs-content .tab-content .table-order > tbody td.order-lists .customer-table .order-service-quantity .quantity-text{
-  top: 0px;
-}
-
-.chef-pages .tabs-content .tab-content .table-order .customer-table table thead, .fixed-table-header{
-  background: #428bca
-}
-
-.chef-pages .tabs-content .tab-content .table-order .customer-table table{
+.chef-cookinglist .order .services > li:last-child{
   border-bottom: none;
 }
 
-.chef-pages .tabs-content .tab-content .table-order .customer-table .order-service-quantity .quantity-text,
-.chef-pages .tabs-content .tab-content .table-order .customer-table .order-service-price{
-  color: #666;
+.chef-cookinglist .order .services > li .check-service-done{
+  margin-right: 10px;
 }
 
-.chef-pages .tabs-content .tab-content .table-order h3{
-   font-size: 17px;
-   color: #333
+.chef-cookinglist .order .services .service-description{
+  font-size: 11px;
+  text-align: justify;
+  color: #777;
+  margin-top: 5px;
 }
 
-.chef-pages .table-order .row-service .order-service-name .note-for-service{
-  font-size: 12px;
-  margin-bottom: 3px;
-  width: 90%
+.chef-cookinglist .order .services .service-quantity{
+  padding-right: 15px;
+  margin-top: 2px;
+  padding-left: 10px;
 }
 
-.chef-pages .table-order .row-service .order-service-price,
-.chef-pages .table-order .row-service .order-service-quantity{
-  font-size: 16px;
+.chef-cookinglist .order .order-notes p{
+  border-top: 1px dashed #999;
+  padding-top: 5px;
+  min-height: 70px;
 }
 
-.chef-pages .table-order .row-service .order-service-name{
-  font-size: 16px;
+.chef-cookinglist .order .order-actions{
+  margin-bottom: 15px;
+}
+
+.chef-cookinglist .order-template,
+.chef-cookinglist .no-orders{
+  display: none;
 }

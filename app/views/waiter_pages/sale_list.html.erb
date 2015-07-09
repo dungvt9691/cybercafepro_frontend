@@ -31,16 +31,16 @@ var stack_context = {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1
                 <% case sale['state'] %>
                 <% when "pending" %>
                 <% if current_user['id'] == sale['pender_id'] %>
-                <span sale-id="<%= sale['id'] %>" class="notification-text"><%= "Máy x" %> vừa có order, kiểm tra và thu tiền</span>
+                <span sale-id="<%= sale['id'] %>" class="notification-text">Máy <%= sale['customer_id'] %> vừa có order, kiểm tra và thu tiền</span>
                 <% end %>
                 <% when "init" %>
-                <span sale-id="<%= sale['id'] %>" class="notification-text"><%= "Máy x" %> vừa có order, kiểm tra và thu tiền</span>
+                <span sale-id="<%= sale['id'] %>" class="notification-text">Máy <%= sale['customer_id'] %> vừa có order, kiểm tra và thu tiền</span>
                 <% when "delivering" %>
                 <% if current_user['id'] == sale['delivering_id'] %>
-                <span sale-id="<%= sale['id'] %>" class="notification-text"><%= "Máy x" %> đã làm xong order, kiểm tra và mang lên cho khách</span>
+                <span sale-id="<%= sale['id'] %>" class="notification-text">Máy <%= sale['customer_id'] %> đã làm xong order, kiểm tra và mang lên cho khách</span>
                 <% end %>
                 <% when "done" %>
-                <span sale-id="<%= sale['id'] %>" class="notification-text"><%= "Máy x" %> đã làm xong order, kiểm tra và mang lên cho khách</span>
+                <span sale-id="<%= sale['id'] %>" class="notification-text">Máy <%= sale['customer_id'] %> đã làm xong order, kiểm tra và mang lên cho khách</span>
                 <% end %>
                 <% end %>
               </div>
@@ -80,7 +80,7 @@ var stack_context = {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1
           <center>
             <i class='fa fa-desktop'></i>
             <br>
-            <label class='label label-primary computer-name'><%= "Máy x" %>
+            <label class='label label-primary computer-name'>Máy <%= sale['customer_id'] %>
             </label>
           </center>
         </div>
@@ -98,7 +98,7 @@ var stack_context = {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1
           <center>
             <i class='fa fa-desktop'></i>
             <br>
-            <label class='label label-primary computer-name'><%= "Máy x" %>
+            <label class='label label-primary computer-name'>Máy <%= sale['customer_id'] %>
             </label>
           </center>
         </div>

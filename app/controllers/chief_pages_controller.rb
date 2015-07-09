@@ -7,7 +7,6 @@ class ChiefPagesController < ApplicationController
     @sales_processing = @sales.select{|m| m['state'] == 'processing'}
     @sales_cooking = @sales.select{|m| m['state'] == 'cooking'}
     @sales_done = @sales.select{|m| m['state'] == 'done'}
-    binding.pry
     respond_to do |format|
       format.html
     end

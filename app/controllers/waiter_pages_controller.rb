@@ -51,6 +51,7 @@ class WaiterPagesController < ApplicationController
   def verify_payment
     if !params[:sale_id].blank?
       @sale = update_next_state_sale(current_token,params[:sale_id],"processing")
+      
       WebsocketRails[:staff].trigger 'next_state_sale',@sale
       respond_to do |format|
         format.js

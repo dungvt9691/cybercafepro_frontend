@@ -16,7 +16,7 @@
         <i class='fa fa-desktop' style="font-size: 50px"></i>
         <br><br>
         <label class="label label-primary">
-          Máy x
+          Máy <%= sale['customer_id'] %>
         </label>
       </td>
       <td class="order-lists">
@@ -30,14 +30,9 @@
               </tr>
             </thead>
             <tbody>
-              <% height = 36 %>
               <% total_price = 0 %>
               <% sale['sale_menu_items_details'].each do |data| %>
               <% item_detail = data['menu_item_details'] %>
-              <% height += 59 %>
-              <% if height > 390 %>
-              <% height = 390 %>
-              <% end %>
               <% total_price += data['sum'].to_i %>
               <tr id="row-service-<%= data['id'] %>" menu-item-id="<%= data['id'] %>" class="row-service">
                 <td class="order-service-name">
@@ -67,15 +62,13 @@
         </div>
       </td>
       <td class="order-status">
-        <a href='<%= go_for_payment_waiter_pages_path + '/?sale_id=' + sale['id'].to_s%>' data-remote='true' class='btn-retrieve <%= 'disabled' if sale['state'] == 'pending' %> btn btn-primary btn-block'>Đi lấy tiền</a>
+        <a href='<%= go_for_payment_waiter_pages_path(sale_id: sale['id'].to_s) %>' data-remote='true' class='btn-retrieve <%= 'disabled' if sale['state'] == 'pending' %> btn btn-primary btn-block'>Đi lấy tiền</a>
         <center><i class='fa fa-caret-down' style='font-size: 30px'></i></center>
-        <a href='<%= verify_payment_waiter_pages_path + '/?sale_id=' + sale['id'].to_s%>' data-remote='true' class='btn-retrieved btn btn-primary <%= 'disabled' if sale['state'] == 'init' %> btn-block'>Đã lấy tiền</a>
+        <a href='<%= verify_payment_waiter_pages_path(sale_id: sale['id'].to_s) %>' data-remote='true' class='btn-retrieved btn btn-primary <%= 'disabled' if sale['state'] == 'init' %> btn-block'>Đã lấy tiền</a>
       </td>
     </tr>
     <script type="text/javascript">
-    $("#sale-<%= sale['id'] %> .customer-table table").bootstrapTable({
-      height: parseInt("<%= height %>")
-    });
+    $("#sale-<%= sale['id'] %> .customer-table table").bootstrapTable();
     </script>
     <% end %>
     <tr class="no-pending-orders no-orders">
@@ -261,12 +254,11 @@ staff_channel.bind("next_state_sale",function(data) {
 //    "next_state"=>"pending"}}
 
 function append_pending_order_row(params){
-  params['sale']['com_name'] = "Máy 1"
   element = $(".no-pending-orders")
   element.before("<tr class='order-row' sale-id='"+params['sale']['id']+"' id='sale-"+params['sale']['id']+"'></tr>")
 
   row_element = $("#sale-"+params['sale']['id'])
-  row_element.append("<td class='order-com'><br><i class='fa fa-desktop' style='font-size: 50px'></i><br><br><label class='label label-primary'>"+ params['sale']['com_name'] +"</label></td>")
+  row_element.append("<td class='order-com'><br><i class='fa fa-desktop' style='font-size: 50px'></i><br><br><label class='label label-primary'>Máy "+ params['sale']['customer_id'] +"</label></td>")
   row_element.append("<td class='order-lists'></td>")
   append_order_list(row_element.children('.order-lists'), params)
 
@@ -286,28 +278,21 @@ function append_order_list(element, params){
   table = "<table><thead><tr><th data-field='id' data-align='left'>MÓN ĂN&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</th><th data-field='price' data-align='left'>ĐƠN GIÁ&nbsp; &nbsp; &nbsp;</th><th data-field='name' data-align='left'>SL &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th></tr></thead><tbody></tbody></table>"
   element.children(".customer-table").append(table)
 
-  height = 36;
   total_price = 0;
   params['sale']['sale_menu_items_details'].forEach(function(data){
     menu_item = data['menu_item_details']
-    height = height + 59;
-    if(height > 390)
-      height = 390
     total_price += parseInt(data['sum'])
     append_data = "<tr id='row-service-"+data['id']+"' menu-item-id='"+data['id']+"' class='row-service'><td class='order-service-name'><b>"+ menu_item['name'] +"</b><br><p class='note-for-service'>"+data['description']+"</p></td><td class='order-service-price' data-price='"+parseInt(menu_item['unit_price'])+"'>"+ number_format(menu_item['unit_price']) +"</td><td class='order-service-quantity'><span class='quantity-text'>"+parseInt(data['quantity'])+"</span></td></tr>"
     element.children(".customer-table").children("table").children("tbody").append(append_data)
   })
 
-  element.children(".customer-table").children("table").bootstrapTable({
-    height: height
-  });
+  element.children(".customer-table").children("table").bootstrapTable();
 
   element.append("<div class='col-lg-12' style='border-top: 1px solid #ccc'><div class='pull-right' style='margin-right: 3px'><h3 style='margin-top: 10px'>Tổng: <span class='total-price'>"+number_format(total_price)+"</span> đ</h3></div></div>")
 }
 
 function set_marquee_notifications_pending(params){
-  params['sale']['com_name'] = "Máy 1"
-  marquee_text = '<span sale-id="'+ params['sale']['id'] +'" class="notification-text">'+ params['sale']['com_name'] +' vừa có order, kiểm tra và thu tiền</span>'
+  marquee_text = '<span sale-id="'+ params['sale']['id'] +'" class="notification-text"> Máy '+ params['sale']['customer_id'] +' vừa có order, kiểm tra và thu tiền</span>'
   $('.marquee-notifications-text').append(marquee_text)
 }
 
@@ -360,8 +345,7 @@ function set_display_stack_notifications(){
 }
 
 function set_stack_notifications(params, type){
-  params['sale']['com_name'] = "Máy x"
-  com_name = params['sale']['com_name']
+  com_name = "Máy " + params['sale']['customer_id']
   sale_id  = params['sale']['id']
   if(type == "pending"){
     append_data = "<div sale-id='"+sale_id+"' class='notification-content'><div class='row'><div class='col-lg-3 col-md-3 col-sm-3 no-padding'><center><i class='fa fa-desktop'></i><br><label class='label label-primary computer-name'>"+ com_name +"</label></center></div><div class='col-lg-9 col-md-9 col-sm-9 no-padding'><div class='alert alert-info'>Có <b>ORDER MỚI</b>, <b>kiểm tra và thu tiền</b> của khách.</div></div></div></div>"
