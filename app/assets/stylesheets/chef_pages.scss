@@ -1,0 +1,218 @@
+// Place all the styles related to the chef_pages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+@-webkit-keyframes glowing {
+  30% { color: white; }
+  60% { color: yellow; }
+  100% { color: orange; }
+}
+@-moz-keyframes glowing {
+  30% { color: white; }
+  60% { color: yellow; }
+  100% { color: orange; }
+}
+@-o-keyframes glowing {
+  30% { color: white; }
+  60% { color: yellow; }
+  100% { color: orange; }
+}
+@keyframes glowing {
+  30% { color: white; }
+  60% { color: yellow; }
+  100% { color: orange; }
+}
+
+@-webkit-keyframes glowing-background {
+  70% { background-color: #FFCFCD; }
+}
+@-moz-keyframes glowing-background {
+  70% { background-color: #FFCFCD; }
+}
+@-o-keyframes glowing-background {
+  70% { background-color: #FFCFCD; }
+}
+@keyframes glowing-background {
+  70% { background-color: #FFCFCD; }
+}
+
+.chef-cookinglist{
+  background-color: rgb(233, 233, 233);
+}
+
+.chef-cookinglist .container{
+  padding-left: 0px;
+  background: #fff;
+  padding-right: 0px;
+}
+
+.chef-cookinglist .chef-pages{
+  min-height: 1000px;
+  padding-bottom: 100px;
+  box-shadow: 0 1px 1px rgba(169,169,169,0.75);
+
+}
+
+.chef-cookinglist .badge-danger{
+  font-size: 17px;
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+.chef-cookinglist .notify-order{
+  display: none
+}
+
+.chef-cookinglist .badge{
+  padding: 5px 10px;
+  padding-top: 5px;
+  border-radius: 19px;
+}
+
+.marquee-notifications{
+  background: rgba(48, 48, 48, 0.8);
+  color: #fff;
+  height: 50px;
+  top: 100px;
+  width: 100%;
+  z-index: 100;
+  line-height: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+}
+
+div.marquee-notifications {
+  white-space:no-wrap;
+  overflow:hidden;
+}
+
+div.marquee-notifications > div.marquee-notifications-text {
+  white-space:nowrap;
+  display:inline;
+  width:auto;
+}
+
+div.marquee-notifications > div.marquee-notifications-text > span.notification-text{
+  margin-right: 100px;
+  font-size: 16px;
+  text-shadow: 0 5px 5px rgba(0,0,0,0.9);
+}
+
+div.marquee-notifications > div.marquee-notifications-text > span.notification-text:first-child{
+  -webkit-animation: glowing 800ms infinite;
+  -moz-animation: glowing 800ms infinite;
+  -o-animation: glowing 800ms infinite;
+  animation: glowing 800ms infinite;
+}
+
+#pinBoot {
+  position: relative;
+  max-width: 100%;
+  width: 100%;
+}
+
+.chef-cookinglist .order {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+  padding: 10px;
+}
+
+.chef-cookinglist .order:hover {
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+  margin-top: -5px;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.chef-cookinglist .order.order-cooking{
+  background: #F7F582;
+}
+
+.chef-cookinglist .order.order-cooking.order-done{
+  -webkit-animation: glowing-background 1500ms infinite;
+  -moz-animation: glowing-background 1500ms infinite;
+  -o-animation: glowing-background 1500ms infinite;
+  animation: glowing-background 1500ms infinite;
+}
+
+.chef-cookinglist .order-info{
+}
+
+.chef-cookinglist .order .fa-desktop{
+  margin-right: 8px;
+  font-size: 13px;
+}
+
+.chef-cookinglist .order .sale-name{
+  position: absolute;
+  margin-top: 4px;
+  font-size: 14px;
+  padding: 5px 10px;
+  font-weight: 300;
+}
+
+.chef-cookinglist .order .sale-code.sale-created-at{
+  font-size: 12px;
+}
+
+.chef-cookinglist .order .services{
+  padding: 3px;
+  margin-top: 10px;
+  list-style: none;
+  color: #428bca;
+  min-height: 250px;
+}
+
+.chef-cookinglist .order .services > li{
+  border-bottom: 1px dotted #303030;
+  padding-bottom: 5px;
+  margin-top: 10px;
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.chef-cookinglist .order .services > li:last-child{
+  border-bottom: none;
+}
+
+.chef-cookinglist .order .services > li .check-service-done{
+  margin-right: 10px;
+}
+
+.chef-cookinglist .order .services .service-description{
+  font-size: 11px;
+  text-align: justify;
+  color: #777;
+  margin-top: 5px;
+}
+
+.chef-cookinglist .order .services .service-quantity{
+  padding-right: 15px;
+  margin-top: 2px;
+  padding-left: 10px;
+}
+
+.chef-cookinglist .order .order-notes p{
+  border-top: 1px dashed #999;
+  padding-top: 5px;
+  min-height: 70px;
+}
+
+.chef-cookinglist .order .order-actions{
+  margin-bottom: 15px;
+}
+
+.chef-cookinglist .order-template,
+.chef-cookinglist .no-orders{
+  display: none;
+}
