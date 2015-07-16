@@ -34,6 +34,9 @@ Rails.application.routes.draw do
   end
 
   resources :cashier_pages,only: [] do
+    member do
+      get "sale_details"
+    end
     collection do
       get "sale_list"
       get "save_sale"

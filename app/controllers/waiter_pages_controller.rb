@@ -3,7 +3,7 @@ class WaiterPagesController < ApplicationController
 
   def sale_list
     @sales = Ckfapi::API::Sale.index(current_token, detail: true)['sales'] rescue []
-    @sales = @sales.sort{|a, b| a['updated_at'].to_datetime <=> b['updated_at'].to_datetime}
+    @sales = @sales.sort{|a, b| b['updated_at'].to_datetime <=> a['updated_at'].to_datetime}
     @sales_pending = []
     @sales_ready = []
     @sales_delivered = []
@@ -34,6 +34,10 @@ class WaiterPagesController < ApplicationController
   def go_for_payment
     if !params[:sale_id].blank?
       @sale = update_next_state_sale(current_token,params[:sale_id],"pending")
+      @sale['sale']['format_created_at'] = (@sale['sale']['created_at'].to_datetime + 7.hours).strftime("%d/%m/%Y")
+      @sale['sale']['order_created_at'] = (@sale['sale']['created_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S")
+      @sale['sale']['format_updated_at'] = (@sale['sale']['updated_at'].to_datetime + 7.hours).strftime("%d/%m/%Y <b>%H:%M</b>").html_safe
+      @sale['sale']['order_updated_at'] = (@sale['sale']['updated_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S")
       WebsocketRails[:staff].trigger 'next_state_sale',@sale
       respond_to do |format|
         format.js
@@ -51,7 +55,10 @@ class WaiterPagesController < ApplicationController
   def verify_payment
     if !params[:sale_id].blank?
       @sale = update_next_state_sale(current_token,params[:sale_id],"processing")
-      
+      @sale['sale']['format_created_at'] = (@sale['sale']['created_at'].to_datetime + 7.hours).strftime("%d/%m/%Y")
+      @sale['sale']['order_created_at'] = (@sale['sale']['created_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S")
+      @sale['sale']['format_updated_at'] = (@sale['sale']['updated_at'].to_datetime + 7.hours).strftime("%d/%m/%Y <b>%H:%M</b>").html_safe
+      @sale['sale']['order_updated_at'] = (@sale['sale']['updated_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S")
       WebsocketRails[:staff].trigger 'next_state_sale',@sale
       respond_to do |format|
         format.js
@@ -69,6 +76,10 @@ class WaiterPagesController < ApplicationController
   def go_deliver
     if !params[:sale_id].blank?
       @sale = update_next_state_sale(current_token,params[:sale_id],"delivering")
+      @sale['sale']['format_created_at'] = (@sale['sale']['created_at'].to_datetime + 7.hours).strftime("%d/%m/%Y")
+      @sale['sale']['order_created_at'] = (@sale['sale']['created_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S")
+      @sale['sale']['format_updated_at'] = (@sale['sale']['updated_at'].to_datetime + 7.hours).strftime("%d/%m/%Y <b>%H:%M</b>").html_safe
+      @sale['sale']['order_updated_at'] = (@sale['sale']['updated_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S")
       WebsocketRails[:staff].trigger 'next_state_sale',@sale
       respond_to do |format|
         format.js
@@ -86,6 +97,10 @@ class WaiterPagesController < ApplicationController
   def done_deliver
     if !params[:sale_id].blank?
       @sale = update_next_state_sale(current_token,params[:sale_id],"delivered")
+      @sale['sale']['format_created_at'] = (@sale['sale']['created_at'].to_datetime + 7.hours).strftime("%d/%m/%Y")
+      @sale['sale']['order_created_at'] = (@sale['sale']['created_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S")
+      @sale['sale']['format_updated_at'] = (@sale['sale']['updated_at'].to_datetime + 7.hours).strftime("%d/%m/%Y <b>%H:%M</b>").html_safe
+      @sale['sale']['order_updated_at'] = (@sale['sale']['updated_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S")
       WebsocketRails[:staff].trigger 'next_state_sale',@sale
       respond_to do |format|
         format.js

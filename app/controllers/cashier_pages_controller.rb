@@ -1,7 +1,12 @@
 class CashierPagesController < ApplicationController
+  layout "cashier_layout"
 
   def sale_list
-    @sale = Ckfapi::API::Sale.index(current_token,detail: true)['sales'] rescue []
+    @sales = Ckfapi::API::Sale.index(current_token,detail: true)['sales'] rescue []
+    @sales = @sales.sort{|a, b| b['updated_at'].to_datetime <=> a['updated_at'].to_datetime}
+    @sales_not_saved = @sales.select{|m| m['state'] != 'saved'}
+    @sales_saved     = @sales.select{|m| m['state'] == 'saved'}
+
     respond_to do |format|
       format.html
     end
@@ -10,6 +15,10 @@ class CashierPagesController < ApplicationController
   def save_sale
     if !params[:sale_id].blank?
       @sale = update_next_state_sale(current_token,params[:sale_id],"saved")
+      @sale['sale']['format_created_at'] = (@sale['sale']['created_at'].to_datetime + 7.hours).strftime("%d/%m/%Y")
+      @sale['sale']['order_created_at'] = (@sale['sale']['created_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S")
+      @sale['sale']['format_updated_at'] = (@sale['sale']['updated_at'].to_datetime + 7.hours).strftime("%d/%m/%Y <b>%H:%M</b>").html_safe
+      @sale['sale']['order_updated_at'] = (@sale['sale']['updated_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S")
       WebsocketRails[:staff].trigger 'next_state_sale_menu_item',@sale
       respond_to do |format|
         format.js
@@ -22,6 +31,14 @@ class CashierPagesController < ApplicationController
       end
     end
     #TODO
+  end
+
+  def sale_details
+    # @sale = 
+    binding.pry
+    respond_to do |format|
+      format.js
+    end
   end
 
   def history_sale

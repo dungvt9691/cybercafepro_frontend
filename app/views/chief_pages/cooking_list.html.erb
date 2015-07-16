@@ -230,7 +230,10 @@ staff_channel.bind("next_state_sale",function(data) {
 
       $(".order-processing[sale-id="+sale_id+"]").remove()
 
-      $('.order.order-cooking').last().after(article)
+      if($(".order.order-cooking").length > 0)
+        $('.order.order-cooking').last().after(article)
+      else
+        $("#pinBoot").prepend(article)
 
       $(".order-cooking[sale-id="+sale_id+"]").html(template)
 
@@ -247,13 +250,15 @@ function set_notifications_number(){
   if(notifications_number > 0)
   {
     $(".notify-order-all").fadeIn(0)
-    $(".no-orders").fadeOut(0)
     $(".notify-order-all").text(notifications_number)
   }
   else{
-    $(".no-orders").fadeIn(0)
     $(".notify-order-all").fadeOut(0)
   }
+  if($("#pinBoot .order").length > 1)
+    $(".no-orders").fadeOut(0)
+  else
+    $(".no-orders").fadeIn(0)
 }
 
 function set_display_stack_notifications(){
@@ -273,10 +278,11 @@ function append_processing_order(params){
   sale_id = params['sale']['id']
   template = $(".order-template").html()
   article = '<article class="order order-processing" sale-id="'+sale_id+'"></article>'
+  console.log(article)
   $(".order-template").before(article)
   $(".order-processing[sale-id="+sale_id+"]").html(template)
   $(".order-processing[sale-id="+sale_id+"] .sale-name").html("<i class='fa fa-desktop'></i>Máy "+params['sale']['customer_id'])
-  $(".order-processing[sale-id="+sale_id+"] .sale-code.sale-created-at").html("MÃ HĐ: "+params['sale']['invoice_number']+"<br>NGÀY: "+params['sale']['created_at'])
+  $(".order-processing[sale-id="+sale_id+"] .sale-code.sale-created-at").html("MÃ HĐ: "+params['sale']['invoice_number']+"<br>NGÀY: "+params['sale']['format_created_at'])
   href = $(".order-processing[sale-id="+sale_id+"] .btn-start-cooking").attr("href")
   href += "?sale_id="+sale_id
   $(".order-processing[sale-id="+sale_id+"] .btn-start-cooking").attr("href", href)
