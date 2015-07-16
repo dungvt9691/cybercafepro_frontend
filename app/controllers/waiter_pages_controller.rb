@@ -3,7 +3,7 @@ class WaiterPagesController < ApplicationController
 
   def sale_list
     @sales = Ckfapi::API::Sale.index(current_token, detail: true)['sales'] rescue []
-    @sales = @sales.sort{|a, b| b['updated_at'].to_datetime <=> a['updated_at'].to_datetime}
+    @sales = @sales.sort{|a, b| a['updated_at'].to_datetime <=> b['updated_at'].to_datetime}
     @sales_pending = []
     @sales_ready = []
     @sales_delivered = []

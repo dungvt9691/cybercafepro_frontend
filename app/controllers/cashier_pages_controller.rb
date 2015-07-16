@@ -6,7 +6,8 @@ class CashierPagesController < ApplicationController
     @sales = @sales.sort{|a, b| b['updated_at'].to_datetime <=> a['updated_at'].to_datetime}
     @sales_not_saved = @sales.select{|m| m['state'] != 'saved'}
     @sales_saved     = @sales.select{|m| m['state'] == 'saved'}
-
+    @sales_init     = @sales.select{|m| m['state'] == 'init'}.count
+    @sales_delivered     = @sales.select{|m| m['state'] == 'delivered'}.count
     respond_to do |format|
       format.html
     end

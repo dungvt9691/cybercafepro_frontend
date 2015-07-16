@@ -19,10 +19,11 @@ class CustomerPagesController < ApplicationController
     #TODO
     params["sale"]["sale_menu_items_attributes"] = params["sale"]["sale_menu_items_attributes"].values
     @sale = Ckfapi::API::Sale.create(current_token, params["sale"])
-    @sale['sale']['format_created_at'] = (@sale['sale']['created_at'].to_datetime + 7.hours).strftime("%d/%m/%Y")
+    @sale['sale']['format_created_at'] = (@sale['sale']['created_at'].to_datetime + 7.hours).strftime("%d/%m/%Y <b>%H:%M</b>").html_safe
     @sale['sale']['order_created_at'] = (@sale['sale']['created_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S")
     @sale['sale']['format_updated_at'] = (@sale['sale']['updated_at'].to_datetime + 7.hours).strftime("%d/%m/%Y <b>%H:%M</b>").html_safe
     @sale['sale']['order_updated_at'] = (@sale['sale']['updated_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S")
+    @sale['sale']['total_price'] = @sale['sale']['sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+)
     WebsocketRails[:staff].trigger 'create_sale',@sale
     respond_to do |format|
       format.js

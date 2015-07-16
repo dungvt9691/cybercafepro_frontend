@@ -26,8 +26,8 @@
     </thead>
     <tbody>
       <% @sales_not_saved.each do |sale| %>
-      <tr class='row-sale' sale-id="<%= sale['id'] %>">
-        <td style='verical-align: middle !important'>
+      <tr class='row-sale <%=  "sale-init" if sale['state'] == "init" %> <%=  "sale-delivered" if sale['state'] == "delivered" %>'  sale-id="<%= sale['id'] %>">
+        <td>
           <a href="javascript:;" sale-id="<%= sale['id'] %>" class='show-sale-details'><%= sale['invoice_number'] %></a>
           <% if sale['state'] == 'delivered' %>
           <a data-remote='true' href='<%= save_sale_cashier_pages_path(sale_id: sale['id']) %>' class='btn btn-danger btn-xs pull-right'>Lưu lại</a>
@@ -44,7 +44,7 @@
           <span style='display:none'><%= (sale['updated_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S") %></span>
           <%= (sale['updated_at'].to_datetime + 7.hours).strftime("%d/%m/%Y <b>%H:%M</b>").html_safe %>
         </td>
-        <td class='text-primary'>
+        <td>
           <b><%= number_with_delimiter(sale['sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+)) %></b> đ
         </td>
         <td>
