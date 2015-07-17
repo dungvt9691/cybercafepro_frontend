@@ -125,6 +125,12 @@ $('#order-now').click(function(){
       }
       )
     })
+
+    if($('[id*=row-service]').length == 0){
+      alert("Xin hãy chọn món trước khi thanh toán")
+      return
+    }
+
     $.ajax({
       method: "POST",
       url: "<%= create_sale_customer_pages_path %>",
@@ -146,8 +152,10 @@ $("#reset-order").click(function(){
 function resetOrder(){
   $('[id*=row-service]').each(function(){
     $(this).remove()
-    $("#no-choice").fadeIn(100)
   })
+  $("#no-choice").fadeIn(100)
+  $("#orders-tab .customer-table .bootstrap-table").css("box-shadow", "0 9px 9px -6px rgba(0,0,0,0.0)")
+  order_row = 0
 }
 // $(".fixed-table-body").niceScroll({horizrailenabled: false, cursorcolor:"rgba(0, 0, 0, 0.2)", cursorwidth: "9px"})
 
