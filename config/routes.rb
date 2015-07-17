@@ -40,6 +40,7 @@ Rails.application.routes.draw do
     collection do
       get "sale_list"
       get "save_sale"
+      get "saved_sales"
     end
   end
 

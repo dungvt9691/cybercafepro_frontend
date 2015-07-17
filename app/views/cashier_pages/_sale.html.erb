@@ -1,0 +1,24 @@
+<tr class='row-sale'  sale-id="<%= sale['id'] %>">
+  <td>
+    <a href="javascript:;" sale-id="<%= sale['id'] %>" class='show-sale-details'><%= sale['invoice_number'] %></a>
+  </td>
+  <td>
+    Máy <%= sale['customer_id'] %>
+  </td>
+  <td>
+    <span style='display:none'><%= (sale['created_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S") %></span>
+    <%= (sale['created_at'].to_datetime + 7.hours).strftime("%d/%m/%Y <b>%H:%M</b>").html_safe %>
+  </td>
+  <td>
+    <span style='display:none'><%= (sale['updated_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S") %></span>
+    <%= (sale['updated_at'].to_datetime + 7.hours).strftime("%d/%m/%Y <b>%H:%M</b>").html_safe %>
+  </td>
+  <td>
+    <b><%= number_with_delimiter(sale['sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+)) %></b> đ
+  </td>
+  <td>
+    <center>
+      <%= display_state(sale['state']).html_safe %>
+    </center>
+  </td>
+</tr>

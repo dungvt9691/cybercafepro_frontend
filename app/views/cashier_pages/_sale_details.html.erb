@@ -1,0 +1,99 @@
+<div class="row">
+  <div class="col-lg-12">
+    <center>
+      <h3>
+        CHI TIẾT HOÁ ĐƠN
+        <br>
+        <p style='color: #777; font-size: 20px; margin-top: 10px'><%= @sale['sale']['invoice_number'] %></p>
+      </h3>
+    </center>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-lg-4 col-md-4 col-sm-6">
+    <p>
+      <b>Tên máy:</b> Máy <%= sale['customer_id'] %>
+    </p>
+  </div>
+  <div class="col-lg-4 col-md-4 col-sm-6">
+    <p>
+      <b>Tạo lúc:</b> <%= (sale['created_at'].to_datetime + 7.hours).strftime("%H:%M %d/%m/%Y") %>
+    </p>
+  </div>
+  <div class="col-lg-4 col-md-4 col-sm-6">
+    <p>
+      <b>Trạng thái:</b> <%= render_state(sale['state']).html_safe %>
+    </p>
+  </div>
+</div>
+<br>
+<div class="row">
+  <% if not sale['processor'].nil? %>
+  <div class="col-lg-4 col-md-4 col-sm-6">
+    <p>
+      <b>Nhân viên thu:</b> <%= "#{sale['processor']['last_name']} #{sale['processor']['first_name']}" %>
+    </p>
+    <p>
+      <b>Thu lúc:</b> <%= ((sale['processing_at'].to_datetime rescue DateTime.now) + 7.hours).strftime("%H:%M %d/%m/%Y") %>
+    </p>
+  </div>
+  <% end %>
+  <% if not sale['chef'].nil? %>
+  <div class="col-lg-4 col-md-4 col-sm-6">
+    <p>
+      <b>Nhân viên làm:</b> <%= "#{sale['chef']['last_name']} #{sale['chef']['first_name']}" %>
+    </p>
+    <p>
+      <b>Làm lúc:</b> <%= ((sale['cooking_at'].to_datetime rescue DateTime.now) + 7.hours).strftime("%H:%M %d/%m/%Y") %>
+    </p>
+  </div>
+  <% end %>
+  <% if not sale['deliverer'].nil? %>
+  <div class="col-lg-4 col-md-4 col-sm-6">
+    <p>
+      <b>Nhân viên giao:</b> <%= "#{sale['deliverer']['last_name']} #{sale['deliverer']['first_name']}" %>
+    </p>
+    <p>
+      <b>Giao lúc:</b> <%= ((sale['delivered_at'].to_datetime rescue DateTime.now) + 7.hours).strftime("%H:%M %d/%m/%Y") %>
+    </p>
+  </div>
+  <% end %>
+</div>
+<br>
+<div class="row">
+  <div class="col-lg-12">
+    <table class='table table-bordered table-hover'>
+      <thead style="background-color: #428bca; color: #fff; border: 1px solid #428bca;">
+        <tr>
+          <th>Món</th>
+          <th>Số lượng</th>
+          <th>Đơn giá</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% sale['sale_menu_items_details'].each do |item| %>
+        <tr>
+          <td style="width: 50%">
+            <%= item['menu_item_details']['name'] %>
+          </td>
+          <td style="width: 30%">
+            <%= item['quantity'].to_i %>
+          </td>
+          <td style="width: 20%">
+            <%= number_with_delimiter(item['menu_item_details']['unit_price'].to_i) %> đ
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="pull-right">
+      <h4>Tổng: <b><%= number_with_delimiter(sale['sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+)) %> đ</b></h4>
+    </div>
+  </div>
+</div>

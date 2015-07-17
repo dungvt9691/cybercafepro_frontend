@@ -5,16 +5,16 @@ var stack_context = {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1
 <div class="container">
   <div class="row">
     <div class="col-sm-12">
-      <div class="chef-pages">
+      <div class="cashier-pages">
         <div class="row tabs-row">
           <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6 no-padding">
             <div class="tab-list active" aria-control="tab-order-saved">
-              DANH SÁCH ORDER <label class="badge badge-danger notify-order-not_saved notify-order"><%= @sales_not_saved.count %></label>
+              DANH SÁCH ORDER
             </div>
           </div>
           <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6 no-padding">
             <div class="tab-list" aria-control="tab-order-done">
-              ORDER ĐÃ LƯU <label class="badge badge-danger notify-order-saved notify-order"><%= @sales_saved.count %></label>
+              ORDER ĐÃ LƯU
             </div>
           </div>
         </div>
@@ -104,6 +104,19 @@ $(".tab-list").click(function(){
   tab_id = $(this).attr("aria-control")
   $(".tab-content").fadeOut(0)
   $("#"+tab_id).fadeIn(300)
+  if(tab_id == "tab-order-done"){
+    if(window.confirm("Bạn có muốn tải lại trang này không? (Tải lại sẽ giúp bạn cập nhật được order mới lưu)")){
+      if (typeof saved_table != 'undefined'){
+        saved_table.fnDestroy()
+      }
+      $("#table-order-saved tbody").html('<tr><td colspan="6"><center><i class="fa fa-spin fa-spinner" style="margin-right: 5px"></i> Đang tải dữ liệu</center></td></tr>')
+      $.ajax({
+        type: "GET",
+        dataType: "script",
+        url: "<%= saved_sales_cashier_pages_path %>"
+      });
+    }
+  }
 })
 
 $(".panel-notification-heading").click(function(){
@@ -196,7 +209,7 @@ staff_channel.bind("next_state_sale_menu_item",function(data) {
 
 var sale_details_id;
 
-$(".chef-pages").on("click", ".show-sale-details", function(){
+$(".cashier-pages").on("click", ".show-sale-details", function(){
   sale_details_id = $(this).attr("sale-id")
   $('.launch-modal').html("<%=j render 'cashier_pages/modal_sale_details' %>")
   $("#modal-sale-details").modal({

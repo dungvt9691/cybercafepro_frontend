@@ -5,7 +5,6 @@ class CashierPagesController < ApplicationController
     @sales = Ckfapi::API::Sale.index(current_token,detail: true)['sales'] rescue []
     @sales = @sales.sort{|a, b| b['updated_at'].to_datetime <=> a['updated_at'].to_datetime}
     @sales_not_saved = @sales.select{|m| m['state'] != 'saved'}
-    @sales_saved     = @sales.select{|m| m['state'] == 'saved'}
     @sales_init     = @sales.select{|m| m['state'] == 'init'}.count
     @sales_delivered     = @sales.select{|m| m['state'] == 'delivered'}.count
     respond_to do |format|
@@ -35,15 +34,15 @@ class CashierPagesController < ApplicationController
   end
 
   def sale_details
-    # @sale = 
-    binding.pry
+    @sale = Ckfapi::API::Sale.get(current_token, params[:id], detail: true)
     respond_to do |format|
       format.js
     end
   end
 
-  def history_sale
-    #TODO
+  def saved_sales
+    @sales = Ckfapi::API::Sale.index(current_token,detail: true)['sales'] rescue []
+    @saved_sales = @sales.select{|m| m['state'] == 'saved'}
   end
 
 end
