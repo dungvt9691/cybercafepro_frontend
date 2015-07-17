@@ -5,8 +5,9 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'customer_pages#customer_ordering'
 
-  resource :users
-  resource :sessions
+  resources :users
+  resource :sessions, only: [:new, :create, :destroy]
+  resources :registrations
 
   resources :customer_pages,only: [] do
     collection do
