@@ -2,17 +2,42 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title></title>
+  <title>CybercafeproFrontend</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
 </head>
 <body>
-  <div id='side-nav-mg' class="col-md-4">
+  <div id='side-nav-mg' class="col-md-2">
     <ul class="nav nav-pills nav-stacked">
-      <li class="<%= 'active' if @mg_page == 'sale' rescue ''%> "> Doanh số ban hàng</li>
-      <li class="<%= 'active' if @mg_page == 'staff' rescue ''%> "> Nhân viên</li>
-      <li class="<%= 'active' if @mg_page == 'blabla' rescue ''%> "> Chưa nghĩ ra</li>
+      <li class="<%= 'active' if @mg_page == 'payment' rescue ''%> ">
+        <a class="href" href="<%= payment_list_manager_pages_path %>">
+          Danh s@ch ho@ đơn
+        </a>
+      </li>
+      <li class="<%= 'active' if @mg_page == 'sale' rescue ''%> ">
+        <a class="href" href="<%= sale_list_manager_pages_path %>">
+          Doanh số ban hàng
+        </a>
+      </li>
+      <li class="<%= 'active' if @mg_page == 'staff' rescue ''%> ">
+        <a class="href" href="<%= user_list_manager_pages_path %>">
+          Nhân viên
+        </a>
+      </li>
+      <li class="<%= 'active' if @mg_page == 'shift' rescue ''%> ">
+        <a class="href" href="<%= shift_list_manager_pages_path %>">
+          Shift
+        </a>
+      </li>
+      <li class="<%= 'active' if @mg_page == 'menu_items' rescue ''%> ">
+        <a class="href" href="<%= menu_item_list_manager_pages_path %>">
+          Menu phục vụ
+        </a>
+      </li>
     </ul>
   </div>
-  <div id='mg-content' class="col-md-8">
+  <div id='mg-content' class="col-md-10">
     <%= yield %>
   </div>
 </body>
