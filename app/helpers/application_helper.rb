@@ -21,4 +21,9 @@ module ApplicationHelper
   def mobile_device?
     request.user_agent =~ /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/
   end
+
+  def extract_customer_id_from_ip ip
+    #CustomerDb.find_by_ip(ip).cs_id rescue nil
+    1
+  end
 end

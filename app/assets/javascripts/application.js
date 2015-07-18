@@ -14,6 +14,9 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap.min
+//= require dataTables/jquery.dataTables
+//= require dataTables/extras/dataTables.tableTools
+//= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
 //= require_tree .
 //= require websocket_rails/main
 
