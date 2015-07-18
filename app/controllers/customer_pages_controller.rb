@@ -27,7 +27,7 @@ class CustomerPagesController < ApplicationController
       @sale['sale']['order_created_at'] = (@sale['sale']['created_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S")
       @sale['sale']['format_updated_at'] = (@sale['sale']['updated_at'].to_datetime + 7.hours).strftime("%d/%m/%Y <b>%H:%M</b>").html_safe
       @sale['sale']['order_updated_at'] = (@sale['sale']['updated_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S")
-      @sale['sale']['total_price'] = @sale['sale']['sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+)
+      @sale['sale']['total_price'] = (@sale['sale']['sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0) + (@sale['sale']['nocook_sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0)
       WebsocketRails[:staff].trigger 'create_sale',@sale
     end
     respond_to do |format|

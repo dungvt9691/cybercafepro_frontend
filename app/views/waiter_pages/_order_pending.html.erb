@@ -52,6 +52,27 @@
                 </td>
               </tr>
               <% end %>
+              <% sale['nocook_sale_menu_items_details'].each do |data| %>
+              <% item_detail = data['menu_item_details'] %>
+              <% total_price += data['sum'].to_i %>
+              <tr id="row-service-<%= data['id'] %>" menu-item-id="<%= data['id'] %>" class="row-service row-nocook">
+                <td class="order-service-name">
+                  <b><%= item_detail['name'] %></b>
+                  <br>
+                  <p class="note-for-service">
+                    <%= data['description'] || "Không có" %>
+                  </p>
+                </td>
+                <td class='order-service-price' data-price='<%= item_detail['unit_price'] %>'>
+                  <%= number_with_delimiter(item_detail['unit_price'].to_i) %>
+                </td>
+                <td class='order-service-quantity'>
+                  <span class='quantity-text'>
+                    <%= data['quantity'].to_i %>
+                  </span>
+                </td>
+              </tr>
+              <% end %>
             </tbody>
           </table>
           <div class='col-lg-12' style='border-top: 1px solid #ccc'>
@@ -283,6 +304,12 @@ function append_order_list(element, params){
     menu_item = data['menu_item_details']
     total_price += parseInt(data['sum'])
     append_data = "<tr id='row-service-"+data['id']+"' menu-item-id='"+data['id']+"' class='row-service'><td class='order-service-name'><b>"+ menu_item['name'] +"</b><br><p class='note-for-service'>"+data['description']+"</p></td><td class='order-service-price' data-price='"+parseInt(menu_item['unit_price'])+"'>"+ number_format(menu_item['unit_price']) +"</td><td class='order-service-quantity'><span class='quantity-text'>"+parseInt(data['quantity'])+"</span></td></tr>"
+    element.children(".customer-table").children("table").children("tbody").append(append_data)
+  })
+  params['sale']['nocook_sale_menu_items_details'].forEach(function(data){
+    menu_item = data['menu_item_details']
+    total_price += parseInt(data['sum'])
+    append_data = "<tr id='row-service-"+data['id']+"' menu-item-id='"+data['id']+"' class='row-service row-nocook'><td class='order-service-name'><b>"+ menu_item['name'] +"</b><br><p class='note-for-service'>"+data['description']+"</p></td><td class='order-service-price' data-price='"+parseInt(menu_item['unit_price'])+"'>"+ number_format(menu_item['unit_price']) +"</td><td class='order-service-quantity'><span class='quantity-text'>"+parseInt(data['quantity'])+"</span></td></tr>"
     element.children(".customer-table").children("table").children("tbody").append(append_data)
   })
 
