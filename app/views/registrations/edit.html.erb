@@ -1,0 +1,100 @@
+<div class="container">
+<br />
+<%= form_tag(registration_path(@user['id']), method: :patch, class: "form-horizontal") do %>
+
+  <% user = @user %>
+
+  <div class="form-group">
+    <%= label_tag 'role', nil, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= select_tag 'user[role]', options_for_select(["Customer", "Waiter", "Chef", "Cashier", "Manager"], user["role"]), class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= label_tag 'current_role', nil, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= select_tag 'user[current_role]', options_for_select(["Customer", "Waiter", "Chef", "Cashier", "Manager"], user["current_role"]), class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= label_tag 'first_name', nil, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= text_field_tag 'user[first_name]', user['first_name'], placeholder: "First Name", class: "form-control"  %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= label_tag 'last_name', nil, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= text_field_tag 'user[last_name]', user['last_name'], placeholder: "Last Name", class: "form-control"  %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= label_tag 'email', nil, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= email_field_tag 'user[email]', user['email'], placeholder: "Email", class: "form-control"  %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= label_tag 'gender', nil, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= select_tag 'user[gender]', options_for_select(["Male", "Female"], user['gender']), class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= label_tag 'phone', nil, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= text_field_tag 'user[phone_number]', user['phone_number'], placeholder: "Phone Number", class: "form-control"  %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= label_tag 'address', nil, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= text_field_tag 'user[address]', user['address'], placeholder: "Address", class: "form-control"  %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= label_tag 'city', nil, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= text_field_tag 'user[city]', user['city'], class: "form-control"  %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= label_tag 'state', nil, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= text_field_tag 'user[state]', user['state'], class: "form-control"  %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= label_tag 'zip', nil, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= text_field_tag 'user[zip]', user['zip'], class: "form-control"  %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= label_tag 'country', nil, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= text_field_tag 'user[country]', user['country'], class: "form-control"  %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= submit_tag 'update', class: "btn btn-default" %>
+    </div>
+  </div>
+
+<% end %>
+
+</div>
+

@@ -6,5 +6,6 @@ class CreateCustomerDbs < ActiveRecord::Migration
 
       t.timestamps null: false
     end
+    add_index :customer_dbs, [:ip], :unique => true
   end
 end

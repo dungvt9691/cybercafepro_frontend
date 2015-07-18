@@ -5,8 +5,19 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'customer_pages#customer_ordering'
 
-  resource :users
-  resource :sessions
+  resources :users
+  resource :sessions, only: [:new, :create, :destroy]
+  resources :registrations
+
+  resources :manager_pages,only: [] do
+    collection do
+      get "user_list"
+      get "menu_item_list"
+      get "payment_list"
+      get "sale_list"
+      get "shift_list"
+    end
+  end
 
   resources :customer_pages,only: [] do
     collection do
