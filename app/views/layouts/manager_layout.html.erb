@@ -25,6 +25,11 @@
           Nhân viên
         </a>
       </li>
+      <li class="<%= 'active' if @mg_page == 'shift' rescue ''%> ">
+        <a class="href" href="<%= shift_list_manager_pages_path %>">
+          Shift
+        </a>
+      </li>
       <li class="<%= 'active' if @mg_page == 'menu_items' rescue ''%> ">
         <a class="href" href="<%= menu_item_list_manager_pages_path %>">
           Menu phục vụ

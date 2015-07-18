@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       get "menu_item_list"
       get "payment_list"
       get "sale_list"
+      get "shift_list"
     end
   end
 
