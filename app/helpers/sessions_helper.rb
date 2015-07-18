@@ -13,7 +13,11 @@ module SessionsHelper
   end
 
   def current_token
-    session[:token]
+    if !CustomerDb.find_by_ip(request.remote_ip).nil?
+      get_token("ductm310@live.com",123123123)
+    else
+      session[:token]
+    end
     # if mobile_device?
       # Ckfapi::API::User.get_token("dungvt9691@gmail.com", 123123123)
     # else
