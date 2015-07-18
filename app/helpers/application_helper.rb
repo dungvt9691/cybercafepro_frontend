@@ -23,7 +23,11 @@ module ApplicationHelper
   end
 
   def extract_customer_id_from_ip ip
-    #CustomerDb.find_by_ip(ip).cs_id rescue nil
-    1
+    csdb = CustomerDb.find_by_ip(ip)
+    if csdb.nil?
+      0
+    else
+      csdb.cs_id
+    end
   end
 end

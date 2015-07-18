@@ -20,4 +20,6 @@ ActiveRecord::Schema.define(version: 20150716152009) do
     t.datetime "updated_at", null: false
   end
 
+  add_index "customer_dbs", ["ip"], name: "index_customer_dbs_on_ip", unique: true
+
 end
