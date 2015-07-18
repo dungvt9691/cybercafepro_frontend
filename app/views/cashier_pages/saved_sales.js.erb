@@ -1,0 +1,31 @@
+<% if @saved_sales.count > 0 %>
+$('#table-order-saved tbody').html("");
+<% @saved_sales.each do |sale| %>
+  $('#table-order-saved tbody').append("<%=j render partial: 'sale', locals: { sale: sale} %>");
+<% end %>
+<% else %>
+$('#table-order-saved tbody').html("");
+<% end %>
+
+var saved_table = $("#table-order-saved").dataTable({
+  "sDom": "<'row'<'col-lg-6'l><'col-lg-6'f>r>t<'row'<'col-lg-2'i><'col-lg-10'p>>",
+  "sPaginationType": "full_numbers",
+  "oLanguage": {
+    "sLengthMenu": "<%= t('datatable.length_menu') %>",
+    "sSearch": "",
+    "sInfo": "<%= t('datatable.info') %>",
+    "oPaginate": {
+      "sNext": "<%= t('datatable.paginate_next') %>",
+      "sPrevious": "<%= t('datatable.paginate_previous') %>",
+      "sFirst": "<%= t('datatable.paginate_first') %>",
+      "sLast": "<%= t('datatable.paginate_last') %>",
+    }
+  },
+  "aaSorting": [],
+  "aoColumnDefs" : [ {
+    'bSortable' : false,
+    'aTargets' : []
+  } ]
+});
+$('.dataTables_filter input').addClass('form-control').attr('placeholder',"<%= t('datatable.search') %>");
+$('.dataTables_length select').addClass('form-control');

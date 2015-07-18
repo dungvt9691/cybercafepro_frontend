@@ -1,95 +1,288 @@
-<div class="col-md-9">
-  <table class="table table-bordered" id="waiter_sale_list">
-    <thead>
-        <tr>
-            <th id="num" scope="col">
-                #
-            </th>
-            <th id="com" scope="col">
-                <abbr title="Computer Number">Com</abbr>
-            </th>
-            <th id="State" scope="col">
-                Items
-            </th>
-            <th id="villa" scope="col">
-                In charge
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-      <% @sale.each_with_index do |sale,index| %>
-        <tr>
-          <td><%= index + 1 %></td>
-          <td><%= sale['customer_id']%></td>
-          <td>
-            <table class="table table-striped">
-              <tr>
-                <th>Tên</th>
-                <th><Description/th>
-                <th>Số lượng</th>
-                <th>Tổng tiền</th>
-                <th>Trạng thai</th>
-              </tr>
-              <% sale['sale_menu_items_details'].each_with_index do |item| %>
-                <tr>
-                  <td><%= item['name']%></td>
-                  <td><%= item['description']%></td>
-                  <td><%= item['quantity']%></td>
-                  <td><%= item['sum']%></td>
-                  <td><%= item['state']%></td>
-                </tr>
-              <% end %>
-              <tr>
-                <td colspan='3'> Tổng tiền :</td>
-                <th> <%= sale['sale_menu_items_details'].inject(0) {|sum,m| sum += m['sum'].to_f} %> </th>
-            </table>
-          </td>
-          <td>
-            <a href="<%= save_sale_cashier_pages_path + '/?sale_id=' + sale['id'].to_s%>" data-remote= "true" type="button" class="btn btn-lg btn-block btn-success">Lưu</a>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
-<div class="col-md-3" >
-  <div id='notify-list' style="height: 1000px; position: relative; overflow: auto;">
+<script type="text/javascript">
+var staff_channel = dispatcher.subscribe('staff');
+var stack_context = {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 5, "spacing2": 5}
+</script>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="cashier-pages">
+        <div class="row tabs-row">
+          <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6 no-padding">
+            <div class="tab-list active" aria-control="tab-order-saved">
+              DANH SÁCH ORDER
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6 no-padding">
+            <div class="tab-list" aria-control="tab-order-done">
+              ORDER ĐÃ LƯU
+            </div>
+          </div>
+        </div>
+        <div class="row tabs-content">
+          <div class="col-sm-12">
+            <div style='padding: 15px'>
+              <div class="tab-content" id="tab-order-saved">
+                <%= render 'order_not_saved' %>
+              </div>
+              <div class="tab-content" id="tab-order-done">
+                <%= render 'order_saved' %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-
-
+<div class='container copyright'>
+  <small>Copyright <i class='fa fa-copyright'></i> ABCDEF</small>
+</div>
+<div class="panel-notifications <%= 'active' if @sales_init + @sales_delivered > 0 %> <%= 'minimize' if @sales_init + @sales_delivered == 0 %>">
+  <div class='panel-notification-heading'>
+    <label class="badge badge-danger notify-order notify-order-all"><%= @sales_init + @sales_delivered %></label>
+    <span class="heading-title">Thông báo</span>
+    <i class="fa fa-caret-down"></i>
+  </div>
+  <div class="panel-notification-body">
+    <% @sales.each do |sale| %>
+    <% if ['init'].include?(sale['state']) %>
+    <div sale-id='<%= sale['id'] %>' class='notification-content'>
+      <div class='row'>
+        <div class='col-lg-3 col-md-3 col-sm-3 no-padding'>
+          <center>
+            <i class='fa fa-desktop'></i>
+            <br>
+            <label class='label label-primary computer-name'><%= "Máy x" %>
+            </label>
+          </center>
+        </div>
+        <div class='col-lg-9 col-md-9 col-sm-9 no-padding'>
+          <div class='alert alert-info'>
+            Có <b>ORDER MỚI</b>.
+          </div>
+        </div>
+      </div>
+    </div>
+    <% elsif ['delivered'].include?(sale['state']) %>
+    <div sale-id='<%= sale['id'] %>' class='notification-content'>
+      <div class='row'>
+        <div class='col-lg-3 col-md-3 col-sm-3 no-padding'>
+          <center>
+            <i class='fa fa-desktop'></i>
+            <br>
+            <label class='label label-primary computer-name'><%= "Máy x" %>
+            </label>
+          </center>
+        </div>
+        <div class='col-lg-9 col-md-9 col-sm-9 no-padding'>
+          <div class='alert alert-success'>
+            <b>ORDER</b> đã được giao cho khách
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+    <% end %>
+  </div>
+</div>
 <script>
+$(document).ready(function () {
+  if($("#table-order-not-saved .row-sale.sale-init").length + $("#table-order-not-saved .row-sale.sale-delivered").length > 0){
+    $(".notify-order-all").fadeIn(0)
+  }
+  else{
+    $(".notify-order-all").fadeOut(0)
+  }
+  set_notifications_number()
+});
+
+$(".panel-notification-body").niceScroll({horizrailenabled: false, cursorcolor:"rgba(0, 0, 0, 0.5)", cursorwidth: "9px"})
+
+$(".tab-list").click(function(){
+  $(".tab-list").removeClass("active")
+  $(this).addClass("active")
+  tab_id = $(this).attr("aria-control")
+  $(".tab-content").fadeOut(0)
+  $("#"+tab_id).fadeIn(300)
+  if(tab_id == "tab-order-done"){
+    if(window.confirm("Bạn có muốn tải lại trang này không? (Tải lại sẽ giúp bạn cập nhật được order mới lưu)")){
+      if (typeof saved_table != 'undefined'){
+        saved_table.fnDestroy()
+      }
+      $("#table-order-saved tbody").html('<tr><td colspan="6"><center><i class="fa fa-spin fa-spinner" style="margin-right: 5px"></i> Đang tải dữ liệu</center></td></tr>')
+      $.ajax({
+        type: "GET",
+        dataType: "script",
+        url: "<%= saved_sales_cashier_pages_path %>"
+      });
+    }
+  }
+})
+
+$(".panel-notification-heading").click(function(){
+  if($(this).parents(".panel-notifications").hasClass("minimize")){
+    $(this).children(".fa").addClass("fa-caret-down").removeClass("fa-caret-up")
+    $(this).parents('.panel-notifications').removeClass("minimize")
+  }
+  else{
+    $(".panel-notification-heading .fa").parents(".panel-notifications").addClass("minimize")
+    $(this).children(".fa").removeClass("fa-caret-down").addClass("fa-caret-up")
+    $(this).parents('.panel-notifications').addClass("minimize")
+  }
+})
+
 staff_channel.bind("next_state_sale",function(data) {
-  if(data['sale']['state'] == "delivered") {
-    $(function(){
-      var notice = new PNotify({
-          title: "test",
-          text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "làm xong",
-          animate_speed: "fast",
-          width: "250px",
-          delay: 500000,
-          type: 'success',
-          styling: "fontawesome",
-          buttons: {sticker: false, closer_hover: false},
-          stack: stack_context,
-      });
-      notice.get().click(function(e) {
-        notice.remove();
-      });
-      var desktop_notice = new PNotify({
-          title: "test",
-          text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "đã xong",
-          animate_speed: "fast",
-          type: 'warning',
-          hide: false,
-          desktop: {
-            desktop: true
-          }
-      });
-      desktop_notice.get().click(function(e) {
-        alert('124');
-      });
-    });
+  sale_id = data['sale']['id']
+  var rows = oTable.fnGetNodes();
+  var row_updated;
+  for(var i=0;i<rows.length;i++)
+  {
+    if($(rows[i]).attr("sale-id") == sale_id){
+      row_updated = rows[i]
+    }
+  }
+  updated_status = render_label_state(data['sale']['state'])
+  updated_at = "<span style='display:none'>"+data['sale']['order_updated_at']+"</span>" + data['sale']['format_updated_at']
+  oTable.fnUpdate(updated_at, row_updated, 3 );
+  oTable.fnUpdate(updated_status, row_updated, 5 );
+  if(data['sale']['state'] == "delivered"){
+    updated_button = '<a href="javascript:;" sale-id="'+sale_id+'" class="show-sale-details">'+data['sale']['invoice_number']+'</a><a data-remote="true" href="/cashier_pages/save_sale?sale_id='+sale_id+'" class="btn btn-danger btn-xs pull-right">Lưu lại</a>'
+    oTable.fnUpdate(updated_button, row_updated, 0 );
+    $(".row-sale[sale-id="+sale_id+"]").addClass("sale-delivered")
+    set_notifications_number()
+    set_display_stack_notifications()
+    set_stack_notifications(data, "delivered")
+  }
+
+  if(data['sale']['state'] == "pending"){
+    $(".notification-content[sale-id="+sale_id+"]").remove()
+    $(".row-sale[sale-id="+sale_id+"]").removeClass("sale-init")
+    set_notifications_number()
+    set_display_stack_notifications()
   }
 });
+
+staff_channel.bind("create_sale",function(data) {
+  $(function(){
+    sale_id = data['sale']['id']
+    td_1 = '<a href="javascript:;" sale-id="'+sale_id+'" class="show-sale-details">'+data['sale']['invoice_number']
+    td_2 = "Máy " + data['sale']['customer_id']
+    td_3 = '<span style="display:none">' + data['sale']['order_created_at'] + '</span>' + data['sale']['format_created_at'] + '</b>'
+    td_4 = '<span style="display:none">' + data['sale']['order_updated_at'] + '</span>' + data['sale']['format_updated_at'] + '</b>'
+    td_5 = '<b>'+ number_format(parseInt(data['sale']['total_price'])) +'</b> đ'
+    td_6 = render_label_state(data['sale']['state'])
+    var a = oTable.fnAddData([td_1, td_2, td_3, td_4, td_5, td_6]);
+    var nTr = oTable.fnSettings().aoData[ a[0] ].nTr;
+    $(nTr).addClass('row-sale').addClass('sale-init').attr("sale-id", sale_id)
+    set_notifications_number()
+    set_display_stack_notifications()
+    set_stack_notifications(data, "init")
+  });
+});
+
+staff_channel.bind("next_state_sale_menu_item",function(data) {
+  $(function(){
+    if(data['sale']['state'] == "saved") {
+      sale_id = data['sale']['id']
+      $(function(){
+        oTable.fnDeleteRow(oTable.fnGetPosition($("tr.row-sale[sale-id="+sale_id+"]").get(0)));
+
+        var notice = pop_notify({
+          title: "test",
+          text: "Order <b>["+data['sale']['invoice_number']+"]</b> từ máy " + data['sale']['customer_id'] + " đã được lưu lại",
+          type: "success",
+          stack: stack_context,
+        });
+        notice.get().click(function(e) {
+          if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
+            return;
+          $.scrollToElement({to: "#sale-" + data['sale']['id']});
+          notice.remove();
+        });
+        $(".notification-content[sale-id="+sale_id+"]").remove()
+        set_notifications_number()
+        set_display_stack_notifications()
+      });
+    }
+  });
+});
+
+var sale_details_id;
+
+$(".cashier-pages").on("click", ".show-sale-details", function(){
+  sale_details_id = $(this).attr("sale-id")
+  $('.launch-modal').html("<%=j render 'cashier_pages/modal_sale_details' %>")
+  $("#modal-sale-details").modal({
+    keyboard: true,
+    backdrop: 'static'
+  })
+})
+
+function render_label_state(state){
+  switch(state) {
+    case "init":
+    return "<center><label class='label label-default'>Order mới</label></center>"
+    break;
+    case "pending":
+    return "<center><label class='label label-info'>Đang lấy tiền</label></center>"
+    break;
+    case "processing":
+    return "<center><label class='label label-primary'>Đã lấy tiền</label</center>"
+    break;
+    case "cooking":
+    return "<center><label class='label label-warning'>Đang làm</label></center>"
+    break;
+    case "done":
+    return "<center><label class='label label-danger'>Làm xong</label></center>"
+    break;
+    case "delivering":
+    return "<center><label class='label label-success'>Đang giao</label></center>"
+    break;
+    case "delivered":
+    return "<center><label class='label label-green'>Đã giao</label></center>"
+    break;
+    default:
+    return "<center><label class='label label-inverse'>Đã lưu</label></center>"
+  }
+}
+
+function set_notifications_number(){
+  notifications_number = $(".row-sale.sale-init").length + $(".row-sale.sale-delivered").length
+  if(notifications_number > 0)
+  {
+    $(".notify-order-all").fadeIn(0)
+    $(".notify-order-all").text(notifications_number)
+  }
+  else{
+    $(".notify-order-all").fadeOut(0)
+  }
+}
+
+function set_display_stack_notifications(){
+  notifications_number = $(".row-sale.sale-init").length + $(".row-sale.sale-delivered").length
+  if(notifications_number > 0)
+  {
+    $(".panel-notifications").removeClass("minimize")
+    $(".panel-notifications").addClass("active")
+  }
+  else{
+    $(".panel-notifications").addClass("minimize")
+    $(".panel-notifications").removeClass("active")
+  }
+}
+
+function set_stack_notifications(params, type){
+  params['sale']['com_name'] = "Máy " + params['sale']['customer_id']
+  com_name = params['sale']['com_name']
+  sale_id  = params['sale']['id']
+  if(type == "init"){
+    append_data = "<div sale-id='"+sale_id+"' class='notification-content'><div class='row'><div class='col-lg-3 col-md-3 col-sm-3 no-padding'><center><i class='fa fa-desktop'></i><br><label class='label label-primary computer-name'>"+ com_name +"</label></center></div><div class='col-lg-9 col-md-9 col-sm-9 no-padding'><div class='alert alert-info'>Có <b>ORDER MỚI</b></div></div></div></div>"
+    $(".panel-notification-body").append(append_data)
+  }
+  else{
+    append_data = "<div sale-id='"+sale_id+"' class='notification-content'><div class='row'><div class='col-lg-3 col-md-3 col-sm-3 no-padding'><center><i class='fa fa-desktop'></i><br><label class='label label-primary computer-name'>"+ com_name +"</label></center></div><div class='col-lg-9 col-md-9 col-sm-9 no-padding'><div class='alert alert-success'><b>ORDER</b> đã được giao cho khách</div></div></div></div>"
+    $(".panel-notification-body").append(append_data)
+  }
+  
+}
 </script>

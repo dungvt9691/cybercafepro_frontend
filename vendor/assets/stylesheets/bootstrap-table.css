@@ -185,13 +185,13 @@
 .fixed-table-toolbar .btn-group>.btn-group:last-child>.btn {
 }
 
-.table>thead>tr>th {
+.customer-table .table>thead>tr>th {
     vertical-align: bottom;
     border-bottom: 2px solid #ddd;
 }
 
 /* support bootstrap 3 */
-.table thead>tr>th {
+.customer-table  .table thead>tr>th {
     padding: 0;
     margin: 0;
 }

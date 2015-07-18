@@ -20,4 +20,12 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  datatable:
+    length_menu: "_MENU_ bản ghi/trang"
+    search: "Tìm kiếm..."
+    info: ""
+    zero: "Không tìm thấy bản ghi tương ứng."
+    paginate_next: "Sau"
+    paginate_previous: "Trước"
+    paginate_first: "Đầu"
+    paginate_last: "Cuối"

@@ -1,0 +1,25 @@
+<div class="modal fade" id="modal-sale-details" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">
+          <i class="fa fa-times-circle">
+          </i>
+          Đóng
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script type="text/javascript">
+$('#modal-sale-details').on('shown.bs.modal', function (e) {
+  $.ajax({
+    type: "GET",
+    dataType: "script",
+    url: "/cashier_pages/"+sale_details_id+"/sale_details"
+  });
+})
+</script>

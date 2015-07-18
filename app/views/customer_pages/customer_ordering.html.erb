@@ -69,8 +69,9 @@ $(".customer-menu").on("click", ".customer-service", function(){
     quantity = parseInt(element.children(".order-service-quantity").children('.quantity-text').text()) + 1
     element.children(".order-service-quantity").children('.quantity-text').text(quantity)
   }
-  get_total_price()
-  if(order_row == 5){
+  $("a[href='#orders-tab']").click();
+  get_total_price();
+  if(order_row >= 5){
     $("#orders-tab .customer-table .bootstrap-table").css("box-shadow", "0 9px 9px -6px rgba(0,0,0,0.5)")
   }
 })
