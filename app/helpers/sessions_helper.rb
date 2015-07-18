@@ -3,7 +3,12 @@ module SessionsHelper
   extend self
 
   def get_token(email, password)
-    session[:token] = Ckfapi::API::User.get_token(email, password)
+    token = Ckfapi::API::User.get_token(email, password)
+    if token['token']['user']
+      session[:token] = token
+    else
+      session[:token] = nil
+    end
   end
 
   def remove_token(token)
