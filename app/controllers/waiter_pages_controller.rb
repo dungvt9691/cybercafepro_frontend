@@ -7,6 +7,7 @@ class WaiterPagesController < ApplicationController
     @sales_pending = []
     @sales_ready = []
     @sales_delivered = []
+    @histories = params[:histories]
     @sales.each do |sale|
       if ["init", "pending"].include?(sale['state'])
         @sales_pending << sale if sale['state'] == "pending" && current_user['id'] == sale['pender_id']

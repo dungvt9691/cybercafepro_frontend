@@ -121,6 +121,13 @@ $(document).ready(function () {
   else{
     $(".notify-order-all").fadeOut(0)
   }
+
+  <% if @histories %>
+  $(".tab-list").removeClass("active")
+  $(".tab-content").fadeOut(0)
+  $("#tab-histories").fadeIn(300)
+  $(".tab-list[aria-control=tab-histories]").addClass("active")
+  <% end %>
 });
 
 $(".panel-notification-body").niceScroll({horizrailenabled: false, cursorcolor:"rgba(0, 0, 0, 0.5)", cursorwidth: "9px"})
@@ -138,12 +145,18 @@ marquee.each(function() {
   mar.data('interval',setInterval(mar.marquee, 8));
 });
 
+
 $(".tab-list").click(function(){
   $(".tab-list").removeClass("active")
   $(this).addClass("active")
   tab_id = $(this).attr("aria-control")
   $(".tab-content").fadeOut(0)
   $("#"+tab_id).fadeIn(300)
+  if(tab_id == "tab-histories"){
+    if(window.confirm("Bạn có muốn tải lại trang này không? (Tải lại sẽ giúp bạn cập nhật được order mới giao)")){
+      window.location.href = "<%= sale_list_waiter_pages_path(histories: true) %>"
+    }
+  }
 })
 
 $(".panel-notification-heading").click(function(){
