@@ -9,6 +9,15 @@ Rails.application.routes.draw do
   resource :sessions, only: [:new, :create, :destroy]
   resources :registrations
 
+  resources :manager_pages,only: [] do
+    collection do
+      get "user_list"
+      get "menu_item_list"
+      get "payment_list"
+      get "sale_list"
+    end
+  end
+
   resources :customer_pages,only: [] do
     collection do
       get  "customer_ordering"

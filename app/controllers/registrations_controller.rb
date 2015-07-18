@@ -10,8 +10,8 @@ class RegistrationsController < ApplicationController
   end
 
   def update
-    @user = Ckfapi::API::User.update(current_token, params[:id], params[:user])['user']
-    render 'edit'
+    @user = Ckfapi::API::User.update(current_token, params[:id], params[:user])
+    redirect_to edit_registration_path(@user['user']['id'])
   end
 
   def create

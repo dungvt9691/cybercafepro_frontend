@@ -11,6 +11,13 @@
       <%= password_field_tag :password,"",class: "form-control" %>
     </div>
 
+    <% if false %>
+    <div class="field form-group">
+      <%= label_tag :role, nil, class: "control-label" %>
+      <%= select_tag :role, options_for_select(["Customer", "Waiter", "Chef", "Cashier", "Manager"], "Waiter"), class: "form-control" %>
+    </div>
+    <% end %>
+
     <div class="row">
       <div class="actions form-group col-md-6 col-xs-6 col-sm-6">
         <%= submit_tag "Log in",class: "btn btn-warning btn-lg btn-block" %>
