@@ -1,5 +1,5 @@
 class CustomerPagesController < ApplicationController
-  skip_before_filter :authenticate_user!, :only => [:customer_ordering,:create_sale]
+  #skip_before_filter :authenticate_user!, :only => [:customer_ordering,:create_sale]
   layout "customer_layout"
 
   append_view_path(File.join(Rails.root,"app/views/customer_pages"))
