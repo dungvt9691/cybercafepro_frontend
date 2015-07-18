@@ -1,0 +1,27 @@
+<div class="content">
+  <h1> Shift </h1>
+  <table id="shifts-table" class="display">
+    <thead>
+      <th>Id</th>
+      <th>Start Time</th>
+      <th>End Time</th>
+    </thead>
+    <tbody>
+      <% if @shifts %>
+        <% @shifts.each do |shift| %>
+          <tr>
+            <td><%= shift['id'] %></td>
+            <td><%= Time.parse(shift['start_time']).strftime("%H:%M:%S") %></td>
+            <td><%= Time.parse(shift['end_time']).strftime("%H:%M:%S") %></td>
+          </tr>
+        <% end %>
+      <% end%>
+    </tbody>
+  </table>
+
+  <script>
+    $(document).ready(function(){
+      $('#shifts-table').DataTable();
+    });
+  </script>
+</div>

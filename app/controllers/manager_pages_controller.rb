@@ -4,17 +4,17 @@ class ManagerPagesController < ApplicationController
 
   def user_list
     @mg_page = "staff"
-    @users = Ckfapi::API::User.index(current_token)['users']
+    @users = Ckfapi::API::User.index(current_token)['users'] rescue []
   end
 
   def menu_item_list
     @mg_page = "menu_item"
-    @menu_items = Ckfapi::API::MenuItem.index(current_token)['menu_items']
+    @menu_items = Ckfapi::API::MenuItem.index(current_token)['menu_items'] rescue []
   end
 
   def payment_list
     @mg_page = "payment"
-    @menu_items = Ckfapi::API::Payment.index(current_token)['payments']
+    @menu_items = Ckfapi::API::Payment.index(current_token)['payments'] rescue []
   end
 
   def sale_list
@@ -23,6 +23,11 @@ class ManagerPagesController < ApplicationController
     respond_to do |format|
       format.html
     end
+  end
+
+  def shift_list
+    @mg_page = "shift"
+    @shifts = Ckfapi::API::Shift.index(current_token, detail: true)['shifts'] rescue []
   end
 
   private
