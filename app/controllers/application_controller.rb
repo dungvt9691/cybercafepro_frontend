@@ -6,6 +6,16 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
 
   before_filter :authenticate_user!
+  rescue_from StandardError, :with => :standard_error
+  rescue_from TypeError, :with => :type_error
+
+  def standard_error(exception)
+    redirect_to new_sessions_path
+  end
+
+  def type_error(exception)
+    redirect_to new_sessions_path
+  end
 
   protected
 
@@ -16,4 +26,5 @@ class ApplicationController < ActionController::Base
       redirect_to new_sessions_path
     end
   end
+
 end
