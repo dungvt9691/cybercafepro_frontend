@@ -1,4 +1,5 @@
 class WaiterPagesController < ApplicationController
+  before_action :filter_role
   layout "waiter_layout"
 
   def sale_list
@@ -127,6 +128,13 @@ class WaiterPagesController < ApplicationController
       end
     end
     #TODO
+  end
+
+  private
+
+  def filter_role
+    return true if ["Waiter"].include? current_user['role']
+    redirect_to get_root_path(current_user)
   end
 
 end

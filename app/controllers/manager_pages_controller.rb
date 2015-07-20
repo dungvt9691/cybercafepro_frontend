@@ -1,5 +1,5 @@
 class ManagerPagesController < ApplicationController
-  before_action :is_manager?
+  before_action :filter_role
   layout "manager_layout"
 
   def user_list
@@ -32,13 +32,9 @@ class ManagerPagesController < ApplicationController
 
   private
 
-  def is_manager?
-    if current_user && current_user['role'] == "Manager"
-      return true
-    else
-      flash[:error] = "Only Manager can register new user"
-      redirect_to root_path
-    end
+  def filter_role
+    return true if ["Manager"].include? current_user['role']
+    redirect_to get_root_path(current_user)
   end
 
 end
