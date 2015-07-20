@@ -1,6 +1,6 @@
 <div class="container">
 <br />
-<%= form_tag(registration_path(@user['id']), method: :patch, class: "form-horizontal") do %>
+<%= form_tag(registration_path(@user['id']), method: :patch, multipart: true, class: "form-horizontal") do %>
 
   <% user = @user %>
 
@@ -14,7 +14,7 @@
   <div class="form-group">
     <%= label_tag 'current_role', nil, class: "col-sm-2 control-label" %>
     <div class="col-sm-10">
-      <%= select_tag 'user[current_role]', options_for_select(["Customer", "Waiter", "Chef", "Cashier", "Manager"], user["current_role"]), class: "form-control" %>
+      <%= select_tag 'user[current_role]', options_for_select([nil, "Customer", "Waiter", "Chef", "Cashier", "Manager"], user["current_role"]), class: "form-control" %>
     </div>
   </div>
 

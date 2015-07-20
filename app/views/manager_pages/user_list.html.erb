@@ -1,5 +1,5 @@
 <div class="content">
-  <h1> Danh s@ch nhân viên </h1>
+  <h1> Danh sách nhân viên </h1>
   <table id="users-table" class="display">
     <thead>
       <th>Id</th>
@@ -22,7 +22,7 @@
       <% @users.each do |user| %>
         <tr>
           <td><%= user['id'] %></td>
-          <td><a class="href" href="<%= edit_registration_path(user['id']) %>">Edit</a></td>
+          <td><%= link_to "Edit", edit_registration_path(user['id']), target: "_blank" %></td>
           <td><%= user['first_name'] %></td>
           <td><%= user['last_name'] %></td>
           <td><%= user['email'] %></td>

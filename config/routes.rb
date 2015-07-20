@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   resource :sessions, only: [:new, :create, :destroy]
   resources :registrations
 
+  resources :menu_items
+
   resources :manager_pages,only: [] do
     collection do
       get "user_list"
