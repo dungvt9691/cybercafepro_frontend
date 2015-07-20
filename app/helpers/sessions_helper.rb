@@ -17,9 +17,15 @@ module SessionsHelper
     session[:token]
   end
 
+  def auth?(token)
+    auth = Ckfapi::API::User.auth(token)
+    return true if auth['message'] == 'success'
+    return false
+  end
+
   def current_token
     if !CustomerDb.find_by_ip(request.remote_ip).nil?
-      get_token("ductm310@live.com",123123123)
+      session[:token] ||= get_token("ductm310@live.com",123123123)
     else
       session[:token]
     end
