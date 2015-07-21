@@ -7,7 +7,6 @@
       <th>Customer</th>
       <th>Pender</th>
       <th>Processor</th>
-      <th>Chef</th>
       <th>Deliverer</th>
       <th>Saver</th>
       <th>Invoice Number</th>
@@ -23,7 +22,6 @@
             <td><%= "#{sale['customer']['first_name']} #{sale['customer']['last_name']}" rescue sale['customer_id'] %></td>
             <td><%= "#{sale['pender']['first_name']} #{sale['pender']['last_name']}" rescue sale['pender_id'] %></td>
             <td><%= "#{sale['processor']['first_name']} #{sale['processor']['last_name']}" rescue sale['processor_id'] %></td>
-            <td><%= "#{sale['chef']['first_name']} #{sale['chef']['last_name']}" rescue sale['chef_id']%></td>
             <td><%= "#{sale['deliverer']['first_name']} #{sale['deliverer']['last_name']}" rescue sale['deliverer_id']%></td>
             <td><%= "#{sale['saver']['first_name']} #{sale['saver']['last_name']}" rescue sale['saver_id'] %></td>
             <td><%= sale['invoice_number'] %></td>

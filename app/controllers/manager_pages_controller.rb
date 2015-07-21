@@ -30,6 +30,10 @@ class ManagerPagesController < ApplicationController
     @shifts = Ckfapi::API::Shift.index(current_token, detail: true)['shifts'] rescue []
   end
 
+  def accounting
+    @mg_page = "accounting"
+  end
+
   private
 
   def filter_role

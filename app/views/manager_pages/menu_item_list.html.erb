@@ -1,5 +1,7 @@
 <div class="content">
   <h1> Menu Items </h1>
+  <%= button_to 'Add MenuItem', new_menu_item_path, class: "btn btn-large btn-default", method: :get %>
+  <br />
   <table id="menu-items-table" class="display">
     <thead>
       <th>Id</th>
@@ -21,7 +23,10 @@
         <% @menu_items.each do |menu_item| %>
           <tr>
             <td><%= menu_item['id'] %></td>
-            <td><%= link_to 'Edit', edit_menu_item_path(menu_item['id']), target: "_blank" %></td>
+            <td>
+              <%= link_to 'Edit', edit_menu_item_path(menu_item['id']), target: "_blank" %>
+              <%= link_to 'Remove', menu_item_path(menu_item['id']), :confirm => 'Are you sure?', :method => :delete, remote: true %>
+            </td>
             <td><%= menu_item['name'] %></td>
             <% if false %>
             <td><%= menu_item['description'] %></td>

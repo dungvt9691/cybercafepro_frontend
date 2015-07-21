@@ -16,7 +16,8 @@ class MenuItemsController < ApplicationController
   end
 
   def update
-    @menu_item = Ckfapi::API::MenuItem.update(current_token, params[:id], params[:menu_item])
+    @menu_item = Ckfapi::API::MenuItem.update(current_token, params[:id], params[:menu_item])['menu_item']
+    flash[:success] = "MenuItem name #{@menu_item['name']} is updated" if @menu_item
     redirect_to edit_menu_item_path(params[:id])
   end
 
