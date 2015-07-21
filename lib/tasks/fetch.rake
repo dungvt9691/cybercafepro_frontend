@@ -18,7 +18,7 @@ namespace :events do
     begin
       CSV.parse(content,headers: true).each do |row|
         begin
-          CustomerDb.create(cs_id: fix_encode(row['cs_id']),ip: fix_encode(row['ip']))
+          CustomerDb.create(cs_email: fix_encode(row['cs_email']), ip: fix_encode(row['ip']))
         rescue => e
           puts row
         end

@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(version: 20150716152009) do
 
   create_table "customer_dbs", force: :cascade do |t|
     t.string   "ip"
-    t.string   "cs_id"
+    t.string   "cs_email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
