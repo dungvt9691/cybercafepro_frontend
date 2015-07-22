@@ -120,11 +120,15 @@ class WaiterPagesController < ApplicationController
   def redo
     if !params[:sale_id].blank?
       respond_to do |format|
-        format.js
+        format.js {
+
+        }
       end
     elsif !params[:sale_menu_id].blank?
       respond_to do |format|
-        format.js
+        format.js {
+          @sale_menu_item = Ckfapi::API::SaleMenuItem.redo(current_token,params[:sale_menu_id])
+        }
       end
     end
     #TODO
