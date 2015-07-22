@@ -1,27 +1,84 @@
 <div class="col-md-4 col-xs-12 col-sm-12 col-md-offset-4" style="margin-top: 20px;">
   <h2>Log in</h2>
   <%= form_tag(sessions_path,class: "form") do %>
-    <div class="field form-group">
-      <%= label_tag :email %><br />
-      <%= email_field_tag :email,"",class: "form-control" %>
-    </div>
+  <div class="field form-group">
+    <%= label_tag :email %><br />
+    <%= email_field_tag :email,"",class: "form-control" %>
+  </div>
 
-    <div class="field form-group">
-      <%= label_tag :password %><br />
-      <%= password_field_tag :password,"",class: "form-control" %>
-    </div>
+  <div class="field form-group">
+    <%= label_tag :password %><br />
+    <%= password_field_tag :password,"",class: "form-control" %>
+  </div>
 
-    <% if false %>
-    <div class="field form-group">
-      <%= label_tag :role, nil, class: "control-label" %>
-      <%= select_tag :role, options_for_select(["Customer", "Waiter", "Chef", "Cashier", "Manager"], "Waiter"), class: "form-control" %>
-    </div>
-    <% end %>
-
-    <div class="row">
-      <div class="actions form-group col-md-6 col-xs-6 col-sm-6">
-        <%= submit_tag "Log in",class: "btn btn-warning btn-lg btn-block" %>
-      </div>
-    </div>
+  <% if false %>
+  <div class="field form-group">
+    <%= label_tag :role, nil, class: "control-label" %>
+    <%= select_tag :role, options_for_select(["Customer", "Waiter", "Chef", "Cashier", "Manager"], "Waiter"), class: "form-control" %>
+  </div>
   <% end %>
+
+  <div class="row">
+    <div class="actions form-group col-md-12 col-xs-12 col-sm-12">
+      <%= submit_tag "Log in",class: "btn btn-warning btn-lg btn-block" %>
+    </div>
+  </div>
+
+  <% end %>
+  <div class='row'>
+    <div class="actions form-group col-md-12 col-xs-12 col-sm-12">
+      <button class='btn btn-primary btn-lg btn-block btn-customer'>Login as customer</button>
+    </div>
+  </div>
+
+  <div class='row'>
+    <div class="actions form-group col-md-12 col-xs-12 col-sm-12">
+      <button class='btn btn-primary btn-lg btn-block btn-waiter'>Login as waiter</button>
+    </div>
+  </div>
+
+  <div class='row'>
+    <div class="actions form-group col-md-12 col-xs-12 col-sm-12">
+      <button class='btn btn-primary btn-lg btn-block btn-waiter2'>Login as waiter 2</button>
+    </div>
+  </div>
+
+  <div class='row'>
+    <div class="actions form-group col-md-12 col-xs-12 col-sm-12">
+      <button class='btn btn-primary btn-lg btn-block btn-chef'>Login as chef</button>
+    </div>
+  </div>
+
+  <div class='row'>
+    <div class="actions form-group col-md-12 col-xs-12 col-sm-12">
+      <button class='btn btn-primary btn-lg btn-block btn-manager'>Login as manager</button>
+    </div>
+  </div>
 </div>
+
+<script type="text/javascript">
+$(".btn-customer").click(function(){
+  $("#email").val("customer@live.com")
+  $("#password").val("123123123")
+})
+
+$(".btn-waiter").click(function(){
+  $("#email").val("waiter@gmail.com")
+  $("#password").val("123123123")
+})
+
+$(".btn-waiter2").click(function(){
+  $("#email").val("waiter2@gmail.com")
+  $("#password").val("123123123")
+})
+
+$(".btn-manager").click(function(){
+  $("#email").val("cyber@gmail.com")
+  $("#password").val("123123123")
+})
+
+$(".btn-chef").click(function(){
+  $("#email").val("chef@gmail.com")
+  $("#password").val("123123123")
+})
+</script>

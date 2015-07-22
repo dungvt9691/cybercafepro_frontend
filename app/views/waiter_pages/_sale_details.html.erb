@@ -1,0 +1,72 @@
+<div class="row">
+  <div class="col-lg-12">
+    <center>
+      <h3>
+        CHI TIẾT HOÁ ĐƠN
+      </h3>
+    </center>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-lg-12">
+    <table class='table table-bordered'>
+      <thead style="background-color: #428bca; color: #fff; border: 1px solid #428bca;">
+        <tr>
+          <th>Món</th>
+          <th>SL</th>
+          <th>Giá</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% sale['food_sale_menu_items_details'].each do |item| %>
+        <tr>
+          <td style="width: 60%">
+            <%= item['menu_item_details']['name'] %>
+          </td>
+          <td style="width: 5%">
+            <%= item['quantity'].to_i %>
+          </td>
+          <td style="width: 35%">
+            <%= number_with_delimiter(item['menu_item_details']['unit_price'].to_i) %> đ
+          </td>
+        </tr>
+        <% end %>
+        <% sale['drink_sale_menu_items_details'].each do |item| %>
+        <tr class="info">
+          <td style="width: 60%">
+            <%= item['menu_item_details']['name'] %>
+          </td>
+          <td style="width: 5%">
+            <%= item['quantity'].to_i %>
+          </td>
+          <td style="width: 35%">
+            <%= number_with_delimiter(item['menu_item_details']['unit_price'].to_i) %> đ
+          </td>
+        </tr>
+        <% end %>
+        <% sale['service_sale_menu_items_details'].each do |item| %>
+        <tr class="warning">
+          <td style="width: 60%">
+            <%= item['menu_item_details']['name'] %>
+          </td>
+          <td style="width: 5%">
+            <%= item['quantity'].to_i %>
+          </td>
+          <td style="width: 35%">
+            <%= number_with_delimiter(item['menu_item_details']['unit_price'].to_i) %> đ
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="pull-right">
+      <h4>Tổng: <b><%= number_with_delimiter((sale['food_sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0) + (sale['drink_sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0) + (sale['service_sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0)) %> đ</b></h4>
+    </div>
+  </div>
+</div>

@@ -25,11 +25,11 @@ class CustomerPagesController < ApplicationController
     unless params['sale']['customer_id'].nil?
       params["sale"]["sale_menu_items_attributes"] = params["sale"]["sale_menu_items_attributes"].values
       @sale = Ckfapi::API::Sale.create(current_token, params["sale"])
-      @sale['sale']['format_created_at'] = (@sale['sale']['created_at'].to_datetime + 7.hours).strftime("%d/%m/%Y <b>%H:%M</b>").html_safe
+      @sale['sale']['format_created_at'] = (@sale['sale']['created_at'].to_datetime + 7.hours).strftime("<b>%H:%M</b> %d/%m/%Y").html_safe
       @sale['sale']['order_created_at'] = (@sale['sale']['created_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S")
-      @sale['sale']['format_updated_at'] = (@sale['sale']['updated_at'].to_datetime + 7.hours).strftime("%d/%m/%Y <b>%H:%M</b>").html_safe
+      @sale['sale']['format_updated_at'] = (@sale['sale']['updated_at'].to_datetime + 7.hours).strftime("<b>%H:%M</b> %d/%m/%Y").html_safe
       @sale['sale']['order_updated_at'] = (@sale['sale']['updated_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S")
-      @sale['sale']['total_price'] = (@sale['sale']['sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0) + (@sale['sale']['nocook_sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0)
+      @sale['sale']['total_price'] = (@sale['sale']['food_sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0) + (@sale['sale']['drink_sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0)  + (@sale['sale']['service_sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0)
       WebsocketRails[:staff].trigger 'create_sale',@sale
     end
     respond_to do |format|
