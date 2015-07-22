@@ -1,5 +1,5 @@
 class ManagerPagesController < ApplicationController
-  before_action :is_manager?
+  before_action :filter_role
   layout "manager_layout"
 
   def user_list
@@ -9,7 +9,7 @@ class ManagerPagesController < ApplicationController
 
   def menu_item_list
     @mg_page = "menu_item"
-    @menu_items = Ckfapi::API::MenuItem.index(current_token)['menu_items'] rescue []
+    @menu_items = Ckfapi::API::MenuItem.index(current_token, detail: true)['menu_items'] rescue []
   end
 
   def payment_list
@@ -30,15 +30,15 @@ class ManagerPagesController < ApplicationController
     @shifts = Ckfapi::API::Shift.index(current_token, detail: true)['shifts'] rescue []
   end
 
+  def accounting
+    @mg_page = "accounting"
+  end
+
   private
 
-  def is_manager?
-    if current_user && current_user['role'] == "Manager"
-      return true
-    else
-      flash[:error] = "Only Manager can register new user"
-      redirect_to root_path
-    end
+  def filter_role
+    return true if ["Manager"].include? current_user['role']
+    redirect_to get_root_path(current_user)
   end
 
 end

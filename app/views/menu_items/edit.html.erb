@@ -1,0 +1,23 @@
+<div class="container">
+<br />
+<%= form_tag(menu_item_path(@menu_item['id']), method: :patch, multipart: true, class: "form-horizontal") do %>
+
+  <% menu_item = @menu_item %>
+
+  <div class="form-group">
+    <%= label_tag 'State', nil, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= select_tag 'menu_item[state]', options_for_select(["Available", "Sold", "Coming"], menu_item["state"]), class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= submit_tag 'update', class: "btn btn-default" %>
+    </div>
+  </div>
+
+<% end %>
+
+</div>
+

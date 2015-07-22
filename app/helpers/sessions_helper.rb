@@ -4,7 +4,7 @@ module SessionsHelper
 
   def get_token(email, password)
     token = Ckfapi::API::User.get_token(email, password)
-    if token['token']['user']
+    if token['token']
       session[:token] = token
     else
       session[:token] = nil
@@ -24,8 +24,8 @@ module SessionsHelper
   end
 
   def current_token
-    if !CustomerDb.find_by_ip(request.remote_ip).nil?
-      session[:token] ||= get_token("ductm310@live.com",123123123)
+    if !(customer = CustomerDb.find_by_ip(request.remote_ip)).nil?
+      session[:token] ||= get_token(customer.cs_email,123123123)
     else
       session[:token]
     end

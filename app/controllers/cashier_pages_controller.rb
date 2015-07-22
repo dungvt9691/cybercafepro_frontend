@@ -1,4 +1,5 @@
 class CashierPagesController < ApplicationController
+  before_action :filter_role
   layout "cashier_layout"
 
   def sale_list
@@ -43,6 +44,13 @@ class CashierPagesController < ApplicationController
   def saved_sales
     @sales = Ckfapi::API::Sale.index(current_token,detail: true)['sales'] rescue []
     @saved_sales = @sales.select{|m| m['state'] == 'saved'}
+  end
+
+  private
+
+  def filter_role
+    return true if ["Manager", "Cashier"].include? current_user['role']
+    redirect_to get_root_path(current_user)
   end
 
 end

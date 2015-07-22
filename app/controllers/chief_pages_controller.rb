@@ -1,4 +1,5 @@
 class ChiefPagesController < ApplicationController
+  before_action :filter_role
   layout "chef_layout"
 
   def cooking_list
@@ -55,6 +56,13 @@ class ChiefPagesController < ApplicationController
 
   def redo_cooking
     #TODO
+  end
+
+  private
+
+  def filter_role
+    return true if ["Chef"].include? current_user['role']
+    redirect_to get_root_path(current_user)
   end
 
 end

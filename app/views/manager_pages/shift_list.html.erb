@@ -1,8 +1,11 @@
 <div class="content">
   <h1> Shift </h1>
+  <%= button_to 'Add Shift', new_shift_path, class: "btn btn-large btn-default", method: :get %>
+  <br />
   <table id="shifts-table" class="display">
     <thead>
       <th>Id</th>
+      <th>Action</th>
       <th>Start Time</th>
       <th>End Time</th>
     </thead>
@@ -11,6 +14,10 @@
         <% @shifts.each do |shift| %>
           <tr>
             <td><%= shift['id'] %></td>
+            <td>
+              <%= link_to "Edit", edit_shift_path(shift['id']), target: "_blank" %> <br />
+              <%= link_to 'Remove', shift_path(shift['id']), :confirm => 'Are you sure?', :method => :delete, remote: true %>
+            </td>
             <td><%= Time.parse(shift['start_time']).strftime("%H:%M:%S") %></td>
             <td><%= Time.parse(shift['end_time']).strftime("%H:%M:%S") %></td>
           </tr>

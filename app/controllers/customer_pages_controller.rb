@@ -1,5 +1,6 @@
 class CustomerPagesController < ApplicationController
   # skip_before_filter :authenticate_user!, :only => [:customer_ordering,:create_sale]
+  before_action :filter_role
   layout "customer_layout"
 
   append_view_path(File.join(Rails.root,"app/views/customer_pages"))
@@ -19,7 +20,8 @@ class CustomerPagesController < ApplicationController
   def create_sale
     #TODO
     ip = request.remote_ip
-    params['sale']['customer_id'] = extract_customer_id_from_ip ip
+    # params['sale']['customer_id'] = extract_customer_id_from_ip ip
+    params['sale']['customer_id'] = current_user['id']
     unless params['sale']['customer_id'].nil?
       params["sale"]["sale_menu_items_attributes"] = params["sale"]["sale_menu_items_attributes"].values
       @sale = Ckfapi::API::Sale.create(current_token, params["sale"])
@@ -46,6 +48,13 @@ class CustomerPagesController < ApplicationController
 
   def history_sale
     #TODO
+  end
+
+  private
+
+  def filter_role
+    return true if ["Manager", "Cashier", "Waiter", "Customer"].include? current_user['role']
+    redirect_to get_root_path(current_user)
   end
 
 end
