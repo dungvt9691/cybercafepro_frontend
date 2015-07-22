@@ -34,6 +34,9 @@ Rails.application.routes.draw do
       get "go_deliver"
       get "done_deliver"
     end
+    member do
+      get "sale_details"
+    end
   end
 
   resources :chief_pages,only: [] do
