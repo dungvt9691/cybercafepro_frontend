@@ -20,7 +20,8 @@ class CustomerPagesController < ApplicationController
   def create_sale
     #TODO
     ip = request.remote_ip
-    params['sale']['customer_id'] = extract_customer_id_from_ip ip
+    # params['sale']['customer_id'] = extract_customer_id_from_ip ip
+    params['sale']['customer_id'] = current_user['id']
     unless params['sale']['customer_id'].nil?
       params["sale"]["sale_menu_items_attributes"] = params["sale"]["sale_menu_items_attributes"].values
       @sale = Ckfapi::API::Sale.create(current_token, params["sale"])

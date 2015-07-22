@@ -1,0 +1,7 @@
+<% if @user %>
+  $('#launch-modal').html("<%=j render partial: 'registrations/modal_edit', locals: { user: @user } %>");
+  $("#registrations-edit").modal({
+    keyboard: true,
+    backdrop: 'static'
+  });
+<% end %>

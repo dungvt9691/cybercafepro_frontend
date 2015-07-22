@@ -9,7 +9,7 @@ class ManagerPagesController < ApplicationController
 
   def menu_item_list
     @mg_page = "menu_item"
-    @menu_items = Ckfapi::API::MenuItem.index(current_token)['menu_items'] rescue []
+    @menu_items = Ckfapi::API::MenuItem.index(current_token, detail: true)['menu_items'] rescue []
   end
 
   def payment_list
@@ -28,6 +28,10 @@ class ManagerPagesController < ApplicationController
   def shift_list
     @mg_page = "shift"
     @shifts = Ckfapi::API::Shift.index(current_token, detail: true)['shifts'] rescue []
+  end
+
+  def accounting
+    @mg_page = "accounting"
   end
 
   private

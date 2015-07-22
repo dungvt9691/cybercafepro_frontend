@@ -3,11 +3,15 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'customer_pages#customer_ordering'
+  # root 'customer_pages#customer_ordering'
+  root 'routes#root'
 
   resources :users
   resource :sessions, only: [:new, :create, :destroy]
   resources :registrations
+
+  resources :menu_items
+  resources :shifts
 
   resources :manager_pages,only: [] do
     collection do
@@ -16,6 +20,7 @@ Rails.application.routes.draw do
       get "payment_list"
       get "sale_list"
       get "shift_list"
+      get "accounting"
     end
   end
 
