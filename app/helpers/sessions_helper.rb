@@ -4,7 +4,7 @@ module SessionsHelper
 
   def get_token(email, password)
     token = Ckfapi::API::User.get_token(email, password)
-    if token['token']['user']
+    if token['token']
       session[:token] = token
     else
       session[:token] = nil

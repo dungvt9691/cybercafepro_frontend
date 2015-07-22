@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
 
   def create
     @token = get_token(params[:email], params[:password])
-    if @token["token"]
+    if @token && @token["token"]
       redirect_to get_root_path(current_user)
     else
       redirect_to new_sessions_path
