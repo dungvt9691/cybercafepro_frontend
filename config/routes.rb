@@ -33,6 +33,7 @@ Rails.application.routes.draw do
       get "verify_payment"
       get "go_deliver"
       get "done_deliver"
+      get "delivered_sales"
     end
     member do
       get "sale_details"

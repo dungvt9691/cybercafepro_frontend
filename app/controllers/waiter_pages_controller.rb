@@ -160,6 +160,11 @@ class WaiterPagesController < ApplicationController
     end
   end
 
+  def delivered_sales
+    @sales = Ckfapi::API::Sale.index(current_token,detail: true)['sales'] rescue []
+    @delivered_sales = @sales.select{|m| m['state'] == 'delivered'}
+  end
+
   def redo
     if !params[:sale_id].blank?
       respond_to do |format|

@@ -29,6 +29,7 @@ var stack_context = {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1
         <%= render 'order_ready' %>
       </div>
       <div class="tab-content" id="tab-histories">
+        <%= render 'order_histories' %>
       </div>
     </div>
   </div>
@@ -49,13 +50,18 @@ $(".tab-list").click(function(){
   $(".tab-list").removeClass("active")
   $(this).addClass("active")
   tab_id = $(this).attr("aria-control")
-  $(".tab-content").fadeOut(0)
-  $("#"+tab_id).fadeIn(300)
   if(tab_id == "tab-histories"){
     if(window.confirm("Bạn có muốn tải lại trang này không? (Tải lại sẽ giúp bạn cập nhật được order mới giao)")){
-      window.location.href = "<%= sale_list_waiter_pages_path(histories: true) %>"
+      $(".table-order-histories tbody").html('<tr class="histories-loading"><td colspan="2"><center><i class="fa fa-spin fa-spinner" style="margin-right: 5px"></i> Đang tải dữ liệu</center></td></tr><tr class="no-histories-orders no-orders" style="display: none"><td colspan="3"><div class="alert alert-warning">Tạm thời không có order mới.</div></td></tr>')
+      $.ajax({
+        type: "GET",
+        dataType: "script",
+        url: "<%= delivered_sales_waiter_pages_path %>"
+      });
     }
   }
+  $(".tab-content").fadeOut(0)
+  $("#"+tab_id).fadeIn(300)
 })
 
 function set_notifications_number(){
