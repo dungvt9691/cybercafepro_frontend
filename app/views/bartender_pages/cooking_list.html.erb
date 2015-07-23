@@ -125,7 +125,7 @@ $("#pinBoot").on('click', '.btn-start-cooking', function(){
 
 staff_channel.bind("next_state_sale",function(data) {
   if(data['sale']['state'] == 'processing') {
-    if(data['sale']['is_food_sale']){
+    if(data['sale']['is_drink_sale']){
       $(function(){
         var notice = pop_notify({
           title: "test",
@@ -163,7 +163,7 @@ function append_processing_order(params){
 
 function append_service_list(params){
   sale_id = params['sale']['id']
-  params['sale']['food_sale_menu_items_details'].forEach(function(data){
+  params['sale']['drink_sale_menu_items_details'].forEach(function(data){
     menu_item = data['menu_item_details']
 
     template = $(".order-processing[sale-id="+sale_id+"] .service-template").html()

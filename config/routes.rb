@@ -52,6 +52,14 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :bartender_pages,only: [] do
+    collection do
+      get "cooking_list"
+      get "start_cooking"
+      get "done_cooking"
+    end
+  end
+
   resources :cashier_pages,only: [] do
     member do
       get "sale_details"

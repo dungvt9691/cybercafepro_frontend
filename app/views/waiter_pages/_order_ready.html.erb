@@ -13,7 +13,7 @@
   </thead>
   <tbody>
     <% @sales_ready.each do |sale| %>
-    <tr class="order-row <%= sale['has_ready_sale_menu_item'] ? 'visible' : 'hidden' %> <%= 'success' if sale['state'] == 'pending' %>" sale-id='<%= sale['id'] %>' id="sale-<%= sale['id'] %>">
+    <tr class="order-row <%= sale['has_ready_sale_menu_item'] ? 'visible' : 'hidden' %>" sale-id='<%= sale['id'] %>' id="sale-<%= sale['id'] %>">
       <td class="order-com">
         Máy <%= sale['customer_id'] %>
       </td>
@@ -21,94 +21,13 @@
         <table class="table table-bordered">
           <tbody>
             <% sale['food_sale_menu_items_details'].each do |item| %>
-            <tr data-target="#item-action-dropdown-<%= item['id'] %>" data-toggle="dropdown" class='menu-item-row <%= get_class_menu_item(item['state']) %>' item-id="<%= item['id'] %>" id="<%= item['id'] %>">
-              <td class='menu-item-name'>
-                <% if ['done', 'delivering'].include? item['state'] %>
-                <div id="item-action-dropdown-<%= item['id'] %>" class="btn-group item-action pull-right" style="margin-top: 12px">
-                  <button type="button" style="padding-bottom: 2px;" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" role="button" data-target="#item-action-dropdown-<%= item['id'] %>" aria-haspopup="true" aria-expanded="false">
-                    <i class='fa fa-caret-down' style='font-size: 18px'></i>
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li class='<%= item['state'] == 'done' ? 'active' : '' %>'>
-                      <a class='btn-go_deliver' <%= "data-remote=true" if item['state'] == 'done' %> href="<%= item['state'] == 'done' ? go_deliver_waiter_pages_path(sale_menu_id: item['id']) : 'javascript:;' %>">Đi giao</a>
-                    </li>
-                    <li class='<%= item['state'] == 'delivering' ? 'active' : '' %>'>
-                      <a class='btn-done-deliver' <%= "data-remote=true" if item['state'] == 'delivering' %> href="<%= item['state'] == 'delivering' ? done_deliver_waiter_pages_path(sale_menu_id: item['id']) : 'javascript:;' %>">Đã giao</a>
-                    </li>
-                  </ul>
-                </div>
-                <% end %>
-                <div class='item-name'>
-                  <%= item['menu_item_details']['name'] %>
-                  <strong class='item-quantity'>
-                    (<%= item['quantity'].to_i %>)
-                  </strong>
-                </div>
-                <small class='pull-left item-action-at' style='font-weight: normal; margin-top: 3px'>
-                  <%= get_item_action_at(item) %>
-                </small>
-              </td>
-            </tr>
+            <%= render 'sale_menu_item', item: item %>
             <% end %>
             <% sale['drink_sale_menu_items_details'].each do |item| %>
-            <tr data-target="#item-action-dropdown-<%= item['id'] %>" data-toggle="dropdown" class='menu-item-row <%= get_class_menu_item(item['state']) %>' item-id="<%= item['id'] %>" id="<%= item['id'] %>">
-              <td class='menu-item-name'>
-                <% if ['done', 'delivering'].include? item['state'] %>
-                <div id="item-action-dropdown-<%= item['id'] %>" class="btn-group item-action pull-right" style="margin-top: 12px">
-                  <button type="button" style="padding-bottom: 2px;" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" role="button" data-target="#item-action-dropdown-<%= item['id'] %>" aria-haspopup="true" aria-expanded="false">
-                    <i class='fa fa-caret-down' style='font-size: 18px'></i>
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li class='<%= item['state'] == 'done' ? 'active' : '' %>'>
-                      <a class='btn-go_deliver' <%= "data-remote=true" if item['state'] == 'done' %> href="<%= item['state'] == 'done' ? go_deliver_waiter_pages_path(sale_menu_id: item['id']) : 'javascript:;' %>">Đi giao</a>
-                    </li>
-                    <li class='<%= item['state'] == 'delivering' ? 'active' : '' %>'>
-                      <a class='btn-done-deliver' <%= "data-remote=true" if item['state'] == 'delivering' %> href="<%= item['state'] == 'delivering' ? done_deliver_waiter_pages_path(sale_menu_id: item['id']) : 'javascript:;' %>">Đã giao</a>
-                    </li>
-                  </ul>
-                </div>
-                <% end %>
-                <div class='item-name'>
-                  <%= item['menu_item_details']['name'] %>
-                  <strong class='item-quantity'>
-                    (<%= item['quantity'].to_i %>)
-                  </strong>
-                </div>
-                <small class='pull-left item-action-at' style='font-weight: normal; margin-top: 3px'>
-                  <%= get_item_action_at(item) %>
-                </small>
-              </td>
-            </tr>
+            <%= render 'sale_menu_item', item: item %>
             <% end %>
             <% sale['service_sale_menu_items_details'].each do |item| %>
-            <tr data-target="#item-action-dropdown-<%= item['id'] %>" data-toggle="dropdown" class='menu-item-row <%= get_class_menu_item(item['state']) %>' item-id="<%= item['id'] %>" id="<%= item['id'] %>">
-              <td class='menu-item-name'>
-                <% if ['done', 'delivering'].include? item['state'] %>
-                <div id="item-action-dropdown-<%= item['id'] %>" class="btn-group item-action pull-right" style="margin-top: 12px">
-                  <button type="button" style="padding-bottom: 2px;" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" role="button" data-target="#item-action-dropdown-<%= item['id'] %>" aria-haspopup="true" aria-expanded="false">
-                    <i class='fa fa-caret-down' style='font-size: 18px'></i>
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li class='<%= item['state'] == 'done' ? 'active' : '' %>'>
-                      <a class='btn-go_deliver' <%= "data-remote=true" if item['state'] == 'done' %> href="<%= item['state'] == 'done' ? go_deliver_waiter_pages_path(sale_menu_id: item['id']) : 'javascript:;' %>">Đi giao</a>
-                    </li>
-                    <li class='<%= item['state'] == 'delivering' ? 'active' : '' %>'>
-                      <a class='btn-done-deliver' <%= "data-remote=true" if item['state'] == 'delivering' %> href="<%= item['state'] == 'delivering' ? done_deliver_waiter_pages_path(sale_menu_id: item['id']) : 'javascript:;' %>">Đã giao</a>
-                    </li>
-                  </ul>
-                </div>
-                <% end %>
-                <div class='item-name'>
-                  <%= item['menu_item_details']['name'] %>
-                  <strong class='item-quantity'>
-                    (<%= item['quantity'].to_i %>)
-                  </strong>
-                </div>
-                <small class='pull-left item-action-at' style='font-weight: normal; margin-top: 3px'>
-                  <%= get_item_action_at(item) %>
-                </small>
-              </td>
-            </tr>
+            <%= render 'sale_menu_item', item: item %>
             <% end %>
           </tbody>
         </table>
@@ -136,11 +55,11 @@ $(document).ready(function () {
 });
 
 staff_channel.bind("next_state_sale",function(data) {
-  if(data['sale']['state'] == "done") {
+  if(data['sale']['state'] == "processing") {
     $(function(){
       var notice = pop_notify({
         title: "test",
-        text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "làm xong",
+        text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + " đã thu tiền",
         stack: stack_context,
       });
       notice.get().click(function(e) {
@@ -149,35 +68,23 @@ staff_channel.bind("next_state_sale",function(data) {
       });
       var desktop_notice = pop_desktop_notify({
         title: "test",
-        text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "làm xong",
+        text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + " đã thu tiền",
         type: "success",
         stack: stack_context,
       })
 
-      append_ready_order_row(data)
+      append_order_processing_row(data)
       set_notifications_number()
-      set_marquee_notifications_ready(data)
-      set_stack_notifications(data, "ready")
-      set_display_stack_notifications()
-    });
-  }
-  else if(data['sale']['state'] == "delivering") {
-    $(function(){
-    });
-  }
-  else if(data['sale']['state'] == "delivered") {
-    $(function(){
     });
   }
 });
 
 staff_channel.bind("next_state_sale_menu_item",function(data) {
-  sale_item_id = data['sale_menu_item']['id']
-  if(data['sale_menu_item']['state'] == "delivering") {
+  if(data['sale_menu_item']['state'] == "done") {
     $(function(){
       var notice = pop_notify({
         title: "test",
-        text: "",
+        text: "Máy " + data['sale_menu_item']['sale']['customer_id'] + " đã làm xong <b>" + parseInt(data['sale_menu_item']['quantity']) + " " + data['sale_menu_item']['menu_item_details']['name'] + "</b>",
         stack: stack_context,
       });
       notice.get().click(function(e) {
@@ -186,19 +93,42 @@ staff_channel.bind("next_state_sale_menu_item",function(data) {
       });
       var desktop_notice = pop_desktop_notify({
         title: "test",
-        text: "",
+        text: "Máy " + data['sale_menu_item']['sale']['customer_id'] + " đã làm xong " + parseInt(data['sale_menu_item']['quantity']) + " " + data['sale_menu_item']['menu_item_details']['name'],
         type: "success",
         stack: stack_context,
       })
 
-      $(".menu-item-row[item-id="+sale_item_id+"]")
+      set_order_done_row(data)
+      set_notifications_number()
+    });
+  }
+  else if(data['sale_menu_item']['state'] == "delivering") {
+    $(function(){
+      var notice = pop_notify({
+        title: "test",
+        text: "Đang mang <b>" + parseInt(data['sale_menu_item']['quantity']) + " " + data['sale_menu_item']['menu_item_details']['name']+ "</b> lên cho máy " + data['sale_menu_item']['sale']['customer_id'],
+        stack: stack_context,
+      });
+      notice.get().click(function(e) {
+        notice.remove();
+        //move to element
+      });
+      var desktop_notice = pop_desktop_notify({
+        title: "test",
+        text: "Đang mang " + parseInt(data['sale_menu_item']['quantity']) + " " + data['sale_menu_item']['menu_item_details']['name']+ " lên  cho máy " + data['sale_menu_item']['sale']['customer_id'],
+        type: "success",
+        stack: stack_context,
+      })
+
+      set_order_delivering_row(data)
+
     });
   }
   else if(data['sale_menu_item']['state'] == "delivered") {
     $(function(){
       var notice = pop_notify({
         title: "test",
-        text: "",
+        text: "Đã giao <b>" + parseInt(data['sale_menu_item']['quantity']) + " " + data['sale_menu_item']['menu_item_details']['name']+ "</b> cho máy " + data['sale_menu_item']['sale']['customer_id'],
         stack: stack_context,
       });
       notice.get().click(function(e) {
@@ -207,13 +137,160 @@ staff_channel.bind("next_state_sale_menu_item",function(data) {
       });
       var desktop_notice = pop_desktop_notify({
         title: "test",
-        text: "",
+        text: "Đã giao " + parseInt(data['sale_menu_item']['quantity']) + " " + data['sale_menu_item']['menu_item_details']['name']+ " cho máy " + data['sale_menu_item']['sale']['customer_id'],
         type: "success",
         stack: stack_context,
       })
 
+      set_order_delivered_row(data)
+      set_notifications_number()
 
     });
   }
 });
+
+function set_order_done_row(data){
+  sale_item_id = data['sale_menu_item']['id']
+  sale_id = data['sale_menu_item']['sale_id']
+
+  $(".order-row[sale-id="+sale_id+"]").removeClass("hidden").addClass("visible")
+
+  $(".menu-item-row[item-id="+sale_item_id+"]").addClass("danger")
+
+  $(".menu-item-row[item-id="+sale_item_id+"] .item-action-at").html("Xong lúc: " + data['sale_menu_item']['format_done_at'])
+
+  $(".menu-item-row[item-id="+sale_item_id+"] .item-action").addClass("visible").removeClass("hidden")
+
+  $(".menu-item-row[item-id="+sale_item_id+"] .btn-go-deliver").parent("li").addClass("active")
+
+  $(".menu-item-row[item-id="+sale_item_id+"] .btn-go-deliver").attr("href", "/waiter_pages/go_deliver?sale_menu_id="+sale_item_id)
+
+  $(".menu-item-row[item-id="+sale_item_id+"] .btn-go-deliver").attr("data-remote", true)
+}
+
+function set_order_delivering_row(data){
+  sale_item_id = data['sale_menu_item']['id']
+  $(".menu-item-row[item-id="+sale_item_id+"]").removeClass("danger").addClass("warning")
+
+  $(".menu-item-row[item-id="+sale_item_id+"] .item-action-at").html("Giao xong lúc: " + data['sale_menu_item']['format_delivering_at'])
+
+  $(".menu-item-row[item-id="+sale_item_id+"] .btn-go-deliver").parent("li").removeClass("active")
+
+  $(".menu-item-row[item-id="+sale_item_id+"] .btn-go-deliver").attr("href", "javascript:;")
+
+  $(".menu-item-row[item-id="+sale_item_id+"] .btn-go-deliver").removeAttr("data-remote")
+
+  $(".menu-item-row[item-id="+sale_item_id+"] .btn-done-deliver").parent("li").addClass("active")
+
+  $(".menu-item-row[item-id="+sale_item_id+"] .btn-done-deliver").attr("href", "/waiter_pages/done_deliver?sale_menu_id="+sale_item_id)
+
+  $(".menu-item-row[item-id="+sale_item_id+"] .btn-done-deliver").attr("data-remote", true)
+
+}
+
+function set_order_delivered_row(data){
+
+  sale_item_id = data['sale_menu_item']['id']
+  sale_id = data['sale_menu_item']['sale_id']
+
+  $(".menu-item-row[item-id="+sale_item_id+"]").removeClass("warning").addClass("success")
+
+  $(".menu-item-row[item-id="+sale_item_id+"] .item-action-at").html("Đi giao lúc: " + data['sale_menu_item']['format_delivered_at'])
+
+  $(".menu-item-row[item-id="+sale_item_id+"] .item-action").addClass("hidden")
+
+  if($(".order-row[sale-id="+sale_id+"] .menu-item-row").length == $(".order-row[sale-id="+sale_id+"] .menu-item-row.success").length){
+    $(".order-row[sale-id="+sale_id+"]").remove()
+    console.log(data)
+    alert("Order " + sale_id + " từ máy " + data['sale_menu_item']['sale']['customer_id'] + " đã mang hết lên cho khách")
+  }
+}
+
+function append_order_processing_row(data){
+  sale_id = data['sale']['id']
+  html = "<%=j render 'order_ready_template' %>"
+  $(".no-ready-orders").before(html)
+  $(".order-ready-template").attr("id", "sale-" + sale_id)
+  $(".order-ready-template").attr("sale-id", sale_id)
+  $(".order-ready-template .order-com").text("Máy " + data['sale']['customer_id'])
+  if(data['sale']['has_ready_sale_menu_item'])
+    $(".order-ready-template").addClass("visible")
+  else
+    $(".order-ready-template").addClass("hidden")
+
+  data['sale']['food_sale_menu_items_details'].forEach(function(item){
+    set_sale_menu_item(item)
+  })
+
+  data['sale']['drink_sale_menu_items_details'].forEach(function(item){
+    set_sale_menu_item(item)
+  })
+
+  data['sale']['service_sale_menu_items_details'].forEach(function(item){
+    set_sale_menu_item(item)
+  })
+
+  $(".order-ready-template").removeClass("order-ready-template")
+}
+
+function set_sale_menu_item(item){
+  item_id = item['id']
+  menu_item_template = "<%=j render 'sale_menu_item_template' %>"
+  class_menu_item = get_class_menu_item(item['state'])
+  class_item_action = "hidden"
+  if(["done", "delivering"].indexOf(item['state']) > -1){
+    class_item_action = "visible"
+  }
+
+  $(".order-ready-template .order-lists .table tbody").append(menu_item_template)
+
+  $(".menu-item-template").attr("data-target", "#item-action-dropdown-"+item_id).attr("data-toggle", "dropdown").attr("item-id", item_id).attr('id', item_id).addClass(class_menu_item)
+
+  $(".menu-item-template .menu-item-name .item-action").attr("id", "item-action-dropdown-"+item_id).addClass(class_item_action)
+
+  $(".menu-item-template .menu-item-name .item-action button").attr("data-target", "#item-action-dropdown-"+item_id)
+
+  $(".menu-item-template .menu-item-name .item-action .btn-go-deliver").parent("li").addClass("active")
+
+  $(".menu-item-row[item-id="+item_id+"] .btn-go-deliver").attr("href", "/waiter_pages/go_deliver?sale_menu_id="+ item_id).attr("data-remote", true)
+
+  $(".menu-item-template .menu-item-name .item-name").html(item['menu_item_details']['name'] + "<strong class='item-quantity'>("+parseInt(item['quantity'])+")</strong>")
+
+  $(".menu-item-template .menu-item-name .item-action-at").html(get_item_action_at(item))
+
+  $(".menu-item-template").removeClass("menu-item-template")
+}
+
+function get_class_menu_item(state)
+{
+  switch(state) {
+    case "done":
+    return "danger"
+    break;
+    case "delivering":
+    return "warning"
+    break;
+    case "delivered":
+    return "success"
+    break;
+    default:
+    return ""
+  }
+}
+
+function get_item_action_at(item){
+  switch(item['state']) {
+    case "done":
+    return "Xong lúc: " + item['format_done_at']
+    break;
+    case "delivering":
+    return "Đi giao lúc: " + item['format_delivering_at']
+    break;
+    case "delivered":
+    return "Giao xong lúc: " + item['format_delivered_at']
+    break;
+    default:
+    return ""
+  }
+}
 </script>

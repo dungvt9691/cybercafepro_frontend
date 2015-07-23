@@ -61,6 +61,41 @@ class WaiterPagesController < ApplicationController
       @sale['sale']['order_created_at'] = (@sale['sale']['created_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S")
       @sale['sale']['format_updated_at'] = (@sale['sale']['updated_at'].to_datetime + 7.hours).strftime("<b>%H:%M</b> %d/%m/%Y").html_safe
       @sale['sale']['order_updated_at'] = (@sale['sale']['updated_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S")
+      @sale['sale']['is_food_sale'] = @sale['sale']['food_sale_menu_items_details'].any?{|f| ['cooking', 'processing'].include?(f['state'])}
+      @sale['sale']['is_drink_sale'] = @sale['sale']['drink_sale_menu_items_details'].any?{|f| ['cooking', 'processing'].include?(f['state'])}
+
+      @sale['sale']['food_sale_menu_items_details'].each do |item|
+        case item['state']
+        when "done"
+          item['format_done_at'] = "#{(item['done_at'].to_datetime + 7.hours).strftime('<b>%H:%M</b> %d/%m/%Y')}".html_safe
+        when "delivering"
+          item['format_delivering_at'] = "#{(item['delivering_at'].to_datetime + 7.hours).strftime('<b>%H:%M</b> %d/%m/%Y')}".html_safe
+        when "delivered"
+          item['format_delivered_at'] = "#{(item['delivered_at'].to_datetime + 7.hours).strftime('<b>%H:%M</b> %d/%m/%Y')}".html_safe
+        end
+      end
+
+      @sale['sale']['drink_sale_menu_items_details'].each do |item|
+        case item['state']
+        when "done"
+          item['format_done_at'] = "#{(item['done_at'].to_datetime + 7.hours).strftime('<b>%H:%M</b> %d/%m/%Y')}".html_safe
+        when "delivering"
+          item['format_delivering_at'] = "#{(item['delivering_at'].to_datetime + 7.hours).strftime('<b>%H:%M</b> %d/%m/%Y')}".html_safe
+        when "delivered"
+          item['format_delivered_at'] = "#{(item['delivered_at'].to_datetime + 7.hours).strftime('<b>%H:%M</b> %d/%m/%Y')}".html_safe
+        end
+      end
+
+      @sale['sale']['service_sale_menu_items_details'].each do |item|
+        case item['state']
+        when "done"
+          item['format_done_at'] = "#{(item['done_at'].to_datetime + 7.hours).strftime('<b>%H:%M</b> %d/%m/%Y')}".html_safe
+        when "delivering"
+          item['format_delivering_at'] = "#{(item['delivering_at'].to_datetime + 7.hours).strftime('<b>%H:%M</b> %d/%m/%Y')}".html_safe
+        when "delivered"
+          item['format_delivered_at'] = "#{(item['delivered_at'].to_datetime + 7.hours).strftime('<b>%H:%M</b> %d/%m/%Y')}".html_safe
+        end
+      end
       WebsocketRails[:staff].trigger 'next_state_sale',@sale
       respond_to do |format|
         format.js
@@ -140,7 +175,6 @@ class WaiterPagesController < ApplicationController
         }
       end
     end
-    #TODO
   end
 
   private
