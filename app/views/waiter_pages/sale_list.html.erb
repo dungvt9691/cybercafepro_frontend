@@ -77,9 +77,11 @@ function set_notifications_number(){
   if(notifications_ready_number > 0)
   {
     $(".notify-order-ready").fadeIn(0)
+    $(".no-ready-orders").fadeOut(0)
     $(".notify-order-ready").text(notifications_ready_number)
   }
   else{
+    $(".no-ready-orders").fadeIn(0)
     $(".notify-order-ready").fadeOut(0)
   }
 }
