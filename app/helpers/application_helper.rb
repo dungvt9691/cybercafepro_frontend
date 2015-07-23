@@ -31,6 +31,10 @@ module ApplicationHelper
     end
   end
 
+  def sum sale
+    ["food","drink","service"].inject(0) {|sum,m| sum += (sale["#{m}_sale_menu_items_details"].inject(0) {|res,e| res += e['sum'].to_f} rescue 0) }
+  end
+
   def flash_class(level)
     case level.to_sym
     when :notice then "alert alert-success"

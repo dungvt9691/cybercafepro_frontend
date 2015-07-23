@@ -14,7 +14,7 @@
     <%= (sale['updated_at'].to_datetime + 7.hours).strftime("%d/%m/%Y <b>%H:%M</b>").html_safe %>
   </td>
   <td>
-    <b><%= number_with_delimiter((sale['sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0) + (sale['nocook_sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0)) %></b> đ
+    <b><%= number_with_delimiter(sum(sale)) %></b> đ
   </td>
   <td>
     <center>
