@@ -188,5 +188,4 @@ class WaiterPagesController < ApplicationController
     return true if ["Waiter"].include? current_user['role']
     redirect_to get_root_path(current_user)
   end
-
 end
