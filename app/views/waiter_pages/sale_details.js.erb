@@ -1,0 +1,6 @@
+$("#modal-sale-details .modal-body").html("<%=j render 'sale_details', sale: @sale['sale'] %>")
+<% if @sale['sale']['state'] == 'init' %>
+$(".modal-footer").prepend("<a data-remote='true' href='<%= go_for_payment_waiter_pages_path(sale_id: @sale['sale']['id']) %>' class='btn btn-primary pull-left'>Đi thu tiền</a>")
+<% else %>
+$(".modal-footer").prepend("<a data-remote='true' href='<%= verify_payment_waiter_pages_path(sale_id: @sale['sale']['id']) %>' class='btn btn-primary pull-left'>Đã thu tiền</a>")
+<% end %>
