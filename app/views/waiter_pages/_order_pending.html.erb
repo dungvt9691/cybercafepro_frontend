@@ -120,7 +120,7 @@ staff_channel.bind("next_state_sale",function(data) {
     $(function(){
       var notice = pop_notify({
         title: "test",
-        text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "đang được đi lấy tiền",
+        text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + " đang được đi lấy tiền",
         stack: stack_context,
       });
       //check data['sale']['pender_id'] vs current_user
@@ -221,8 +221,12 @@ function append_order_init_row(data){
 
 function set_order_pending_row(data){
   sale_id = data['sale']['id']
+
   $(".order-row[sale-id="+sale_id+"] .btn-go-to-payment").parent("li").removeClass("active")
+
   $(".order-row[sale-id="+sale_id+"] .btn-go-to-payment").attr("href", "javascript:;")
+
+  $(".order-row[sale-id="+sale_id+"] .btn-go-to-payment").removeAttr("data-remote")
 
   $(".order-row[sale-id="+sale_id+"] .btn-verify-payment").parent("li").addClass("active")
 
@@ -230,7 +234,7 @@ function set_order_pending_row(data){
 
   $(".order-row[sale-id="+sale_id+"] .btn-verify-payment").attr("href", "/waiter_pages/verify_payment?sale_id="+sale_id)
 
-  $(".order-row[sale-id="+sale_id+"] .btn-verify-payment").attr("data-remote", "true")
+  $(".order-row[sale-id="+sale_id+"] .btn-verify-payment").attr("data-remote", "true" )
 
   $("#modal-sale-details").modal('hide')
 

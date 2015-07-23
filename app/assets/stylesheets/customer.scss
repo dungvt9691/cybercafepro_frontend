@@ -82,22 +82,22 @@ body.customer-ordering .customer-wrapper{
 }
 
 .customer-ordering .customer-food-type.customer-foods{
-  background: image-url('food-icon.png') center no-repeat;
+  background: url('customer/food-icon.png') center no-repeat;
   background-size: 100px;
 }
 
 .customer-ordering .customer-food-type.customer-drinks{
-  background: image-url('drink-icon.png') center no-repeat;
+  background: url('customer/drink-icon.png') center no-repeat;
   background-size: 100px;
 }
 
 .customer-ordering .customer-food-type.customer-services{
-  background: image-url('service-icon.png') center no-repeat;
+  background: url('customer/service-icon.png') center no-repeat;
   background-size: 100px;
 }
 
 .customer-ordering .customer-food-type.customer-support{
-  background: image-url('support-icon.png') center no-repeat;
+  background: url('customer/support-icon.png') center no-repeat;
   background-size: 100px;
 }
 
