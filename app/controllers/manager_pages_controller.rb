@@ -19,7 +19,7 @@ class ManagerPagesController < ApplicationController
 
   def sale_list
     @mg_page = "sale"
-    @sales = Ckfapi::API::Sale.index(current_token, detail: true)['sales'] rescue []
+    @sale_menu_items = Ckfapi::API::SaleMenuItem.index(current_token, detail: true)['sale_menu_items'] rescue []
     respond_to do |format|
       format.html
     end
@@ -32,6 +32,24 @@ class ManagerPagesController < ApplicationController
 
   def accounting
     @mg_page = "accounting"
+    @shifts = Ckfapi::API::Shift.index(current_token)['shifts'] rescue []
+  end
+
+  def stat
+    date = Time.parse(params[:date])
+    @sales = Ckfapi::API::Shift.stat(current_token, params[:shift_id], "sale", {
+      year: date.year,
+      month: date.month,
+      day: date.day
+    })['stats'] if date
+    @attendances = Ckfapi::API::Shift.stat(current_token, params[:shift_id], "attendance", {
+      year: date.year,
+      month: date.month,
+      day: date.day
+    })['stats'] if date
+    respond_to do |format|
+      format.js
+    end
   end
 
   private

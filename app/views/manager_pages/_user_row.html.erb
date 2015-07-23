@@ -1,0 +1,19 @@
+<tr id="user-<%= user['id'] %>">
+<td><%= user['id'] %></td>
+<td>
+  <%= link_to "Edit", edit_registration_path(user['id']), remote: true %>
+  <%= link_to 'Remove', registration_path(user['id']), :confirm => 'Are you sure?', :method => :delete, remote: true %>
+</td>
+<td><%= user['first_name'] %></td>
+<td><%= user['last_name'] %></td>
+<td><%= user['email'] %></td>
+<td><%= user['gender'] %></td>
+<td><%= user['role'] %></td>
+<td><%= user['current_role'] %></td>
+<td><%= user['phone_number']%></td>
+<td><%= user['address'] %></td>
+<td><%= user['city'] %></td>
+<td><%= user['state'] %></td>
+<td><%= user['zip'] %></td>
+<td><%= user['country'] %></td>
+</tr>

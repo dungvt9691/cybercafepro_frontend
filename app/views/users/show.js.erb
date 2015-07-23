@@ -1,0 +1,7 @@
+<% if @user %>
+  $('#launch-modal').html("<%=j render partial: 'users/modal_user', locals: { user: @user } %>");
+  $("#modal-user").modal({
+    keyboard: true,
+    backdrop: 'static'
+  });
+<% end %>
