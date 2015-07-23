@@ -1,0 +1,24 @@
+<% if @attendances %>
+  $('#stat-attendance-table').dataTable().fnDestroy();;
+  $('#stat-attendance-table tbody').html('');
+  <% (@attendances['waiters'] | @attendances['chefs'] | @attendances['cashiers'] | @attendances['bartenders'] | @attendances['managers'] | @attendances['customers']).each do |user| %>
+    <% user['employee']['current_role'] = user['role'] %>
+    $('#stat-attendance-table tbody').append("<%=j render partial: 'user_row', locals: { user: user['employee'] } %>");
+  <% end %>
+  $('#stat-attendance-table').dataTable();
+  $('#customer-stat h2').html("<%= @attendances['customers'].length %><small> Customer</small>");
+  $('#waiter-stat h2').html("<%= @attendances['waiters'].length %><small> Waiter</small>");
+  $('#chef-stat h2').html("<%= @attendances['chefs'].length %><small> Chef</small>");
+  $('#bartender-stat h2').html("<%= @attendances['bartenders'].length %><small> Bartender</small>");
+  $('#cashier-stat h2').html("<%= @attendances['cashiers'].length %><small> Cashier</small>");
+  $('#manager-stat h2').html("<%= @attendances['managers'].length %><small> Manager</small>");
+<% end %>
+
+<% if @sales %>
+  $('#stat-sale-table').dataTable().fnDestroy();;
+  $('#stat-sale-table tbody').html('');
+  <% (@sales['sales'].values.sum).each do |s| %>
+    $('#stat-sale-table tbody').append("<%=j render partial: 'sale_menu_item_row', locals: { sale_menu_item: s } %>");
+  <% end %>
+  $('#stat-sale-table').dataTable();
+<% end %>
