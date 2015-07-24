@@ -17,7 +17,6 @@
 //= require dataTables/jquery.dataTables
 //= require dataTables/extras/dataTables.tableTools
 //= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
-//= require best_in_place
 //= require_tree .
 //= require websocket_rails/main
 

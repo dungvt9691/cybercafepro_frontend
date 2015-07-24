@@ -1,6 +1,5 @@
 <div class="content">
   <h1> Danh sách nhân viên </h1>
-  <%= button_to 'Add User', new_registration_path, class: "btn btn-large btn-default", method: :get %>
   <br />
   <table id="users-table" class="display">
     <thead>
@@ -22,25 +21,7 @@
   <tbody>
     <% if @users %>
       <% @users.each do |user| %>
-        <tr id="user-<%= user['id'] %>">
-          <td><%= user['id'] %></td>
-          <td>
-            <%= link_to "Edit", edit_registration_path(user['id']), remote: true %>
-            <%= link_to 'Remove', registration_path(user['id']), :confirm => 'Are you sure?', :method => :delete, remote: true %>
-          </td>
-          <td><%= user['first_name'] %></td>
-          <td><%= user['last_name'] %></td>
-          <td><%= user['email'] %></td>
-          <td><%= user['gender'] %></td>
-          <td><%= user['role'] %></td>
-          <td><%= user['current_role'] %></td>
-          <td><%= user['phone_number']%></td>
-          <td><%= user['address'] %></td>
-          <td><%= user['city'] %></td>
-          <td><%= user['state'] %></td>
-          <td><%= user['zip'] %></td>
-          <td><%= user['country'] %></td>
-        </tr>
+        <%= render partial: 'user_row', locals: { user: user } %>
       <% end %>
     <% end%>
   </tbody>

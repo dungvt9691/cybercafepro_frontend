@@ -51,6 +51,12 @@
 
   <div class='row'>
     <div class="actions form-group col-md-12 col-xs-12 col-sm-12">
+      <button class='btn btn-primary btn-lg btn-block btn-bartender'>Login as bartender</button>
+    </div>
+  </div>
+
+  <div class='row'>
+    <div class="actions form-group col-md-12 col-xs-12 col-sm-12">
       <button class='btn btn-primary btn-lg btn-block btn-manager'>Login as manager</button>
     </div>
   </div>
@@ -58,7 +64,7 @@
 
 <script type="text/javascript">
 $(".btn-customer").click(function(){
-  $("#email").val("customer@live.com")
+  $("#email").val("customer@gmail.com")
   $("#password").val("123123123")
 })
 
@@ -79,6 +85,11 @@ $(".btn-manager").click(function(){
 
 $(".btn-chef").click(function(){
   $("#email").val("chef@gmail.com")
+  $("#password").val("123123123")
+})
+
+$(".btn-bartender").click(function(){
+  $("#email").val("bartender@gmail.com")
   $("#password").val("123123123")
 })
 </script>
