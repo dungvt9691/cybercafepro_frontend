@@ -11,6 +11,8 @@ $(".no-histories-orders").fadeIn(100)
 $(".btn-order-details").click(function(){
   sale_id = $(this).attr("sale-id")
   $('.launch-modal').html("<%=j render 'waiter_pages/modal_sale_details' %>")
+
+  $("#modal-sale-details").attr("sale-id", sale_id)
   $("#modal-sale-details").modal({
     keyboard: true,
     backdrop: 'static'
