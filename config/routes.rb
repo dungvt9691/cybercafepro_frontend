@@ -38,10 +38,22 @@ Rails.application.routes.draw do
       get "verify_payment"
       get "go_deliver"
       get "done_deliver"
+      get "delivered_sales"
+    end
+    member do
+      get "sale_details"
     end
   end
 
   resources :chief_pages,only: [] do
+    collection do
+      get "cooking_list"
+      get "start_cooking"
+      get "done_cooking"
+    end
+  end
+
+  resources :bartender_pages,only: [] do
     collection do
       get "cooking_list"
       get "start_cooking"

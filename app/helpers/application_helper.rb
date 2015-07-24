@@ -1,7 +1,7 @@
 module ApplicationHelper
 
   def update_next_state_sale token,sale_id,state
-    sale = Ckfapi::API::Sale.get(token,sale_id)
+    sale = Ckfapi::API::Sale.get(token, sale_id)
     if sale['sale']['next_state'] == state
       Ckfapi::API::Sale.next_state(token,sale_id)
     else
@@ -29,6 +29,10 @@ module ApplicationHelper
     else
       csdb.cs_id
     end
+  end
+
+  def sum sale
+    ["food","drink","service"].inject(0) {|sum,m| sum += (sale["#{m}_sale_menu_items_details"].inject(0) {|res,e| res += e['sum'].to_f} rescue 0) }
   end
 
   def flash_class(level)

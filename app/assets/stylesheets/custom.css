@@ -300,6 +300,31 @@ table.dataTable thead th.sorting_desc:after {
     content: "\f0dd";
 }
 
-.row-nocook{
-  background-color: #fcf8e3 !important;
+.table-order-ready .order-lists{
+  padding: 0;
+}
+
+.table-order-ready .order-lists table{
+  border: none;
+}
+
+.table-order-ready .order-lists table tbody tr:first-child td{
+  border-top: none;
+}
+
+.table-order-ready .order-lists table tbody tr td.menu-item-name{
+  text-align: left !important;
+  font-weight: bold;
+}
+
+.table > thead > tr > td.danger, .table > tbody > tr > td.danger, .table > tfoot > tr > td.danger, .table > thead > tr > th.danger, .table > tbody > tr > th.danger, .table > tfoot > tr > th.danger, .table > thead > tr.danger > td, .table > tbody > tr.danger > td, .table > tfoot > tr.danger > td, .table > thead > tr.danger > th, .table > tbody > tr.danger > th, .table > tfoot > tr.danger > th{
+  background-color: #FFE7E7 !important;
+}
+
+.hidden{
+  display: none;
+}
+
+.visible{
+  display: table-row;
 }
