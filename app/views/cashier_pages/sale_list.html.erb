@@ -86,20 +86,18 @@ staff_channel.bind("next_state_sale",function(data) {
     oTable.fnUpdate(updated_button, row_updated, 0 );
     $(".row-sale[sale-id="+sale_id+"]").addClass("sale-delivered")
     set_notifications_number()
-    set_display_stack_notifications()
-    set_stack_notifications(data, "delivered")
   }
 
   if(data['sale']['state'] == "pending"){
     $(".notification-content[sale-id="+sale_id+"]").remove()
     $(".row-sale[sale-id="+sale_id+"]").removeClass("sale-init")
     set_notifications_number()
-    set_display_stack_notifications()
   }
 });
 
 staff_channel.bind("create_sale",function(data) {
   $(function(){
+    console.log("abs")
     sale_id = data['sale']['id']
     td_1 = '<a href="javascript:;" sale-id="'+sale_id+'" class="show-sale-details">'+data['sale']['invoice_number']
     td_2 = "Máy " + data['sale']['customer_id']
@@ -110,9 +108,8 @@ staff_channel.bind("create_sale",function(data) {
     var a = oTable.fnAddData([td_1, td_2, td_3, td_4, td_5, td_6]);
     var nTr = oTable.fnSettings().aoData[ a[0] ].nTr;
     $(nTr).addClass('row-sale').addClass('sale-init').attr("sale-id", sale_id)
+    console.log("abs")
     set_notifications_number()
-    set_display_stack_notifications()
-    set_stack_notifications(data, "init")
   });
 });
 
@@ -126,10 +123,9 @@ staff_channel.bind("next_state_sale_menu_item",function(data) {
         var notice = pop_notify({
           text: "Order <b>["+data['sale']['invoice_number']+"]</b> từ máy " + data['sale']['customer_id'] + " đã được lưu lại",
         });
-        
+
         $(".notification-content[sale-id="+sale_id+"]").remove()
         set_notifications_number()
-        set_display_stack_notifications()
       });
     }
   });
@@ -184,33 +180,5 @@ function set_notifications_number(){
   else{
     $(".notify-order-all").fadeOut(0)
   }
-}
-
-function set_display_stack_notifications(){
-  notifications_number = $(".row-sale.sale-init").length + $(".row-sale.sale-delivered").length
-  if(notifications_number > 0)
-  {
-    $(".panel-notifications").removeClass("minimize")
-    $(".panel-notifications").addClass("active")
-  }
-  else{
-    $(".panel-notifications").addClass("minimize")
-    $(".panel-notifications").removeClass("active")
-  }
-}
-
-function set_stack_notifications(params, type){
-  params['sale']['com_name'] = "Máy " + params['sale']['customer_id']
-  com_name = params['sale']['com_name']
-  sale_id  = params['sale']['id']
-  if(type == "init"){
-    append_data = "<div sale-id='"+sale_id+"' class='notification-content'><div class='row'><div class='col-lg-3 col-md-3 col-sm-3 no-padding'><center><i class='fa fa-desktop'></i><br><label class='label label-primary computer-name'>"+ com_name +"</label></center></div><div class='col-lg-9 col-md-9 col-sm-9 no-padding'><div class='alert alert-info'>Có <b>ORDER MỚI</b></div></div></div></div>"
-    $(".panel-notification-body").append(append_data)
-  }
-  else{
-    append_data = "<div sale-id='"+sale_id+"' class='notification-content'><div class='row'><div class='col-lg-3 col-md-3 col-sm-3 no-padding'><center><i class='fa fa-desktop'></i><br><label class='label label-primary computer-name'>"+ com_name +"</label></center></div><div class='col-lg-9 col-md-9 col-sm-9 no-padding'><div class='alert alert-success'><b>ORDER</b> đã được giao cho khách</div></div></div></div>"
-    $(".panel-notification-body").append(append_data)
-  }
-
 }
 </script>
