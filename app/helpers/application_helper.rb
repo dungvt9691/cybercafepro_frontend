@@ -10,7 +10,7 @@ module ApplicationHelper
   end
 
   def update_next_state_sale_menu_item token,sale_menu_item_id,state
-    sale_menu_item = Ckfapi::API::SalMenuItem.get(token,sale_menu_item_id)
+    sale_menu_item = Ckfapi::API::SaleMenuItem.get(token,sale_menu_item_id)
     if sale_menu_item['sale_menu_item']['next_state'] == state
       Ckfapi::API::SaleMenuItem.next_state(token,sale_menu_item_id)
     else
