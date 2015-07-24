@@ -51,6 +51,8 @@ module SessionsHelper
       sale_list_cashier_pages_path
     when "Chef"
       cooking_list_chief_pages_path
+    when "Bartender"
+      cooking_list_bartender_pages_path
     when "Manager"
       user_list_manager_pages_path
     else
