@@ -3,7 +3,7 @@
   <%= form_tag(stat_manager_pages_path, remote: true, method: :get, multipart: true, class: "form-inline", id: "registrations-edit-form") do %>
     <div class="form-group">
       <%= label_tag 'shift' %>
-      <%= select_tag 'shift_id', options_for_select(@shifts.collect { |p| [ "#{Time.parse(p['start_time']).strftime("%H:%M:%S")} -- #{Time.parse(p['end_time']).strftime("%H:%M:%S")}", p['id']] }), class: "form-control" %>
+      <%= select_tag 'shift_id', options_for_select(@shifts.collect { |p| [ "#{Time.parse(p['start_time']).in_time_zone(7).strftime("%H:%M:%S")} -- #{Time.parse(p['end_time']).in_time_zone(7).strftime("%H:%M:%S")}", p['id']] }), class: "form-control" %>
     </div>
     <div class="form-group">
       <%= label_tag 'date' %>
