@@ -49,7 +49,7 @@ class CashierPagesController < ApplicationController
   private
 
   def filter_role
-    return true if ["Manager", "Cashier"].include? current_user['role']
+    return true if ["Manager", "Cashier"].include? current_user['current_role']
     redirect_to get_root_path(current_user)
   end
 

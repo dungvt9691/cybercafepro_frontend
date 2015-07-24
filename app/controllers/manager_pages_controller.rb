@@ -10,6 +10,8 @@ class ManagerPagesController < ApplicationController
   def menu_item_list
     @mg_page = "menu_item"
     @menu_items = Ckfapi::API::MenuItem.index(current_token, detail: true)['menu_items'] rescue []
+    @items = Ckfapi::API::Item.index(current_token, detail: true)['items'] rescue []
+    @categories = Ckfapi::API::Category.index(current_token)['categories'] rescue []
   end
 
   def payment_list
@@ -55,7 +57,7 @@ class ManagerPagesController < ApplicationController
   private
 
   def filter_role
-    return true if ["Manager"].include? current_user['role']
+    return true if ["Manager"].include? current_user['current_role']
     redirect_to get_root_path(current_user)
   end
 

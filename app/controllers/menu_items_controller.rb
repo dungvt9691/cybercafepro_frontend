@@ -1,11 +1,17 @@
 class MenuItemsController < ApplicationController
 
+  skip_before_filter :verify_authenticity_token, :only => [:create]
+
   before_action :is_manager?
 
   def new
   end
 
   def create
+    @menu_item = Ckfapi::API::MenuItem.create(current_token, params[:menu_item])
+    respond_to do |format|
+      format.js
+    end
   end
 
   def destroy
@@ -24,7 +30,7 @@ class MenuItemsController < ApplicationController
   private
 
   def is_manager?
-    if current_user && current_user['role'] == "Manager"
+    if current_user && current_user['current_role'] == "Manager"
       return true
     else
       flash[:error] = "Only Manager can register new user"
