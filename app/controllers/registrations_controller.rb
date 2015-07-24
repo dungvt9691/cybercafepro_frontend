@@ -43,7 +43,7 @@ class RegistrationsController < ApplicationController
   private
 
   def is_manager?
-    if current_user && current_user['role'] == "Manager"
+    if current_user && current_user['current_role'] == "Manager"
       return true
     else
       flash[:error] = "Only Manager can register new user"

@@ -133,7 +133,7 @@ class WaiterPagesController < ApplicationController
   private
 
   def filter_role
-    return true if ["Waiter"].include? current_user['role']
+    return true if ["Waiter"].include? current_user['current_role']
     redirect_to get_root_path(current_user)
   end
 

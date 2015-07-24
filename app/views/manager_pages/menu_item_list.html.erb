@@ -1,54 +1,148 @@
 <div class="content">
   <h1> Menu Items </h1>
-  <%= button_to 'Add MenuItem', new_menu_item_path, class: "btn btn-large btn-default", method: :get %>
-  <br />
-  <table id="menu-items-table" class="display">
-    <thead>
-      <th>Id</th>
-      <th>Action</th>
-      <th>Name</th>
-      <!-- <th>Description</th> -->
-      <th>Menu Type</th>
-      <th>State</th>
-      <th>Unit Price</th>
-      <th>Unit</th>
-      <th>Category</th>
-      <th>Need Cook</th>
-      <th>Image</th>
-      <th>Updated At</th>
-      <th>Created At</th>
-    </thead>
-    <tbody>
-      <% if @menu_items %>
-        <% @menu_items.each do |menu_item| %>
-          <tr>
-            <td><%= menu_item['id'] %></td>
-            <td>
-              <%= link_to 'Edit', edit_menu_item_path(menu_item['id']), target: "_blank" %>
-              <%= link_to 'Remove', menu_item_path(menu_item['id']), :confirm => 'Are you sure?', :method => :delete, remote: true %>
-            </td>
-            <td><%= menu_item['name'] %></td>
-            <% if false %>
-            <td><%= menu_item['description'] %></td>
-            <% end %>
-            <td><%= menu_item['mtype'] %></td>
-            <td><%= menu_item['state'] %></td>
-            <td><%= menu_item['unit_price'] %></td>
-            <td><%= menu_item['unit'] %></td>
-            <td><%= menu_item['category']['name'] %></td>
-            <td><%= menu_item['need_cook'] %></td>
-            <td><%= image_tag menu_item['image_url'], style: "width: 200px;" %></td>
-            <td><%= menu_item['updated_at'] %></td>
-            <td><%= menu_item['created_at'] %></td>
-          </tr>
-        <% end %>
-      <% end%>
-    </tbody>
-  </table>
 
-  <script>
-    $(document).ready(function(){
-      $('#menu-items-table').DataTable();
-    });
-  </script>
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#menu-item-list" aria-controls="menu-item-list" role="tab" data-toggle="tab">Index</a></li>
+    <li role="presentation"><a href="#new-menu-item" aria-controls="new-menu-item" role="tab" data-toggle="tab">Create</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="menu-item-list">
+      <br />
+      <div class="menu-items-index">
+        <table id="menu-items-table" class="display">
+          <thead>
+            <th>Id</th>
+            <th>Action</th>
+            <th>Name</th>
+            <!-- <th>Description</th> -->
+            <th>Menu Type</th>
+            <th>State</th>
+            <th>Unit Price</th>
+            <th>Unit</th>
+            <th>Category</th>
+            <th>Need Cook</th>
+            <th>Image</th>
+            <th>Updated At</th>
+            <th>Created At</th>
+          </thead>
+          <tbody>
+            <% if @menu_items %>
+              <% @menu_items.each do |menu_item| %>
+                <tr>
+                  <td><%= menu_item['id'] %></td>
+                  <td>
+                    <%= link_to 'Edit', edit_menu_item_path(menu_item['id']), target: "_blank" %>
+                    <%= link_to 'Remove', menu_item_path(menu_item['id']), :confirm => 'Are you sure?', :method => :delete, remote: true %>
+                  </td>
+                  <td><%= menu_item['name'] %></td>
+                  <% if false %>
+                    <td><%= menu_item['description'] %></td>
+                  <% end %>
+                  <td><%= menu_item['mtype'] %></td>
+                  <td><%= menu_item['state'] %></td>
+                  <td><%= menu_item['unit_price'] %></td>
+                  <td><%= menu_item['unit'] %></td>
+                  <td><%= menu_item['category']['name'] %></td>
+                  <td><%= menu_item['need_cook'] %></td>
+                  <td><%= image_tag menu_item['image_url'], style: "width: 200px;" %></td>
+                  <td><%= menu_item['updated_at'] %></td>
+                  <td><%= menu_item['created_at'] %></td>
+                </tr>
+              <% end %>
+            <% end%>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <div role="tabpanel" class="tab-pane" id="new-menu-item">
+      <br />
+      <%= form_tag(menu_items_path, method: 'post', remote: true) do %>
+        <div class="menu-item-manage">
+          <div class="col-xs-4 col-ms-4 col-md-4 col-lg-4" style="border-right: 1px #CCC2C2 solid">
+            <ul id="items-list-select" class="btn-group" data-toggle="buttons" style="width: 100%">
+              <% @items.each do |item| %>
+                <li id="item-<%= item['id'] %>-select" class="item-name item-row" style="width: 100%">
+                  <label class="btn btn-primary btn-block">
+                    <input item-id="<%= item['id'] %>" type="checkbox" autocomplete="off" style="visibility: hidden" onchange="toggleItem(this)"><%= item['name'] %>
+                  </label>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+          <div class="col-xs-4 col-ms-4 col-md-4 col-lg-4">
+            <ul id="items-list-form">
+              <% @items.each do |item| %>
+                <li id="item-<%= item['id'] %>-form" data-price="<%= item['unit_price']%>" class="item-name item-row" style="display: none;">
+                  <span class="col-xs-5 col-ms-5 col-md-5 col-lg-5" style="padding: 5px 0;">
+                    <%= item['name'] %>(<%= item['unit'] %>)
+                    <%= hidden_field_tag 'menu_item[item_menu_items_attributes][][item_id]', item['id'], disabled: 'dissabled' %>
+                  </span>
+                  <span class="col-xs-4 col-ms-4 col-md-4 col-lg-4">
+                    <%= text_field_tag 'menu_item[item_menu_items_attributes][][quantity]', 1, class: "quantity form-control", onchange: "changePrice(this)", disabled: 'disabled' %>
+                  </span>
+                  <span class="col-xs-3 col-ms-3 col-md-3 col-lg-3 price" style="padding: 5px 0;">
+                    <%= item['unit_price'] %>
+                  </span>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+          <div class="col-xs-4 col-ms-4 col-md-4 col-lg-4" style="border-left: 1px #CCC2C2 solid">
+            <%= file_field_tag 'menu_item[image]' %><br />
+            <%= text_field_tag 'menu_item[name]', nil, placeholder: "Name", class: 'form-control' %><br />
+            <%= text_field_tag 'menu_item[description]', nil, placeholder: "Description", class: 'form-control' %><br />
+            <%= text_field_tag 'menu_item[unit]', nil, placeholder: "Unit", class: 'form-control' %><br />
+            <%= text_field_tag 'menu_item[unit_price]', nil, placeholder: "Price by unit", class: 'form-control' %><br />
+            <%= select_tag 'menu_item[category_id]', options_for_select(@categories.collect { |p| [ p['name'] , p['id']] }), class: "form-control" %><br />
+            <%= text_field_tag 'menu_item[mtype]', nil, placeholder: "Menu Type (bread, soft drink, ...)", class: 'form-control' %><br />
+            <%= select_tag 'menu_item[klass]', options_for_select(['food', 'drink', 'service']), class: "form-control" %><br />
+
+            <%= submit_tag 'Create', class: 'btn btn-default btn-large' %>
+          </div>
+        </div>
+      <% end %>
+
+    </div>
+
+  </div>
 </div>
+
+
+<script>
+  $(document).ready(function(){
+    $('#menu-items-table').DataTable();
+  });
+  var changePrice = function(el){
+    var unit_price = parseFloat($(el).parent().parent().attr('data-price'));
+    var quantity = parseInt($(el).val());
+    $(el).parent().siblings('.price').html(parseFloat(unit_price*quantity));
+  }
+
+  var toggleItem = function(el){
+    var item_id = $(el).attr('item-id');
+    if ($(el).is(":checked") == true) {
+      $('#item-' + item_id + '-form input').prop('disabled', false);
+      $('#item-' + item_id + '-form').show();
+    } else {
+      $('#item-' + item_id + '-form').hide();
+      $('#item-' + item_id + '-form input').prop('disabled', true);
+    }
+  }
+  $('.nav-tabs a').click(function (e) {
+    e.preventDefault();
+    $(this).tab('show');
+  });
+
+</script>
+
+<style>
+  .item-row {
+    display: table;
+    margin-bottom: 2px;
+    height: 35px;
+  }
+</style>
