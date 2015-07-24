@@ -23,7 +23,6 @@
             <th>Unit Price</th>
             <th>Unit</th>
             <th>Category</th>
-            <th>Need Cook</th>
             <th>Image</th>
             <th>Updated At</th>
             <th>Created At</th>
@@ -34,6 +33,7 @@
                 <tr>
                   <td><%= menu_item['id'] %></td>
                   <td>
+                    <%= link_to 'View', menu_item_path(menu_item['id']), remote: true %> <br />
                     <%= link_to 'Edit', edit_menu_item_path(menu_item['id']), target: "_blank" %>
                     <%= link_to 'Remove', menu_item_path(menu_item['id']), :confirm => 'Are you sure?', :method => :delete, remote: true %>
                   </td>
@@ -46,7 +46,6 @@
                   <td><%= menu_item['unit_price'] %></td>
                   <td><%= menu_item['unit'] %></td>
                   <td><%= menu_item['category']['name'] %></td>
-                  <td><%= menu_item['need_cook'] %></td>
                   <td><%= image_tag menu_item['image_url'], style: "width: 200px;" %></td>
                   <td><%= menu_item['updated_at'] %></td>
                   <td><%= menu_item['created_at'] %></td>

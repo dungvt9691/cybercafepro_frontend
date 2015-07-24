@@ -4,6 +4,13 @@ class MenuItemsController < ApplicationController
 
   before_action :is_manager?
 
+  def show
+    @menu_item = Ckfapi::API::MenuItem.get(current_token, params[:id], { detail: true })
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def new
   end
 
