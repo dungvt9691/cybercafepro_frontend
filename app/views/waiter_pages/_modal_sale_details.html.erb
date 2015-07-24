@@ -20,6 +20,8 @@
 </div><!-- /.modal -->
 <script type="text/javascript">
 $('#modal-sale-details').on('shown.bs.modal', function (e) {
+  sale_id = $(this).attr("sale-id")
+  
   $.ajax({
     type: "GET",
     dataType: "script",

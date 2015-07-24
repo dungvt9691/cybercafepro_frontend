@@ -48,7 +48,7 @@ $("#pinBoot").on('click', '.order-cooking .service', function(){
 
   $.ajax({
     type: "GET",
-    url: "/chief_pages/done_cooking?sale_menu_id=" + id
+    url: "/bartender_pages/done_cooking?sale_menu_id=" + id
   });
 
   done = true
@@ -63,16 +63,8 @@ $("#pinBoot").on('click', '.order-cooking .service', function(){
     check_has_order()
     $(function(){
       var notice = pop_notify({
-        title: "test",
         text: "Order " + sale_id + " đã làm xong",
-        type: 'success',
-        stack: stack_context,
       });
-
-      notice.get().click(function(e) {
-        notice.remove();
-      });
-      
     });
   }
 })
@@ -82,7 +74,7 @@ $("#pinBoot").on('click', '.btn-done-cooking', function(){
     id = $(this).attr('service-id')
     $.ajax({
       type: "GET",
-      url: "/chief_pages/done_cooking?sale_menu_id=" + id
+      url: "/bartender_pages/done_cooking?sale_menu_id=" + id
     });
   })
 
@@ -96,7 +88,7 @@ $("#pinBoot").on('click', '.btn-start-cooking', function(){
     id = $(this).attr('service-id')
     $.ajax({
       type: "GET",
-      url: "/chief_pages/start_cooking?sale_menu_id=" + id
+      url: "/bartender_pages/start_cooking?sale_menu_id=" + id
     });
   })
 
@@ -128,18 +120,8 @@ staff_channel.bind("next_state_sale",function(data) {
     if(data['sale']['is_drink_sale']){
       $(function(){
         var notice = pop_notify({
-          title: "test",
           text: "Order mới từ máy " + data['sale']['customer_id'],
-          type: 'info',
-          stack: stack_context,
         });
-
-        notice.get().click(function(e) {
-          if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
-            return;
-          notice.remove();
-        //move to element
-      });
 
         append_processing_order(data)
         check_has_order()

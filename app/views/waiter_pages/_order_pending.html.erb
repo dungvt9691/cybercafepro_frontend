@@ -91,24 +91,8 @@ $(".table-order-pending").on("click", ".active .btn-verify-payment", function(){
 staff_channel.bind("create_sale",function(data) {
   $(function(){
     var notice = pop_notify({
-      title: "test",
       text: "Order mới từ máy " + data['sale']['customer_id'],
-      type: "success",
-      stack: stack_context,
     });
-    notice.get().click(function(e) {
-      if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
-        return;
-      $.scrollToElement({to: "#sale-" + data['sale']['id']});
-      notice.remove();
-      //move to element
-    });
-    var desktop_notice = pop_desktop_notify({
-      title: "test",
-      text: "Order mới từ máy " + data['sale']['customer_id'],
-      type: "success",
-      stack: stack_context,
-    })
 
     append_order_init_row(data)
     set_notifications_number()
@@ -119,21 +103,8 @@ staff_channel.bind("next_state_sale",function(data) {
   if(data['sale']['state'] == "pending") {
     $(function(){
       var notice = pop_notify({
-        title: "test",
         text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + " đang được đi lấy tiền",
-        stack: stack_context,
       });
-      //check data['sale']['pender_id'] vs current_user
-      notice.get().click(function(e) {
-        notice.remove();
-        //move to element
-      });
-      var desktop_notice = pop_desktop_notify({
-        title: "test",
-        text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + " đang được đi lấy tiền",
-        type: "success",
-        stack: stack_context,
-      })
 
       set_order_pending_row(data)
 
@@ -142,7 +113,6 @@ staff_channel.bind("next_state_sale",function(data) {
         sale_id = data['sale']['id']
         $(".order-row[sale-id="+sale_id+"]").remove()
         set_notifications_number()
-        set_display_stack_notifications()
         if($('.table-order-pending .order-row').length == 0)
         {
           $(".no-pending-orders").fadeIn(100)
@@ -196,8 +166,8 @@ function append_order_init_row(data){
   })
 
   $(".order-row[sale-id="+sale_id+"] .btn-order-details").click(function(){
-    sale_id = $(this).attr("sale-id")
     $('.launch-modal').html("<%=j render 'waiter_pages/modal_sale_details' %>")
+    $('#modal-sale-details').attr("sale-id", sale_id)
     $("#modal-sale-details").modal({
       keyboard: true,
       backdrop: 'static'
