@@ -44,13 +44,15 @@ module SessionsHelper
   end
 
   def get_root_path user
-    case user['role']
+    case user['current_role']
     when "Waiter"
       sale_list_waiter_pages_path
     when "Cashier"
       sale_list_cashier_pages_path
     when "Chef"
       cooking_list_chief_pages_path
+    when "Bartender"
+      cooking_list_bartender_pages_path
     when "Manager"
       user_list_manager_pages_path
     else

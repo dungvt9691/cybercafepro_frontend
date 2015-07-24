@@ -3,10 +3,15 @@
   <table id="sales-table" class="display">
     <thead>
       <th>Id</th>
-      <th>State</th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Unit</th>
+      <th>Class</th>
+      <th>Quantity</th>
       <th>Customer</th>
       <th>Pender</th>
       <th>Processor</th>
+      <th>Maker</th>
       <th>Deliverer</th>
       <th>Saver</th>
       <th>Invoice Number</th>
@@ -14,20 +19,9 @@
       <th>Created At</th>
     </thead>
     <tbody>
-      <% if @sales %>
-        <% @sales.each do |sale| %>
-          <tr>
-            <td><%= sale['id'] %></td>
-            <td><%= sale['state'] %></td>
-            <td><%= "#{sale['customer']['first_name']} #{sale['customer']['last_name']}" rescue sale['customer_id'] %></td>
-            <td><%= "#{sale['pender']['first_name']} #{sale['pender']['last_name']}" rescue sale['pender_id'] %></td>
-            <td><%= "#{sale['processor']['first_name']} #{sale['processor']['last_name']}" rescue sale['processor_id'] %></td>
-            <td><%= "#{sale['deliverer']['first_name']} #{sale['deliverer']['last_name']}" rescue sale['deliverer_id']%></td>
-            <td><%= "#{sale['saver']['first_name']} #{sale['saver']['last_name']}" rescue sale['saver_id'] %></td>
-            <td><%= sale['invoice_number'] %></td>
-            <td><%= sale['updated_at'] %></td>
-            <td><%= sale['created_at'] %></td>
-          </tr>
+      <% if @sale_menu_items %>
+        <% @sale_menu_items.each do |sale_menu_item| %>
+          <%= render partial: 'sale_menu_item_row', locals: { sale_menu_item: sale_menu_item } %>
         <% end %>
       <% end%>
     </tbody>

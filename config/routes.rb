@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   # root 'customer_pages#customer_ordering'
   root 'routes#root'
 
-  resources :users
+  resources :users, only: [:show, :index]
   resource :sessions, only: [:new, :create, :destroy]
   resources :registrations
 
@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       get "sale_list"
       get "shift_list"
       get "accounting"
+      get "stat"
     end
   end
 

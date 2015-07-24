@@ -1,4 +1,5 @@
 class BartenderPagesController < ApplicationController
+  before_action :filter_role
   layout "bartender_layout"
 
   def cooking_list
@@ -57,5 +58,12 @@ class BartenderPagesController < ApplicationController
 
   def redo_cooking
     #TODO
+  end
+
+  private
+
+  def filter_role
+    return true if ["Bartender"].include? current_user['current_role']
+    redirect_to get_root_path(current_user)
   end
 end
