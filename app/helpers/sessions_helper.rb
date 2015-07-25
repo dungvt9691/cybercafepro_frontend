@@ -12,9 +12,8 @@ module SessionsHelper
   end
 
   def remove_token(token)
-    dtoken = Ckfapi::API::User.remove_token(token)
-    session[:token] = nil if dtoken["message"].include? "Session deleted"
-    session[:token]
+    # dtoken = Ckfapi::API::User.remove_token(token)
+    session[:token] = nil
   end
 
   def auth?(token)

@@ -5,6 +5,7 @@ $('.table-order-histories tbody tr.histories-loading').remove();
 $('.table-order-histories tbody .no-histories-orders').before("<%=j render partial: 'delivered_sale', locals: { sale: sale} %>");
 <% end %>
 <% else %>
+$('.table-order-histories tbody tr.histories-loading').remove();
 $(".no-histories-orders").fadeIn(100)
 <% end %>
 

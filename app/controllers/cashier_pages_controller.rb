@@ -3,14 +3,6 @@ class CashierPagesController < ApplicationController
   layout "cashier_layout"
 
   def sale_list
-    @sales = Ckfapi::API::Sale.index(current_token,detail: true)['sales'] rescue []
-    @sales = @sales.sort{|a, b| b['updated_at'].to_datetime <=> a['updated_at'].to_datetime}
-    @sales_not_saved = @sales.select{|m| m['state'] != 'saved'}
-    @sales_init     = @sales.select{|m| m['state'] == 'init'}.count
-    @sales_delivered     = @sales.select{|m| m['state'] == 'delivered'}.count
-    respond_to do |format|
-      format.html
-    end
   end
 
   def save_sale
@@ -44,6 +36,11 @@ class CashierPagesController < ApplicationController
   def saved_sales
     @sales = Ckfapi::API::Sale.index(current_token,detail: true)['sales'] rescue []
     @saved_sales = @sales.select{|m| m['state'] == 'saved'}
+  end
+
+  def not_saved_sales
+    @sales = Ckfapi::API::Sale.index(current_token,detail: true)['sales'] rescue []
+    @not_saved_sales = @sales.select{|m| m['state'] != 'saved'}
   end
 
   private
