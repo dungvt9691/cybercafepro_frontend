@@ -29,60 +29,13 @@ var stack_context = {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class='container copyright'>
-  <small>Copyright <i class='fa fa-copyright'></i> ABCDEF</small>
-</div>
-<div class="panel-notifications <%= 'active' if @sales_init + @sales_delivered > 0 %> <%= 'minimize' if @sales_init + @sales_delivered == 0 %>">
-  <div class='panel-notification-heading'>
-    <label class="badge badge-danger notify-order notify-order-all"><%= @sales_init + @sales_delivered %></label>
-    <span class="heading-title">Thông báo</span>
-    <i class="fa fa-caret-down"></i>
-  </div>
-  <div class="panel-notification-body">
-    <% @sales.each do |sale| %>
-    <% if ['init'].include?(sale['state']) %>
-    <div sale-id='<%= sale['id'] %>' class='notification-content'>
-      <div class='row'>
-        <div class='col-lg-3 col-md-3 col-sm-3 no-padding'>
+          <br>
           <center>
-            <i class='fa fa-desktop'></i>
-            <br>
-            <label class='label label-primary computer-name'><%= "Máy x" %>
-            </label>
+            <a data-method="DELETE" href="/sessions">Đăng xuất</a>
           </center>
         </div>
-        <div class='col-lg-9 col-md-9 col-sm-9 no-padding'>
-          <div class='alert alert-info'>
-            Có <b>ORDER MỚI</b>.
-          </div>
-        </div>
       </div>
     </div>
-    <% elsif ['delivered'].include?(sale['state']) %>
-    <div sale-id='<%= sale['id'] %>' class='notification-content'>
-      <div class='row'>
-        <div class='col-lg-3 col-md-3 col-sm-3 no-padding'>
-          <center>
-            <i class='fa fa-desktop'></i>
-            <br>
-            <label class='label label-primary computer-name'><%= "Máy x" %>
-            </label>
-          </center>
-        </div>
-        <div class='col-lg-9 col-md-9 col-sm-9 no-padding'>
-          <div class='alert alert-success'>
-            <b>ORDER</b> đã được giao cho khách
-          </div>
-        </div>
-      </div>
-    </div>
-    <% end %>
-    <% end %>
   </div>
 </div>
 <script>
@@ -96,7 +49,20 @@ $(document).ready(function () {
   set_notifications_number()
 });
 
-$(".panel-notification-body").niceScroll({horizrailenabled: false, cursorcolor:"rgba(0, 0, 0, 0.5)", cursorwidth: "9px"})
+setInterval(function(){
+  if(window.confirm("Bạn có muốn tải lại trang này không? (Tải lại sẽ giúp bạn cập nhật được order mới)")){
+    if (typeof not_saved_table != 'undefined'){
+      not_saved_table.fnDestroy()
+    }
+    $("#table-order-not-saved tbody").html('<tr><td colspan="6"><center><i class="fa fa-spin fa-spinner" style="margin-right: 5px"></i> Đang tải dữ liệu</center></td></tr>')
+    $.ajax({
+      type: "GET",
+      dataType: "script",
+      url: "<%= not_saved_sales_cashier_pages_path %>"
+    });
+  }
+}, 1000 * 3600 * 5);
+
 
 $(".tab-list").click(function(){
   $(".tab-list").removeClass("active")
@@ -118,96 +84,6 @@ $(".tab-list").click(function(){
     }
   }
 })
-
-$(".panel-notification-heading").click(function(){
-  if($(this).parents(".panel-notifications").hasClass("minimize")){
-    $(this).children(".fa").addClass("fa-caret-down").removeClass("fa-caret-up")
-    $(this).parents('.panel-notifications').removeClass("minimize")
-  }
-  else{
-    $(".panel-notification-heading .fa").parents(".panel-notifications").addClass("minimize")
-    $(this).children(".fa").removeClass("fa-caret-down").addClass("fa-caret-up")
-    $(this).parents('.panel-notifications').addClass("minimize")
-  }
-})
-
-staff_channel.bind("next_state_sale",function(data) {
-  sale_id = data['sale']['id']
-  var rows = oTable.fnGetNodes();
-  var row_updated;
-  for(var i=0;i<rows.length;i++)
-  {
-    if($(rows[i]).attr("sale-id") == sale_id){
-      row_updated = rows[i]
-    }
-  }
-  updated_status = render_label_state(data['sale']['state'])
-  updated_at = "<span style='display:none'>"+data['sale']['order_updated_at']+"</span>" + data['sale']['format_updated_at']
-  oTable.fnUpdate(updated_at, row_updated, 3 );
-  oTable.fnUpdate(updated_status, row_updated, 5 );
-  if(data['sale']['state'] == "delivered"){
-    updated_button = '<a href="javascript:;" sale-id="'+sale_id+'" class="show-sale-details">'+data['sale']['invoice_number']+'</a><a data-remote="true" href="/cashier_pages/save_sale?sale_id='+sale_id+'" class="btn btn-danger btn-xs pull-right">Lưu lại</a>'
-    oTable.fnUpdate(updated_button, row_updated, 0 );
-    $(".row-sale[sale-id="+sale_id+"]").addClass("sale-delivered")
-    set_notifications_number()
-    set_display_stack_notifications()
-    set_stack_notifications(data, "delivered")
-  }
-
-  if(data['sale']['state'] == "pending"){
-    $(".notification-content[sale-id="+sale_id+"]").remove()
-    $(".row-sale[sale-id="+sale_id+"]").removeClass("sale-init")
-    set_notifications_number()
-    set_display_stack_notifications()
-  }
-});
-
-staff_channel.bind("create_sale",function(data) {
-  $(function(){
-    sale_id = data['sale']['id']
-    td_1 = '<a href="javascript:;" sale-id="'+sale_id+'" class="show-sale-details">'+data['sale']['invoice_number']
-    td_2 = "Máy " + data['sale']['customer_id']
-    td_3 = '<span style="display:none">' + data['sale']['order_created_at'] + '</span>' + data['sale']['format_created_at'] + '</b>'
-    td_4 = '<span style="display:none">' + data['sale']['order_updated_at'] + '</span>' + data['sale']['format_updated_at'] + '</b>'
-    td_5 = '<b>'+ number_format(parseInt(data['sale']['total_price'])) +'</b> đ'
-    td_6 = render_label_state(data['sale']['state'])
-    var a = oTable.fnAddData([td_1, td_2, td_3, td_4, td_5, td_6]);
-    var nTr = oTable.fnSettings().aoData[ a[0] ].nTr;
-    $(nTr).addClass('row-sale').addClass('sale-init').attr("sale-id", sale_id)
-    set_notifications_number()
-    set_display_stack_notifications()
-    set_stack_notifications(data, "init")
-  });
-});
-
-staff_channel.bind("next_state_sale_menu_item",function(data) {
-  $(function(){
-    if(data['sale']['state'] == "saved") {
-      sale_id = data['sale']['id']
-      $(function(){
-        oTable.fnDeleteRow(oTable.fnGetPosition($("tr.row-sale[sale-id="+sale_id+"]").get(0)));
-
-        var notice = pop_notify({
-          title: "test",
-          text: "Order <b>["+data['sale']['invoice_number']+"]</b> từ máy " + data['sale']['customer_id'] + " đã được lưu lại",
-          type: "success",
-          stack: stack_context,
-        });
-        notice.get().click(function(e) {
-          if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
-            return;
-          $.scrollToElement({to: "#sale-" + data['sale']['id']});
-          notice.remove();
-        });
-        $(".notification-content[sale-id="+sale_id+"]").remove()
-        set_notifications_number()
-        set_display_stack_notifications()
-      });
-    }
-  });
-});
-
-var sale_details_id;
 
 $(".cashier-pages").on("click", ".show-sale-details", function(){
   sale_details_id = $(this).attr("sale-id")
@@ -256,33 +132,5 @@ function set_notifications_number(){
   else{
     $(".notify-order-all").fadeOut(0)
   }
-}
-
-function set_display_stack_notifications(){
-  notifications_number = $(".row-sale.sale-init").length + $(".row-sale.sale-delivered").length
-  if(notifications_number > 0)
-  {
-    $(".panel-notifications").removeClass("minimize")
-    $(".panel-notifications").addClass("active")
-  }
-  else{
-    $(".panel-notifications").addClass("minimize")
-    $(".panel-notifications").removeClass("active")
-  }
-}
-
-function set_stack_notifications(params, type){
-  params['sale']['com_name'] = "Máy " + params['sale']['customer_id']
-  com_name = params['sale']['com_name']
-  sale_id  = params['sale']['id']
-  if(type == "init"){
-    append_data = "<div sale-id='"+sale_id+"' class='notification-content'><div class='row'><div class='col-lg-3 col-md-3 col-sm-3 no-padding'><center><i class='fa fa-desktop'></i><br><label class='label label-primary computer-name'>"+ com_name +"</label></center></div><div class='col-lg-9 col-md-9 col-sm-9 no-padding'><div class='alert alert-info'>Có <b>ORDER MỚI</b></div></div></div></div>"
-    $(".panel-notification-body").append(append_data)
-  }
-  else{
-    append_data = "<div sale-id='"+sale_id+"' class='notification-content'><div class='row'><div class='col-lg-3 col-md-3 col-sm-3 no-padding'><center><i class='fa fa-desktop'></i><br><label class='label label-primary computer-name'>"+ com_name +"</label></center></div><div class='col-lg-9 col-md-9 col-sm-9 no-padding'><div class='alert alert-success'><b>ORDER</b> đã được giao cho khách</div></div></div></div>"
-    $(".panel-notification-body").append(append_data)
-  }
-
 }
 </script>

@@ -58,21 +58,8 @@ staff_channel.bind("next_state_sale",function(data) {
   if(data['sale']['state'] == "processing") {
     $(function(){
       var notice = pop_notify({
-        title: "test",
         text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + " đã thu tiền",
-        stack: stack_context,
       });
-      notice.get().click(function(e) {
-        notice.remove();
-        //move to element
-      });
-      var desktop_notice = pop_desktop_notify({
-        title: "test",
-        text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + " đã thu tiền",
-        type: "success",
-        stack: stack_context,
-      })
-
       append_order_processing_row(data)
       set_notifications_number()
     });
@@ -83,20 +70,8 @@ staff_channel.bind("next_state_sale_menu_item",function(data) {
   if(data['sale_menu_item']['state'] == "done") {
     $(function(){
       var notice = pop_notify({
-        title: "test",
         text: "Máy " + data['sale_menu_item']['sale']['customer_id'] + " đã làm xong <b>" + parseInt(data['sale_menu_item']['quantity']) + " " + data['sale_menu_item']['menu_item_details']['name'] + "</b>",
-        stack: stack_context,
       });
-      notice.get().click(function(e) {
-        notice.remove();
-        //move to element
-      });
-      var desktop_notice = pop_desktop_notify({
-        title: "test",
-        text: "Máy " + data['sale_menu_item']['sale']['customer_id'] + " đã làm xong " + parseInt(data['sale_menu_item']['quantity']) + " " + data['sale_menu_item']['menu_item_details']['name'],
-        type: "success",
-        stack: stack_context,
-      })
 
       set_order_done_row(data)
       set_notifications_number()
@@ -105,20 +80,8 @@ staff_channel.bind("next_state_sale_menu_item",function(data) {
   else if(data['sale_menu_item']['state'] == "delivering") {
     $(function(){
       var notice = pop_notify({
-        title: "test",
         text: "Đang mang <b>" + parseInt(data['sale_menu_item']['quantity']) + " " + data['sale_menu_item']['menu_item_details']['name']+ "</b> lên cho máy " + data['sale_menu_item']['sale']['customer_id'],
-        stack: stack_context,
       });
-      notice.get().click(function(e) {
-        notice.remove();
-        //move to element
-      });
-      var desktop_notice = pop_desktop_notify({
-        title: "test",
-        text: "Đang mang " + parseInt(data['sale_menu_item']['quantity']) + " " + data['sale_menu_item']['menu_item_details']['name']+ " lên  cho máy " + data['sale_menu_item']['sale']['customer_id'],
-        type: "success",
-        stack: stack_context,
-      })
 
       set_order_delivering_row(data)
 
@@ -127,21 +90,9 @@ staff_channel.bind("next_state_sale_menu_item",function(data) {
   else if(data['sale_menu_item']['state'] == "delivered") {
     $(function(){
       var notice = pop_notify({
-        title: "test",
         text: "Đã giao <b>" + parseInt(data['sale_menu_item']['quantity']) + " " + data['sale_menu_item']['menu_item_details']['name']+ "</b> cho máy " + data['sale_menu_item']['sale']['customer_id'],
-        stack: stack_context,
       });
-      notice.get().click(function(e) {
-        notice.remove();
-        //move to element
-      });
-      var desktop_notice = pop_desktop_notify({
-        title: "test",
-        text: "Đã giao " + parseInt(data['sale_menu_item']['quantity']) + " " + data['sale_menu_item']['menu_item_details']['name']+ " cho máy " + data['sale_menu_item']['sale']['customer_id'],
-        type: "success",
-        stack: stack_context,
-      })
-
+      
       set_order_delivered_row(data)
       set_notifications_number()
 

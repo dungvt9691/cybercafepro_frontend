@@ -163,7 +163,8 @@ class WaiterPagesController < ApplicationController
 
   def delivered_sales
     @sales = Ckfapi::API::Sale.index(current_token,detail: true)['sales'] rescue []
-    @delivered_sales = @sales.select{|m| m['state'] == 'delivered'}
+    @sales = @sales.sort{|a, b| b['updated_at'].to_datetime <=> a['updated_at'].to_datetime}
+    @delivered_sales = @sales.select{|m| m['state'] == 'delivered' || m['state'] == "saved"}
   end
 
   def redo

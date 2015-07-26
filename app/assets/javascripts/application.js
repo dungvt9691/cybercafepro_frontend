@@ -52,36 +52,41 @@ function truncate (string, length) {
   return string.substring(0, length) + "...";
 }
 
-function pop_notify(options) {
-  var defaults = {
-    width: "250px",
-    delay: 5000,
-    styling: "fontawesome",
-    buttons: {sticker: false, closer_hover: false},
-    mouse_reset: false
-  }
-  var settings = $.extend({},defaults,options);
-  return (new PNotify(settings));
-}
+// function pop_notify(options) {
+//   var defaults = {
+//     width: "250px",
+//     delay: 5000,
+//     styling: "fontawesome",
+//     buttons: {sticker: false, closer_hover: false},
+//     mouse_reset: false
+//   }
+//   var settings = $.extend({},defaults,options);
+//   return (new PNotify(settings));
+// }
 
 function pop_desktop_notify(options) {
-  PNotify.desktop.permission();
-  var defaults = {
-    mouse_reset: false,
-    width: "250px",
-    delay: 5000,
-    styling: "fontawesome",
-    buttons: {sticker: false, closer_hover: false},
-    mouse_reset: false,
-    styling: "fontawesome",
-    desktop: {
-      desktop: true
+  
+}
+
+function pop_notify(options){
+  timeout = typeof timeout !== 'undefined' ? timeout : 5000;
+  var notification = new NotificationFx({
+    message : options.text,
+    layout : 'bar',
+    effect : 'slidetop',
+    ttl: 5000,
+    type : "notice", // notice, warning or error
+    onClose : function() {
+      console.log('bar closed');
+    },
+    onOpen : function() { 
+      $($(".ns-effect-slidetop")[1]).fadeOut(300)
+      setTimeout( function() {
+        $($(".ns-effect-slidetop")[1]).remove()
+      }, 200 );
     }
-  };
-  var settings = $.extend({},defaults,options);
-  return (new PNotify(settings)).get().click(function(e) {
-      if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target)) return;
   });
+  notification.show();
 }
 
 function bootstrap_env() {

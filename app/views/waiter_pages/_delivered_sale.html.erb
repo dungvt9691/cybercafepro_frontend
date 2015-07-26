@@ -1,4 +1,4 @@
-<tr data-target="#order-action-dropdown-<%= sale['id'] %>" data-toggle="dropdown" class="order-row <%= 'success' if sale['state'] == 'pending' %>" sale-id='<%= sale['id'] %>' id="sale-<%= sale['id'] %>">
+<tr data-target="#order-action-dropdown-<%= sale['id'] %>" data-toggle="dropdown" class="<%= 'saved-row' if sale['state'] == 'saved' %> order-row <%= 'success' if sale['state'] == 'pending' %>" sale-id='<%= sale['id'] %>' id="sale-<%= sale['id'] %>">
   <td class="order-com">
     Máy <%= sale['customer_id'] %>
   </td>
@@ -18,7 +18,11 @@
       <span style='color: #999'>đ</span>
     </div>
     <small class="pull-left order-created-at" style='margin-top: 3px; margin-left: 1px'>
+      <% if sale['state'] == "delivered" %>
       Giao xong lúc: <%= ((sale['delivered_at'].to_datetime + 7.hours) rescue DateTime.now).strftime("<b>%H:%M</b> %d/%m/%Y").html_safe %>
+      <% else %>
+      Đã lưu lúc: <%= ((sale['updated_at'].to_datetime + 7.hours) rescue DateTime.now).strftime("<b>%H:%M</b> %d/%m/%Y").html_safe %> 
+      <% end %>
     </small>
   </td>
 </tr>

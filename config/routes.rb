@@ -70,6 +70,7 @@ Rails.application.routes.draw do
       get "sale_list"
       get "save_sale"
       get "saved_sales"
+      get "not_saved_sales"
     end
   end
 
