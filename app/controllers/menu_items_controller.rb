@@ -2,7 +2,7 @@ class MenuItemsController < ApplicationController
 
   skip_before_filter :verify_authenticity_token, :only => [:create]
 
-  before_action :is_manager?
+  before_action :filter_role
 
   def show
     @menu_item = Ckfapi::API::MenuItem.get(current_token, params[:id], { detail: true })
@@ -46,13 +46,10 @@ class MenuItemsController < ApplicationController
 
   private
 
-  def is_manager?
-    if current_user && current_user['current_role'] == "Manager"
-      return true
-    else
-      flash[:error] = "Only Manager can register new user"
-      redirect_to root_path
-    end
+  def filter_role
+    return true if current_user && ["Manager", "Chef", "Bartender"].include?(current_user['current_role'])
+    flash[:error] = "Can only be acessed by Manager"
+    redirect_to get_root_path(current_user)
   end
 
 end

@@ -15,6 +15,7 @@
   <% end %>
   <div id='side-nav-mg' class="col-md-2">
     <ul class="nav nav-pills nav-stacked">
+      <% if current_user['current_role'] == "Manager" %>
       <li class="<%= 'active' if @mg_page == 'payment' rescue ''%> ">
         <a class="href" href="<%= payment_list_manager_pages_path %>">
           Danh sách hoá đơn
@@ -40,11 +41,14 @@
           Accounting
         </a>
       </li>
+      <% end %>
+      <% if ["Manager", "Chef", "Bartender"].include?(current_user['current_role']) %>
       <li class="<%= 'active' if @mg_page == 'menu_item' rescue ''%> ">
         <a class="href" href="<%= menu_item_list_manager_pages_path %>">
           Menu phục vụ
         </a>
       </li>
+      <% end %>
     </ul>
   </div>
   <div id='mg-content' class="col-md-10">
