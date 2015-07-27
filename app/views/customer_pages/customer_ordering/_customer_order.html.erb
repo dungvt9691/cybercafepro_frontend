@@ -137,6 +137,9 @@ $('#order-now').click(function(){
       dataType: "json",
       data: { sale: sale_params},
       success: function(data){
+        if (data.sale.errors) {
+          alert(data.sale.errors);
+        }
         console.log(data);
       }
     })

@@ -34,7 +34,7 @@
                   <td><%= menu_item['id'] %></td>
                   <td>
                     <%= link_to 'View', menu_item_path(menu_item['id']), remote: true %> <br />
-                    <%= link_to 'Edit', edit_menu_item_path(menu_item['id']), target: "_blank" %>
+                    <%= link_to 'Edit', edit_menu_item_path(menu_item['id']), remote: true %>
                     <%= link_to 'Remove', menu_item_path(menu_item['id']), :confirm => 'Are you sure?', :method => :delete, remote: true %>
                   </td>
                   <td><%= menu_item['name'] %></td>

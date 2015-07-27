@@ -1,0 +1,7 @@
+<% if @menu_item %>
+  $('#launch-modal').html("<%=j render partial: 'menu_items/modal_edit_menu_item', locals: { menu_item: @menu_item } %>");
+  $("#modal-edit-menu-item").modal({
+    keyboard: true,
+    backdrop: 'static'
+  });
+<% end %>

@@ -26,12 +26,22 @@ class MenuItemsController < ApplicationController
 
   def edit
     @menu_item = Ckfapi::API::MenuItem.get(current_token, params[:id])['menu_item']
+    respond_to do |format|
+      format.js
+    end
   end
 
   def update
     @menu_item = Ckfapi::API::MenuItem.update(current_token, params[:id], params[:menu_item])['menu_item']
-    flash[:success] = "MenuItem name #{@menu_item['name']} is updated" if @menu_item
-    redirect_to edit_menu_item_path(params[:id])
+    respond_to do |format|
+      format.js
+      format.html {
+        if @menu_item
+          flash[:success] = "MenuItem name #{@menu_item['name']} is updated" if @menu_item
+        end
+        redirect_to edit_menu_item_path(params[:id])
+      }
+    end
   end
 
   private

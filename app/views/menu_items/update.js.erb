@@ -1,0 +1,5 @@
+<% if @menu_item %>
+  alert("MenuItem name <%= @menu_item['name'] %> is updated");
+<% else %>
+  alert("<%= @menu_item.errors %>");
+<% end %>
