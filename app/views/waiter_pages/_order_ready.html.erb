@@ -21,13 +21,13 @@
         <table class="table table-bordered">
           <tbody>
             <% sale['food_sale_menu_items_details'].each do |item| %>
-            <%= render 'sale_menu_item', item: item %>
+            <%= render 'sale_menu_item', item: item, not_services: true %>
             <% end %>
             <% sale['drink_sale_menu_items_details'].each do |item| %>
-            <%= render 'sale_menu_item', item: item %>
+            <%= render 'sale_menu_item', item: item, not_services: true %>
             <% end %>
             <% sale['service_sale_menu_items_details'].each do |item| %>
-            <%= render 'sale_menu_item', item: item %>
+            <%= render 'sale_menu_item', item: item, not_services: false %>
             <% end %>
           </tbody>
         </table>
@@ -67,6 +67,14 @@ staff_channel.bind("next_state_sale",function(data) {
 });
 
 staff_channel.bind("next_state_sale_menu_item",function(data) {
+  if(data['sale_menu_item']['state'] == "processing") {
+    $(function(){
+      $("#modal-redo-sale-item").modal('hide')
+      $(".modal-backdrop").remove()
+      set_order_processing_row(data)
+      set_notifications_number()
+    });
+  }
   if(data['sale_menu_item']['state'] == "done") {
     $(function(){
       var notice = pop_notify({
@@ -100,6 +108,16 @@ staff_channel.bind("next_state_sale_menu_item",function(data) {
   }
 });
 
+$(".table-order-ready").on("click", ".btn-redo", function(){
+  item_id = $(this).parents(".menu-item-row").attr("item-id")
+  $('.launch-modal').html("<%=j render 'waiter_pages/modal_redo_sale_item' %>")
+  $('#modal-redo-sale-item').attr("item-id", item_id)
+  $("#modal-redo-sale-item").modal({
+    keyboard: true,
+    backdrop: 'static'
+  })
+})
+
 function set_order_done_row(data){
   sale_item_id = data['sale_menu_item']['id']
   sale_id = data['sale_menu_item']['sale_id']
@@ -111,6 +129,23 @@ function set_order_done_row(data){
   $(".menu-item-row[item-id="+sale_item_id+"] .item-action-at").html("Xong lúc: " + data['sale_menu_item']['format_done_at'])
 
   $(".menu-item-row[item-id="+sale_item_id+"] .item-action").addClass("visible").removeClass("hidden")
+
+  $(".menu-item-row[item-id="+sale_item_id+"] .btn-go-deliver").parent("li").addClass("active")
+
+  $(".menu-item-row[item-id="+sale_item_id+"] .btn-go-deliver").attr("href", "/waiter_pages/go_deliver?sale_menu_id="+sale_item_id)
+
+  $(".menu-item-row[item-id="+sale_item_id+"] .btn-go-deliver").attr("data-remote", true)
+}
+
+function set_order_processing_row(data){
+  sale_item_id = data['sale_menu_item']['id']
+  sale_id = data['sale_menu_item']['sale_id']
+
+  $(".menu-item-row[item-id="+sale_item_id+"]").removeClass().addClass("menu-item-row")
+
+  $(".menu-item-row[item-id="+sale_item_id+"] .item-action-at").html("Đang chờ")
+
+  $(".menu-item-row[item-id="+sale_item_id+"] .item-action").addClass("hidden").removeClass("visible")
 
   $(".menu-item-row[item-id="+sale_item_id+"] .btn-go-deliver").parent("li").addClass("active")
 
@@ -152,7 +187,6 @@ function set_order_delivered_row(data){
 
   if($(".order-row[sale-id="+sale_id+"] .menu-item-row").length == $(".order-row[sale-id="+sale_id+"] .menu-item-row.success").length){
     $(".order-row[sale-id="+sale_id+"]").remove()
-    console.log(data)
     alert("Order " + sale_id + " từ máy " + data['sale_menu_item']['sale']['customer_id'] + " đã mang hết lên cho khách")
   }
 }
@@ -205,7 +239,12 @@ function set_sale_menu_item(item){
 
   $(".menu-item-row[item-id="+item_id+"] .btn-go-deliver").attr("href", "/waiter_pages/go_deliver?sale_menu_id="+ item_id).attr("data-remote", true)
 
-  $(".menu-item-template .menu-item-name .item-name").html(item['menu_item_details']['name'] + "<strong class='item-quantity'>("+parseInt(item['quantity'])+")</strong>")
+  if(item["menu_item_details"]['klass'] == "service"){
+    $(".menu-item-row[item-id="+item_id+"] .dropdown-menu .divider").remove()
+    $(".menu-item-row[item-id="+item_id+"] .dropdown-menu .btn-redo").parent("li").remove()
+  }
+
+  $(".menu-item-template .menu-item-name .item-name").html(item['menu_item_details']['name'] + " <strong class='item-quantity'>("+parseInt(item['quantity'])+")</strong>")
 
   $(".menu-item-template .menu-item-name .item-action-at").html(get_item_action_at(item))
 
@@ -241,7 +280,7 @@ function get_item_action_at(item){
     return "Giao xong lúc: " + item['format_delivered_at']
     break;
     default:
-    return ""
+    return "Đang chờ"
   }
 }
 </script>

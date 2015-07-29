@@ -1,0 +1,84 @@
+<div class="modal fade" id="modal-redo-sale-item" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <h4>Lý do yêu cầu làm lại:</h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="col-lg-12">
+              <label>
+                <input type="radio" name='reason' checked value="1"> <span style='margin-left: 5px; font-weight: normal' class='redo-reason'>Làm đổ</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="col-lg-12">
+              <label>
+                <input type="radio" name='reason' value='2'> <span style='margin-left: 5px; font-weight: normal' class='redo-reason'>Làm nhầm món</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="col-lg-12">
+              <label>
+                <input type="radio" name='reason' value='3'> <span style='margin-left: 5px; font-weight: normal' class='redo-reason'>Khách gọi nhầm</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="col-lg-12">
+              <label>
+                <input type="radio" name='reason' value='0'> <span style='margin-left: 5px; font-weight: normal' class='redo-reason'>Khác</span>
+              </label>
+              <br>
+              <textarea class="form-control redo-reason" disabled style="height: 100px" placeholder="Nêu rõ lý do khác"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">
+          <i class="fa fa-times-circle">
+          </i>
+          Huỷ bỏ
+        </button>
+        <button id="btn-confirm-redo" type="button" class="btn btn-primary">
+          <i class="fa fa-check" style="margin-right: 5px"></i> Yêu cầu làm lại
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script type="text/javascript">
+$("input[type=radio]").click(function(){
+  if($(this).val() == "0")
+    $("textarea.redo-reason").removeAttr("disabled")
+  else
+    $("textarea.redo-reason").prop("disabled", true)
+})
+
+$("#btn-confirm-redo").click(function(){
+  if($("input[type=radio]:checked").val() == "0")
+    reason = $("textarea.redo-reason").val()
+  else
+    reason = $("input[type=radio]:checked").siblings("span.redo-reason").text()
+
+  item_id = $("#modal-redo-sale-item").attr("item-id")
+  $.ajax({
+    type: "POST",
+    dataType: "script",
+    url: "/waiter_pages/redo",
+    data: {sale_menu_id: item_id, reason: reason}
+  });
+})
+</script>

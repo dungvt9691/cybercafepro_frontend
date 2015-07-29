@@ -5,8 +5,7 @@ class BartenderPagesController < ApplicationController
   def cooking_list
     #TODO
     @sales = Ckfapi::API::Sale.index(current_token, detail: true)['sales']
-    @sales_processing = @sales.select{|m| m['state'] == 'processing' && m['drink_sale_menu_items_details'].any?{|f| f['state'] == 'processing'}}
-    @sales_cooking = @sales.select{|m| m['state'] == 'processing' && m['drink_sale_menu_items_details'].any?{|f| f['state'] == 'cooking'}}
+    @sales_processing = @sales.sort{|a, b| a['created_at'].to_datetime <=> b['created_at'].to_datetime}.select{|m| m['state'] == 'processing' && m['drink_sale_menu_items_details'].any?{|f| ['processing', 'cooking'].include? f['state']}}
     respond_to do |format|
       format.html
     end

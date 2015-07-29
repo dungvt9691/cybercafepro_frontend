@@ -12,7 +12,6 @@ var stack_context = {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1
   </div>
   <div style='padding-left: 15px;'>
     <section id="pinBoot">
-      <%= render 'order_cooking' %>
       <%= render 'order_processing' %>
       <%= render 'order_template' %>
     </section>
@@ -32,34 +31,24 @@ $(document).ready(function () {
 
 
 
-$("#pinBoot").on('click', '.order-cooking .service', function(){
+$("#pinBoot").on('click', '.order-processing .service-cooking', function(){
   var checked = $(this).children(".row").children(".col-lg-10").children(".check-service-done").prop("checked")
 
-  sale_id = $(this).parents(".order-cooking").attr("sale-id")
+  sale_id = $(this).parents(".order-processing").attr("sale-id")
 
   id = $(this).attr('service-id')
-
-  if(checked) {
-    $(this).children(".row").children(".col-lg-10").children(".check-service-done").prop('checked', false); 
-  }
-  else {
-    $(this).children(".row").children(".col-lg-10").children(".check-service-done").prop('checked', true); 
-  }
 
   $.ajax({
     type: "GET",
     url: "/bartender_pages/done_cooking?sale_menu_id=" + id
   });
 
-  done = true
+  $(".service-cooking[service-id="+id+"]").remove()
 
-  $(".order-cooking[sale-id="+sale_id+"] .check-service-done").each( function(){
-    if(!$(this).prop("checked"))
-      done = false
-  })
+  done = $(".order-processing[sale-id="+sale_id+"] .service-cooking").length == 0
 
   if(done){
-    $(".order-cooking[sale-id="+sale_id+"]").remove()
+    $(".order-processing[sale-id="+sale_id+"]").remove()
     check_has_order()
     $(function(){
       var notice = pop_notify({
@@ -70,7 +59,7 @@ $("#pinBoot").on('click', '.order-cooking .service', function(){
 })
 
 $("#pinBoot").on('click', '.btn-done-cooking', function(){
-  $(this).parents(".order-cooking").children(".service-lists").children(".col-lg-12").children(".services").children(".service").each(function(){
+  $(this).parents(".order-processing").children(".service-lists").children(".col-lg-12").children(".services").children(".service").each(function(){
     id = $(this).attr('service-id')
     $.ajax({
       type: "GET",
@@ -78,41 +67,25 @@ $("#pinBoot").on('click', '.btn-done-cooking', function(){
     });
   })
 
-  $(this).parents(".order-cooking").remove()
+  $(this).parents(".order-processing").remove()
   check_has_order()
 })
 
 $("#pinBoot").on('click', '.btn-start-cooking', function(){
   sale_id = $(this).attr('sale-id')
-  $(".order-processing[sale-id="+sale_id+"]").children(".service-lists").children(".col-lg-12").children(".services").children(".service").each(function(){
+  $(".order-processing[sale-id="+sale_id+"]").children(".service-lists").children(".col-lg-12").children(".services").children(".service.service-processing").each(function(){
     id = $(this).attr('service-id')
     $.ajax({
       type: "GET",
       url: "/bartender_pages/start_cooking?sale_menu_id=" + id
     });
+
+    $(".service-processing[service-id="+id+"] .list-style").remove()
+    $(".service-processing[service-id="+id+"] .service-name").before("<input type='checkbox' class='check-service-done'>")
+    $(".service-processing[service-id="+id+"]").removeClass("order-processing").addClass("service-cooking")
   })
 
-  $(".order-processing[sale-id="+sale_id+"] .list-style").remove()
-  $(".order-processing[sale-id="+sale_id+"] .service-name").before("<input type='checkbox' class='check-service-done'>")
-
-  $(".order-processing[sale-id="+sale_id+"] .btn-start-cooking").text("Làm Xong")
-
-  $(".order-processing[sale-id="+sale_id+"] .btn-start-cooking").addClass("btn-danger").removeClass("btn-primary")
-
-  $(".order-processing[sale-id="+sale_id+"] .btn-start-cooking").addClass("btn-done-cooking").removeClass("btn-start-cooking")      
-
-  template = $(".order-processing[sale-id="+sale_id+"]").html()
-
-  article = '<article class="order order-cooking" sale-id="'+sale_id+'"></article>'
-
-  $(".order-processing[sale-id="+sale_id+"]").remove()
-
-  if($(".order.order-cooking").length > 0)
-    $('.order.order-cooking').last().after(article)
-  else
-    $("#pinBoot").prepend(article)
-
-  $(".order-cooking[sale-id="+sale_id+"]").html(template)
+  $(".order-processing[sale-id="+sale_id+"] .btn-start-cooking").addClass("disabled")      
 })
 
 staff_channel.bind("next_state_sale",function(data) {
@@ -130,11 +103,42 @@ staff_channel.bind("next_state_sale",function(data) {
   }
 });
 
+staff_channel.bind("next_state_sale_menu_item", function(data) {
+  sale_id = data['sale_menu_item']['sale_id']
+  if(data['sale_menu_item']['state'] == 'processing') {
+    if(data['sale_menu_item']['sale']['is_drink_sale']){
+      $(function(){
+        var notice = pop_notify({
+          text: "Yêu cầu làm lại từ máy " + data['sale_menu_item']['sale']['customer_id'] + " với lý do: <b>" + data['sale_menu_item']['reason'] + "</b>",
+        });
+
+        params = {}
+        params['sale'] = data['sale_menu_item']['sale']
+        params['sale']['drink_sale_menu_items_details'] = [data['sale_menu_item']]
+        params['is_redo'] = true
+        if($(".order-processing[sale-id="+sale_id+"]").length == 0){
+          append_processing_order(params)
+          check_has_order()
+        }
+        else{
+          append_service_list(params)
+          $(".order-processing[sale-id="+sale_id+"] .btn-start-cooking").removeClass("disabled")
+        }
+      });
+    }
+  }
+});
+
 function append_processing_order(params){
   sale_id = params['sale']['id']
   template = $(".order-template").html()
   article = '<article class="order order-processing" sale-id="'+sale_id+'"></article>'
-  $(".order-template").before(article)
+  if(params['is_redo']){
+    $("#pinBoot").prepend(article)
+  }
+  else{
+    $(".order-template").before(article)
+  }
   $(".order-processing[sale-id="+sale_id+"]").html(template)
   $(".order-processing[sale-id="+sale_id+"] .sale-name").html("<i class='fa fa-desktop'></i>Máy "+params['sale']['customer_id'])
   $(".order-processing[sale-id="+sale_id+"] .sale-code.sale-created-at").html("MÃ HĐ: "+params['sale']['invoice_number']+"<br>NGÀY: "+params['sale']['format_created_at'])
@@ -145,12 +149,13 @@ function append_processing_order(params){
 
 function append_service_list(params){
   sale_id = params['sale']['id']
+  console.log(params['sale']['drink_sale_menu_items_details'])
   params['sale']['drink_sale_menu_items_details'].forEach(function(data){
     menu_item = data['menu_item_details']
 
-    template = $(".order-processing[sale-id="+sale_id+"] .service-template").html()
+    template = $(".order-template .service-template").html()
 
-    service  = "<li class='service' service-id='"+data['id']+"'></li>"
+    service  = "<li class='service service-processing' service-id='"+data['id']+"'></li>"
 
     $(".order-processing[sale-id="+sale_id+"] .services").append(service)
 
@@ -167,7 +172,7 @@ function append_service_list(params){
 
 function check_has_order(){
   order_processing = $(".order.order-processing").length
-  order_cooking    = $(".order.order-cooking").length
+  order_cooking    = $(".order.order-processing").length
   if(order_cooking + order_processing == 0){
     $(".no-orders").fadeIn(100)
   }

@@ -5,8 +5,7 @@ class ChiefPagesController < ApplicationController
   def cooking_list
     #TODO
     @sales = Ckfapi::API::Sale.index(current_token, detail: true)['sales']
-    @sales_processing = @sales.select{|m| m['state'] == 'processing' && m['food_sale_menu_items_details'].any?{|f| f['state'] == 'processing'}}
-    @sales_cooking = @sales.select{|m| m['state'] == 'processing' && m['food_sale_menu_items_details'].any?{|f| f['state'] == 'cooking'}}
+    @sales_processing = @sales.sort{|a, b| a['created_at'].to_datetime <=> b['created_at'].to_datetime}.select{|m| m['state'] == 'processing' && m['food_sale_menu_items_details'].any?{|f| ['processing', 'cooking'].include? f['state']}}
     respond_to do |format|
       format.html
     end
@@ -26,7 +25,9 @@ class ChiefPagesController < ApplicationController
       end
     elsif !params[:sale_menu_id].blank?
       @sale_menu_item =  update_next_state_sale_menu_item(current_token, params[:sale_menu_id], "cooking")
-      WebsocketRails[:staff].trigger 'next_state_sale_menu_item',@sale_menu_item
+      if not @sale_menu_item.nil?
+        WebsocketRails[:staff].trigger 'next_state_sale_menu_item',@sale_menu_item
+      end
       respond_to do |format|
         format.js
       end

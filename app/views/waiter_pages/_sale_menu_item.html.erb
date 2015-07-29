@@ -11,6 +11,12 @@
         <li class='<%= item['state'] == 'delivering' ? 'active' : '' %>'>
           <a class='btn-done-deliver' <%= "data-remote=true" if item['state'] == 'delivering' %> href="<%= item['state'] == 'delivering' ? done_deliver_waiter_pages_path(sale_menu_id: item['id']) : 'javascript:;' %>">Đã giao</a>
         </li>
+        <% if not_services %>
+        <li role="separator" class="divider"></li>
+        <li class="active">
+          <a class='btn-redo'>Làm lại</a>
+        </li>
+        <% end %>
       </ul>
     </div>
     <div class='item-name'>
