@@ -73,7 +73,7 @@ $("#pinBoot").on('click', '.btn-done-cooking', function(){
 
 $("#pinBoot").on('click', '.btn-start-cooking', function(){
   sale_id = $(this).attr('sale-id')
-  $(".order-processing[sale-id="+sale_id+"]").children(".service-lists").children(".col-lg-12").children(".services").children(".service").each(function(){
+  $(".order-processing[sale-id="+sale_id+"]").children(".service-lists").children(".col-lg-12").children(".services").children(".service.service-processing").each(function(){
     id = $(this).attr('service-id')
     $.ajax({
       type: "GET",
