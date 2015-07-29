@@ -1,7 +1,5 @@
 class ManagerPagesController < ApplicationController
-  before_action :is_manager?
-  before_action :is_maker?
-  skip_before_action :is_manager?, only: [:menu_item_list]
+  before_action :filter_role
   layout "manager_layout"
 
   def user_list
@@ -58,13 +56,13 @@ class ManagerPagesController < ApplicationController
 
   private
 
-  def is_manager?
-    return true if ["Manager"].include? current_user['current_role']
-    redirect_to get_root_path(current_user)
-  end
-
-  def is_maker?
-    return true if ["Chef", "Bartender"].include? current_user['current_role']
+  def filter_role
+    case action_name
+    when 'menu_item_list'
+      return true if ["Manager", "Chef", "Bartender"].include?(current_user['current_role'])
+    else
+      return true if ["Manager"].include? current_user['current_role']
+    end
     redirect_to get_root_path(current_user)
   end
 
