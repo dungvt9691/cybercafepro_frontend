@@ -18,8 +18,8 @@ module ApplicationHelper
     end
   end
 
-  def redo_sale_menu_item token,sale_menu_item_id
-    Ckfapi::API::SaleMenuItem.redo(current_token, sale_menu_item_id)
+  def redo_sale_menu_item token,sale_menu_item_id,message=""
+    Ckfapi::API::SaleMenuItem.redo(current_token, sale_menu_item_id, message)
   end
 
   def mobile_device?

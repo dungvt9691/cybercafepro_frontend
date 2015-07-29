@@ -177,7 +177,7 @@ class WaiterPagesController < ApplicationController
     elsif !params[:sale_menu_id].blank?
       respond_to do |format|
         format.js {
-          @sale_menu_item = redo_sale_menu_item(current_token, params[:sale_menu_id])
+          @sale_menu_item = redo_sale_menu_item(current_token, params[:sale_menu_id], params[:reason])
           @sale_menu_item['sale_menu_item']['sale']['is_food_sale'] = @sale_menu_item['sale_menu_item']['menu_item_details']['klass'] == "food"
           @sale_menu_item['sale_menu_item']['sale']['is_drink_sale'] = @sale_menu_item['sale_menu_item']['menu_item_details']['klass'] == "drink"
           @sale_menu_item['sale_menu_item']['reason'] = params[:reason]
