@@ -18,6 +18,10 @@ module ApplicationHelper
     end
   end
 
+  def redo_sale_menu_item token,sale_menu_item_id
+    Ckfapi::API::SaleMenuItem.redo(current_token, sale_menu_item_id)
+  end
+
   def mobile_device?
     request.user_agent =~ /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/
   end

@@ -40,6 +40,7 @@ Rails.application.routes.draw do
       get "go_deliver"
       get "done_deliver"
       get "delivered_sales"
+      post "redo"
     end
     member do
       get "sale_details"

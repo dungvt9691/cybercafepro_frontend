@@ -15,10 +15,11 @@
     <div class="col-lg-12">
       <ul class="services">
         <% sale['food_sale_menu_items_details'].each do |data| %>
+        <% if data['state'] != 'done' %>
         <li class='service' service-id="<%= data['id'] %>">
           <div class="row">
             <div class="col-lg-10 col-md-10 col-sm-10">
-              <input type='checkbox' class='check-service-done'>
+              <input type='checkbox' <%= 'checked' if data['state'] == "done" %> class='check-service-done'>
               <span class='service-name'>
                 <%= data['menu_item_details']['name'] %>
               </span>
@@ -37,6 +38,7 @@
             </div>
           </div>
         </li>
+        <% end %>
         <% end %>
       </ul>
     </div>

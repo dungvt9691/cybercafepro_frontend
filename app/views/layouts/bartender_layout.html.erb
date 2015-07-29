@@ -7,17 +7,6 @@
   <%= csrf_meta_tags %>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <%= render 'layouts/socket_pattern' %>
-  <script type="text/javascript">
-  $(document).ready(function () {
-    $(document).ajaxStart(function (event) {
-      $(".btn").addClass("disabled")
-      $('body').css('cursor', 'progress ' )
-    }).ajaxStop(function (event) {
-      $(".btn").removeClass("disabled")
-      $('body').css('cursor', 'auto' )
-    });
-  });
-  </script>
 </head>
 <body class='chef-cookinglist'>
 <%= yield %>
