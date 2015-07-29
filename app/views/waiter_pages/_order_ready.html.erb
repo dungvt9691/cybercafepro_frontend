@@ -100,7 +100,7 @@ staff_channel.bind("next_state_sale_menu_item",function(data) {
       var notice = pop_notify({
         text: "Đã giao <b>" + parseInt(data['sale_menu_item']['quantity']) + " " + data['sale_menu_item']['menu_item_details']['name']+ "</b> cho máy " + data['sale_menu_item']['sale']['customer_id'],
       });
-      
+
       set_order_delivered_row(data)
       set_notifications_number()
 
@@ -158,7 +158,7 @@ function set_order_delivering_row(data){
   sale_item_id = data['sale_menu_item']['id']
   $(".menu-item-row[item-id="+sale_item_id+"]").removeClass("danger").addClass("warning")
 
-  $(".menu-item-row[item-id="+sale_item_id+"] .item-action-at").html("Giao xong lúc: " + data['sale_menu_item']['format_delivering_at'])
+  $(".menu-item-row[item-id="+sale_item_id+"] .item-action-at").html("Đi Giao lúc: " + data['sale_menu_item']['format_delivering_at'])
 
   $(".menu-item-row[item-id="+sale_item_id+"] .btn-go-deliver").parent("li").removeClass("active")
 
@@ -181,7 +181,7 @@ function set_order_delivered_row(data){
 
   $(".menu-item-row[item-id="+sale_item_id+"]").removeClass("warning").addClass("success")
 
-  $(".menu-item-row[item-id="+sale_item_id+"] .item-action-at").html("Đi giao lúc: " + data['sale_menu_item']['format_delivered_at'])
+  $(".menu-item-row[item-id="+sale_item_id+"] .item-action-at").html("Giao xong lúc: " + data['sale_menu_item']['format_delivered_at'])
 
   $(".menu-item-row[item-id="+sale_item_id+"] .item-action").addClass("hidden")
 
