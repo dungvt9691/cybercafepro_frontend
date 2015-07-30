@@ -15,6 +15,10 @@ class CustomerPagesController < ApplicationController
 
     @services = @categories["categories"].find {|e| e["name"] == "Game Service" }
     @service_types = @services['menu_items'].map {|e| e['mtype']}.uniq
+
+    @sales = Ckfapi::API::Sale.index(current_token, detail: true)['sales'] rescue []
+    @sales = @sales.sort{|a, b| b['created_at'].to_datetime <=> a['created_at'].to_datetime}
+    @lated_sale = @sales.select{|s| s['customer_id'] == current_user['id']}.first
   end
 
   def create_sale

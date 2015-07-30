@@ -64,22 +64,35 @@
         </div>
         <div role="tabpanel" class="tab-pane fade" id="histories-tab">
           <div class="customer-table">
-            <table data-height="350" data-width="299">
+            <h4 style='font-size: 17px;'>ORDER GẦN ĐÂY NHẤT</h4>
+            <table data-height="290" data-width="299">
               <thead>
                 <tr>
-                  <th data-field="id" data-align="left">CÁC MÓN ĂN ĐÃ GỌI&nbsp; &nbsp;</th>
+                  <th data-field="id" data-align="left">CÁC MÓN ĂN ĐÃ CHỌN&nbsp; &nbsp;</th>
                   <th data-field="price" data-align="left">ĐƠN GIÁ&nbsp;</th>
                   <th data-field="name" data-align="left">SL &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                 </tr>
               </thead>
               <tbody>
+                <% if @lated_sale.blank? %>
                 <tr id="no-choice">
                   <td colspan="3">Chưa chọn món</td>
                 </tr>
+                <% else %>
+                <% @lated_sale['food_sale_menu_items_details'].each do |item| %>
+                <%= render 'sale_menu_item', item: item, not_services: true %>
+                <% end %>
+                <% @lated_sale['drink_sale_menu_items_details'].each do |item| %>
+                <%= render 'sale_menu_item', item: item, not_services: true %>
+                <% end %>
+                <% @lated_sale['service_sale_menu_items_details'].each do |item| %>
+                <%= render 'sale_menu_item', item: item, not_services: false %>
+                <% end %>
+                <% end %>
               </tbody>
             </table>
           </div>
-          <div style="padding: 15px; padding-top: 5px; padding-bottom: 0px">
+          <div style="padding: 15px; padding-top: 20px; padding-bottom: 0px">
             <div class="row">
               <div class="col-lg-12">
                 <h4 style='font-size: 17px;'>Đóng góp ý kiến</h4>
@@ -100,6 +113,13 @@
   </div>
 </div>
 <script type="text/javascript">
+$( document ).ready(function() {
+  history_order_row = $(".menu-item-row").length
+  if(history_order_row >= 5){
+    $("#histories-tab .customer-table .bootstrap-table").css("box-shadow", "0 9px 9px -6px rgba(0,0,0,0.5)")
+  }
+});
+
 $(".show-orders").click(function(){
   $('a[href="#orders-tab"]').tab('show')
 })
