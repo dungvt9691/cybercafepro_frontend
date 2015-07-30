@@ -50,7 +50,7 @@ $(".customer-food-type").click(function(){
 
 var order_row = 0;
 
-$(".customer-menu").on("click", ".customer-service", function(){
+$(".customer-menu").on("click", ".customer-service.active", function(){
   service_name = $(this).attr("data-service-name")
   service_id = $(this).attr("data-service-id")
   service_price = $(this).attr("data-service-price")
