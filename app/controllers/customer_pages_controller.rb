@@ -15,6 +15,10 @@ class CustomerPagesController < ApplicationController
 
     @services = @categories["categories"].find {|e| e["name"] == "Game Service" }
     @service_types = @services['menu_items'].map {|e| e['mtype']}.uniq
+
+    @sales = Ckfapi::API::Sale.index(current_token, detail: true)['sales'] rescue []
+    @sales = @sales.sort{|a, b| b['created_at'].to_datetime <=> a['created_at'].to_datetime}
+    @lated_sale = @sales.select{|s| s['customer_id'] == current_user['id']}.first
   end
 
   def create_sale
@@ -37,6 +41,20 @@ class CustomerPagesController < ApplicationController
     respond_to do |format|
       format.js
       format.json { render :json => { sale: @sale} }
+    end
+  end
+
+  def report_sale
+
+    @report = Ckfapi::API::Report.create(current_token,{
+      title: "Customer Report",
+      description: params[:report][:description],
+      user_id: current_user['id'],
+      model: "Sale",
+      model_id: params[:report][:sale_id]
+    })
+    respond_to do |format|
+      format.js
     end
   end
 

@@ -1,0 +1,32 @@
+<tr data-target="#item-action-dropdown-<%= item['id'] %>" data-toggle="dropdown" class='menu-item-row <%= get_class_menu_item(item['state']) %>' item-id="<%= item['id'] %>" id="<%= item['id'] %>">
+  <td class='menu-item-name'>
+    <div id="item-action-dropdown-<%= item['id'] %>" class="btn-group item-action pull-right <%= ['done', 'delivering'].include?(item['state']) ? 'visible' : 'hidden' %>" style="margin-top: 12px">
+      <button type="button" style="padding-bottom: 2px;" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" role="button" data-target="#item-action-dropdown-<%= item['id'] %>" aria-haspopup="true" aria-expanded="false">
+        <i class='fa fa-caret-down' style='font-size: 18px'></i>
+      </button>
+      <ul class="dropdown-menu">
+        <li class='<%= item['state'] == 'done' ? 'active' : '' %>'>
+          <a class='btn-go-deliver' <%= "data-remote=true" if item['state'] == 'done' %> href="<%= item['state'] == 'done' ? go_deliver_waiter_pages_path(sale_menu_id: item['id']) : 'javascript:;' %>">Đi giao</a>
+        </li>
+        <li class='<%= item['state'] == 'delivering' ? 'active' : '' %>'>
+          <a class='btn-done-deliver' <%= "data-remote=true" if item['state'] == 'delivering' %> href="<%= item['state'] == 'delivering' ? done_deliver_waiter_pages_path(sale_menu_id: item['id']) : 'javascript:;' %>">Đã giao</a>
+        </li>
+        <% if not_services %>
+        <li role="separator" class="divider"></li>
+        <li class="active">
+          <a class='btn-redo'>Làm lại</a>
+        </li>
+        <% end %>
+      </ul>
+    </div>
+    <div class='item-name'>
+      <%= item['menu_item_details']['name'] %>
+      <strong class='item-quantity'>
+        (<%= item['quantity'].to_i %>)
+      </strong>
+    </div>
+    <small class='pull-left item-action-at' style='font-weight: normal; margin-top: 3px'>
+      <%= get_item_action_at(item) %>
+    </small>
+  </td>
+</tr>
