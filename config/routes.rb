@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     collection do
       get  "customer_ordering"
       post "create_sale"
+      post "report_sale"
     end
   end
 

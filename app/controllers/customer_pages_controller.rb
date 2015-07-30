@@ -44,6 +44,20 @@ class CustomerPagesController < ApplicationController
     end
   end
 
+  def report_sale
+
+    @report = Ckfapi::API::Report.create(current_token,{
+      title: "Customer Report",
+      description: params[:report][:description],
+      user_id: current_user['id'],
+      model: "Sale",
+      model_id: params[:report][:sale_id]
+    })
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def edit_sale
     #TODO
   end
