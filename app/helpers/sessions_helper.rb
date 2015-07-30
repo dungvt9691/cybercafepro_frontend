@@ -53,7 +53,7 @@ module SessionsHelper
     when "Bartender"
       cooking_list_bartender_pages_path
     when "Manager"
-      user_list_manager_pages_path
+      accounting_manager_pages_path
     else
       customer_ordering_customer_pages_path
     end

@@ -1,7 +1,9 @@
 <div class="content">
   <h1> Danh sách nhân viên </h1>
+  <%= link_to "Add User", new_registration_path, class: "btn btn-default btn-large", target: "_blank" %>
   <br />
-  <table id="users-table" class="display">
+  <br />
+  <table id="users-table" class="display table table-bordered">
     <thead>
       <th>Id</th>
       <th>Action</th>
@@ -25,11 +27,64 @@
       <% end %>
     <% end%>
   </tbody>
+  <tfoot>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th><input type="text" name="search_role" placeholder="Search roles" class="search_init"></th>
+    <th><input type="text" name="search_current_role" placeholder="Search current roles" class="search_init"></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tfoot>
   </table>
 
-  <script>
-    $(document).ready(function(){
-      $('#users-table').DataTable();
-    });
-  </script>
 </div>
+
+<script>
+  $(document).ready(function(){
+    var userTable = $('#users-table').dataTable();
+    var asInitUserVals = new Array();
+
+    $("#users-table tfoot input").keyup( function () {
+      /* Filter on the column (the index) of this element */
+      userTable.fnFilter( this.value, $("#users-table tfoot th").index($(this).parent()) );
+    } );
+
+    /*
+     * Support functions to provide a little bit of 'user friendlyness' to the textboxes in
+     * the footer
+     */
+    $("#users-table tfoot input").each( function (i) {
+      asInitUserVals[i] = this.value;
+    } );
+
+    $("#users-table tfoot input").focus( function () {
+      if ( this.className == "search_init" )
+      {
+        this.className = "";
+        this.value = "";
+      }
+    } );
+
+    $("#users-table tfoot input").blur( function (i) {
+      if ( this.value == "" )
+      {
+        this.className = "search_init";
+        this.value = asInitUserVals[$("#users-table tfoot th").index($(this).parent())];
+      }
+    } );
+  });
+</script>
+
+<style>
+  tfoot th input {
+    width: 100%;
+  }
+</style>

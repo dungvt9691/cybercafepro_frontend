@@ -5,7 +5,37 @@
     <% user['employee']['current_role'] = user['role'] %>
     $('#stat-attendance-table tbody').append("<%=j render partial: 'user_row', locals: { user: user['employee'] } %>");
   <% end %>
-  $('#stat-attendance-table').dataTable();
+  var userTable = $('#stat-attendance-table').dataTable();
+  var asInitUserVals = new Array();
+
+  $("#stat-attendance-table tfoot input").keyup( function () {
+    /* Filter on the column (the index) of this element */
+    userTable.fnFilter( this.value, $("#stat-attendance-table tfoot th").index($(this).parent()) );
+  } );
+
+  /*
+    * Support functions to provide a little bit of 'user friendlyness' to the textboxes in
+    * the footer
+    */
+  $("#stat-attendance-table tfoot input").each( function (i) {
+    asInitUserVals[i] = this.value;
+  } );
+
+  $("#stat-attendance-table tfoot input").focus( function () {
+    if ( this.className == "search_init" )
+    {
+      this.className = "";
+      this.value = "";
+    }
+  } );
+
+  $("#stat-attendance-table tfoot input").blur( function (i) {
+    if ( this.value == "" )
+    {
+      this.className = "search_init";
+      this.value = asInitUserVals[$("#stat-attendance-table tfoot th").index($(this).parent())];
+    }
+  } );
   $('#customer-stat h2').html("<%= @attendances['customers'].length %><small> Customer</small>");
   $('#waiter-stat h2').html("<%= @attendances['waiters'].length %><small> Waiter</small>");
   $('#chef-stat h2').html("<%= @attendances['chefs'].length %><small> Chef</small>");
@@ -20,5 +50,35 @@
   <% (@sales['sales'].values.sum).each do |s| %>
     $('#stat-sale-table tbody').append("<%=j render partial: 'sale_menu_item_row', locals: { sale_menu_item: s } %>");
   <% end %>
-  $('#stat-sale-table').dataTable();
+  var saleMenuItemTable = $('#stat-sale-table').dataTable();
+  var asInitSaleMenuItemVals = new Array();
+
+  $("#stat-sale-table tfoot input").keyup( function () {
+    /* Filter on the column (the index) of this element */
+    saleMenuItemTable.fnFilter( this.value, $("#stat-sale-table tfoot th").index($(this).parent()) );
+  } );
+
+  /*
+    * Support functions to provide a little bit of 'user friendlyness' to the textboxes in
+    * the footer
+    */
+  $("#stat-sale-table tfoot input").each( function (i) {
+    asInitSaleMenuItemVals[i] = this.value;
+  } );
+
+  $("#stat-sale-table tfoot input").focus( function () {
+    if ( this.className == "search_init" )
+    {
+      this.className = "";
+      this.value = "";
+    }
+  } );
+
+  $("#stat-sale-table tfoot input").blur( function (i) {
+    if ( this.value == "" )
+    {
+      this.className = "search_init";
+      this.value = asInitSaleMenuItemVals[$("#stat-sale-table tfoot th").index($(this).parent())];
+    }
+  } );
 <% end %>

@@ -12,7 +12,7 @@
     <div role="tabpanel" class="tab-pane active" id="menu-item-list">
       <br />
       <div class="menu-items-index">
-        <table id="menu-items-table" class="display">
+        <table id="menu-items-table" class="display table table-bordered">
           <thead>
             <th>Id</th>
             <th>Action</th>
@@ -53,6 +53,20 @@
               <% end %>
             <% end%>
           </tbody>
+          <tfoot>
+            <th><input type="text" id="search_id" placeholder="Search ids" class="search_init"></th>
+            <th></th>
+            <th><input type="text" name="search_name" placeholder="Search names" class="search_init"></th>
+            <!-- <th></th> -->
+            <th><input type="text" mtype="search_mtype" placeholder="Search mtypes" class="search_init"></th>
+            <th><input type="text" state="search_state" placeholder="Search states" class="search_init"></th>
+            <th></th>
+            <th></th>
+            <th><input type="text" category="search_category" placeholder="Search categorys" class="search_init"></th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tfoot>
         </table>
       </div>
 
@@ -113,7 +127,37 @@
 
 <script>
   $(document).ready(function(){
-    $('#menu-items-table').DataTable();
+    var menuItemTable = $('#menu-items-table').dataTable();
+    var asInitMenuItemVals = new Array();
+
+    $("#menu-items-table tfoot input").keyup( function () {
+      /* Filter on the column (the index) of this element */
+      menuItemTable.fnFilter( this.value, $("#menu-items-table tfoot th").index($(this).parent()) );
+    } );
+
+    /*
+     * Support functions to provide a little bit of 'user friendlyness' to the textboxes in
+     * the footer
+     */
+    $("#menu-items-table tfoot input").each( function (i) {
+      asInitMenuItemVals[i] = this.value;
+    } );
+
+    $("#menu-items-table tfoot input").focus( function () {
+      if ( this.className == "search_init" )
+      {
+        this.className = "";
+        this.value = "";
+      }
+    } );
+
+    $("#menu-items-table tfoot input").blur( function (i) {
+      if ( this.value == "" )
+      {
+        this.className = "search_init";
+        this.value = asInitMenuItemVals[$("#menu-items-table tfoot th").index($(this).parent())];
+      }
+    } );
   });
   var changePrice = function(el){
     var unit_price = parseFloat($(el).parent().parent().attr('data-price'));
@@ -144,4 +188,8 @@
     margin-bottom: 2px;
     height: 35px;
   }
+  tfoot th input {
+    width: 100%;
+  }
 </style>
+

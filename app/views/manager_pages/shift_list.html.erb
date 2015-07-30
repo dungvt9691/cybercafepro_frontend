@@ -2,7 +2,7 @@
   <h1> Shift </h1>
   <%= button_to 'Add Shift', new_shift_path, class: "btn btn-large btn-default", method: :get %>
   <br />
-  <table id="shifts-table" class="display">
+  <table id="shifts-table" class="display table table-bordered">
     <thead>
       <th>Id</th>
       <th>Action</th>
@@ -18,8 +18,8 @@
               <%= link_to "Edit", edit_shift_path(shift['id']), target: "_blank" %> <br />
               <%= link_to 'Remove', shift_path(shift['id']), :confirm => 'Are you sure?', :method => :delete, remote: true %>
             </td>
-            <td><%= Time.parse(shift['start_time']).strftime("%H:%M:%S") %></td>
-            <td><%= Time.parse(shift['end_time']).strftime("%H:%M:%S") %></td>
+            <td><%= Time.parse(shift['start_time']).in_time_zone(7).strftime("%H:%M:%S") %></td>
+            <td><%= Time.parse(shift['end_time']).in_time_zone(7).strftime("%H:%M:%S") %></td>
           </tr>
         <% end %>
       <% end%>

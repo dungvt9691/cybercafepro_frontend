@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :registrations
 
   resources :menu_items
+  resources :sales
   resources :shifts
 
   resources :manager_pages,only: [] do
@@ -19,7 +20,9 @@ Rails.application.routes.draw do
       get "menu_item_list"
       get "payment_list"
       get "sale_list"
+      get "sale_menu_item_list"
       get "shift_list"
+      get "report_list"
       get "accounting"
       get "stat"
     end

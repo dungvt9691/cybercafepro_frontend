@@ -1,17 +1,29 @@
-<tr>
+<% case sale_menu_item['menu_item_details']['klass'] %>
+<% when 'food' %>
+<tr >
+<% when 'drink' %>
+<tr class="info">
+<% when 'service' %>
+<tr class="warning">
+<% else %>
+<tr >
+<% end %>
 <td><%= sale_menu_item['id'] %></td>
+<td><%= link_to sale_menu_item['sale']['invoice_number'], 'javascript:;', onclick: "showSale(#{sale_menu_item['sale']['id']})" %></td>
 <td><%= sale_menu_item['menu_item_details']['name'] %></td>
-<td><%= sale_menu_item['menu_item_details']['unit_price'] %></td>
-<td><%= sale_menu_item['menu_item_details']['unit'] %></td>
-<td><%= sale_menu_item['menu_item_details']['klass'] %></td>
 <td><%= sale_menu_item['quantity'] %></td>
+<td><%= sale_menu_item['state'] %></td>
 <td><%= link_to sale_menu_item['sale']['customer_id'], user_path(sale_menu_item['sale']['customer_id']), remote: true %></td>
 <td><%= link_to sale_menu_item['pender_id'], user_path(sale_menu_item['pender_id']), remote: true %></td>
+<td><%= Time.parse(sale_menu_item['sale']['pending_at']).in_time_zone(7) if sale_menu_item['sale']['pending_at'] %></td>
 <td><%= link_to sale_menu_item['processor_id'], user_path(sale_menu_item['processor_id']), remote: true %></td>
+<td><%= Time.parse(sale_menu_item['sale']['processing_at']).in_time_zone(7) if sale_menu_item['sale']['processing_at'] %></td>
 <td><%= link_to sale_menu_item['maker_id'], user_path(sale_menu_item['maker_id']), remote: true %></td>
+<td><%= Time.parse(sale_menu_item['cooking_at']).in_time_zone(7) if sale_menu_item['cooking_at'] %></td>
+<td><%= Time.parse(sale_menu_item['done_at']).in_time_zone(7) if sale_menu_item['done_at'] %></td>
 <td><%= link_to sale_menu_item['deliverer_id'], user_path(sale_menu_item['deliverer_id']), remote: true %></td>
+<td><%= Time.parse(sale_menu_item['delivering_at']).in_time_zone(7) if sale_menu_item['delivering_at'] %></td>
+<td><%= Time.parse(sale_menu_item['delivered_at']).in_time_zone(7) if sale_menu_item['delivered_at'] %></td>
 <td><%= link_to sale_menu_item['saver_id'], user_path(sale_menu_item['saver_id']), remote: true %></td>
-<td><%= sale_menu_item['sale']['invoice_number']%></td>
-<td><%= sale_menu_item['updated_at'] %></td>
-<td><%= sale_menu_item['created_at'] %></td>
+<td><%= Time.parse(sale_menu_item['saved_at']).in_time_zone(7) if sale_menu_item['saved_at'] %></td>
 </tr>

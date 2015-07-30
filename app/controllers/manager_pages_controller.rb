@@ -22,14 +22,28 @@ class ManagerPagesController < ApplicationController
   def sale_list
     @mg_page = "sale"
     @sale_menu_items = Ckfapi::API::SaleMenuItem.index(current_token, detail: true)['sale_menu_items'] rescue []
+    @sales = Ckfapi::API::Sale.index(current_token)['sales'] rescue []
     respond_to do |format|
       format.html
+    end
+  end
+
+  def sale_menu_item_list
+    @mg_page = "sale"
+    @sale_menu_items = Ckfapi::API::SaleMenuItem.index(current_token, detail: true)['sale_menu_items'] rescue []
+    respond_to do |format|
+      format.js
     end
   end
 
   def shift_list
     @mg_page = "shift"
     @shifts = Ckfapi::API::Shift.index(current_token, detail: true)['shifts'] rescue []
+  end
+
+  def report_list
+    @mg_page = "report"
+    @reports = Ckfapi::API::Report.index(current_token, detail: true)['reports'] rescue []
   end
 
   def accounting

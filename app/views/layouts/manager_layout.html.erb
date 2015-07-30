@@ -23,7 +23,7 @@
       </li>
       <li class="<%= 'active' if @mg_page == 'sale' rescue ''%> ">
         <a class="href" href="<%= sale_list_manager_pages_path %>">
-          Doanh số ban hàng
+          Danh sách Order
         </a>
       </li>
       <li class="<%= 'active' if @mg_page == 'staff' rescue ''%> ">
@@ -41,6 +41,11 @@
           Accounting
         </a>
       </li>
+      <li class="<%= 'active' if @mg_page == 'report' rescue ''%> ">
+        <a class="href" href="<%= report_list_manager_pages_path %>">
+          Reports
+        </a>
+      </li>
       <% end %>
       <% if ["Manager", "Chef", "Bartender"].include?(current_user['current_role']) %>
       <li class="<%= 'active' if @mg_page == 'menu_item' rescue ''%> ">
@@ -54,6 +59,6 @@
   <div id='mg-content' class="col-md-10">
     <%= yield %>
   </div>
-  <div id="launch-modal"></div>
+  <div class="launch-modal" id="launch-modal"></div>
 </body>
 </html>

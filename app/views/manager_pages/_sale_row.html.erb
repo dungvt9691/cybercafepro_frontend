@@ -1,12 +1,17 @@
 <tr>
 <td><%= sale['id'] %></td>
-<td><%= sale['state'] %></td>
-<td><%= "#{sale['customer']['first_name']} #{sale['customer']['last_name']}" rescue sale['customer_id'] %></td>
-<td><%= "#{sale['pender']['first_name']} #{sale['pender']['last_name']}" rescue sale['pender_id'] %></td>
-<td><%= "#{sale['processor']['first_name']} #{sale['processor']['last_name']}" rescue sale['processor_id'] %></td>
-<td><%= "#{sale['deliverer']['first_name']} #{sale['deliverer']['last_name']}" rescue sale['deliverer_id']%></td>
-<td><%= "#{sale['saver']['first_name']} #{sale['saver']['last_name']}" rescue sale['saver_id'] %></td>
+<td>
+  <%= link_to "View", 'javascript:;', onclick: "showSale(#{sale['id']})" %>
+</td>
 <td><%= sale['invoice_number'] %></td>
-<td><%= sale['updated_at'] %></td>
-<td><%= sale['created_at'] %></td>
+<td><%= sale['state'] %></td>
+<td><%= link_to sale['customer_id'], user_path(sale['customer_id']), remote: true %></td>
+<td><%= link_to sale['pender_id'], user_path(sale['pender_id']), remote: true %></td>
+<td><%= Time.parse(sale['pending_at']).in_time_zone(7) if sale['pending_at'] %></td>
+<td><%= link_to sale['processor_id'], user_path(sale['processor_id']), remote: true %></td>
+<td><%= Time.parse(sale['processing_at']).in_time_zone(7) if sale['processing_at'] %></td>
+<td><%= link_to sale['saver_id'], user_path(sale['saver_id']), remote: true %></td>
+<td><%= Time.parse(sale['saving_at']).in_time_zone(7) if sale['saving_at'] %></td>
+<td><%= Time.parse(sale['updated_at']).in_time_zone(7) %></td>
+<td><%= Time.parse(sale['created_at']).in_time_zone(7) %></td>
 </tr>
