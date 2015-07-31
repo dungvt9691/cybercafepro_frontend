@@ -1,0 +1,11 @@
+<tr class='menu-item-row'>
+  <td class='menu-item-name'>
+    <%= item['menu_item_details']['name'] %>
+  </td>
+  <td>
+    <%= number_with_delimiter(item['menu_item_details']['unit_price'].to_i) %>
+  </td>
+  <td>
+    <%= item['quantity'].to_i %>
+  </td>
+</tr>

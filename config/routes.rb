@@ -3,11 +3,16 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'customer_pages#customer_ordering'
+  # root 'customer_pages#customer_ordering'
+  root 'routes#root'
 
-  resources :users
+  resources :users, only: [:show, :index]
   resource :sessions, only: [:new, :create, :destroy]
   resources :registrations
+
+  resources :menu_items
+  resources :sales
+  resources :shifts
 
   resources :manager_pages,only: [] do
     collection do
@@ -15,7 +20,11 @@ Rails.application.routes.draw do
       get "menu_item_list"
       get "payment_list"
       get "sale_list"
+      get "sale_menu_item_list"
       get "shift_list"
+      get "report_list"
+      get "accounting"
+      get "stat"
     end
   end
 
@@ -23,6 +32,7 @@ Rails.application.routes.draw do
     collection do
       get  "customer_ordering"
       post "create_sale"
+      post "report_sale"
     end
   end
 
@@ -33,10 +43,23 @@ Rails.application.routes.draw do
       get "verify_payment"
       get "go_deliver"
       get "done_deliver"
+      get "delivered_sales"
+      post "redo"
+    end
+    member do
+      get "sale_details"
     end
   end
 
   resources :chief_pages,only: [] do
+    collection do
+      get "cooking_list"
+      get "start_cooking"
+      get "done_cooking"
+    end
+  end
+
+  resources :bartender_pages,only: [] do
     collection do
       get "cooking_list"
       get "start_cooking"
@@ -52,6 +75,7 @@ Rails.application.routes.draw do
       get "sale_list"
       get "save_sale"
       get "saved_sales"
+      get "not_saved_sales"
     end
   end
 

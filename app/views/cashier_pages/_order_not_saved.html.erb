@@ -25,60 +25,25 @@
       </tr>
     </thead>
     <tbody>
-      <% @sales_not_saved.each do |sale| %>
-      <tr class='row-sale <%=  "sale-init" if sale['state'] == "init" %> <%=  "sale-delivered" if sale['state'] == "delivered" %>'  sale-id="<%= sale['id'] %>">
-        <td>
-          <a href="javascript:;" sale-id="<%= sale['id'] %>" class='show-sale-details'><%= sale['invoice_number'] %></a>
-          <% if sale['state'] == 'delivered' %>
-          <a data-remote='true' href='<%= save_sale_cashier_pages_path(sale_id: sale['id']) %>' class='btn btn-danger btn-xs pull-right'>Lưu lại</a>
-          <% end %>
-        </td>
-        <td>
-          Máy <%= sale['customer_id'] %>
-        </td>
-        <td>
-          <span style='display:none'><%= (sale['created_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S") %></span>
-          <%= (sale['created_at'].to_datetime + 7.hours).strftime("%d/%m/%Y <b>%H:%M</b>").html_safe %>
-        </td>
-        <td>
-          <span style='display:none'><%= (sale['updated_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S") %></span>
-          <%= (sale['updated_at'].to_datetime + 7.hours).strftime("%d/%m/%Y <b>%H:%M</b>").html_safe %>
-        </td>
-        <td>
-          <b><%= number_with_delimiter((sale['sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0) + (sale['nocook_sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0)) %></b> đ
-        </td>
-        <td>
+      <tr class="not-saved-loading">
+        <td colspan="6">
           <center>
-            <%= display_state(sale['state']).html_safe %>
+            <i class='fa fa-spin fa-spinner' style="margin-right: 5px"></i> Đang tải dữ liệu
           </center>
         </td>
       </tr>
-      <% end %>
+      <tr class="no-not-saved-orders no-orders" style="display: none">
+        <td colspan="6">
+          <div class="alert alert-warning">Tạm thời không có order mới.</div>
+        </td>
+      </tr>
+      <script type="text/javascript">
+      $.ajax({
+        type: "GET",
+        dataType: "script",
+        url: "<%= not_saved_sales_cashier_pages_path %>"
+      });
+      </script>
     </tbody>
   </table>
 </div>
-<script type="text/javascript">
-var oTable = $("#table-order-not-saved").dataTable({
-  "sDom": "<'row'<'col-lg-6'l><'col-lg-6'f>r>t<'row'<'col-lg-2'i><'col-lg-10'p>>",
-  "sPaginationType": "full_numbers",
-  "oLanguage": {
-    "sLengthMenu": "<%= t('datatable.length_menu') %>",
-    "sSearch": "",
-    "sInfo": "<%= t('datatable.info') %>",
-    "oPaginate": {
-      "sNext": "<%= t('datatable.paginate_next') %>",
-      "sPrevious": "<%= t('datatable.paginate_previous') %>",
-      "sFirst": "<%= t('datatable.paginate_first') %>",
-      "sLast": "<%= t('datatable.paginate_last') %>",
-    }
-  },
-  "aaSorting": [],
-  "aoColumnDefs" : [ {
-    'bSortable' : false,
-    'aTargets' : []
-  } ]
-});
-$('.dataTables_filter input').addClass('form-control').attr('placeholder',"<%= t('datatable.search') %>");
-$('.dataTables_length select').addClass('form-control');
-
-</script>

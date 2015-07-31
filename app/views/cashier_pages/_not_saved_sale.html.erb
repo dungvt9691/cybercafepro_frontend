@@ -1,0 +1,27 @@
+<tr class='row-sale <%=  "sale-init" if sale['state'] == "init" %> <%=  "sale-delivered" if sale['state'] == "delivered" %>'  sale-id="<%= sale['id'] %>">
+  <td>
+    <a href="javascript:;" sale-id="<%= sale['id'] %>" class='show-sale-details'><%= sale['invoice_number'] %></a>
+    <% if sale['state'] == 'delivered' %>
+    <a data-remote='true' href='<%= save_sale_cashier_pages_path(sale_id: sale['id']) %>' class='btn-saved-order btn btn-danger btn-xs pull-right'>Lưu lại</a>
+    <% end %>
+  </td>
+  <td>
+    Máy <%= sale['customer_id'] %>
+  </td>
+  <td>
+    <span style='display:none'><%= (sale['created_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S") %></span>
+    <%= (sale['created_at'].to_datetime + 7.hours).strftime("%d/%m/%Y <b>%H:%M</b>").html_safe %>
+  </td>
+  <td>
+    <span style='display:none'><%= (sale['updated_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S") %></span>
+    <%= (sale['updated_at'].to_datetime + 7.hours).strftime("%d/%m/%Y <b>%H:%M</b>").html_safe %>
+  </td>
+  <td>
+    <b><%= number_with_delimiter(sum(sale)) %></b> đ
+  </td>
+  <td>
+    <center>
+      <%= display_state(sale['state']).html_safe %>
+    </center>
+  </td>
+</tr>

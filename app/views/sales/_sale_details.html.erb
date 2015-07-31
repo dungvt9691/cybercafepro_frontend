@@ -1,0 +1,101 @@
+<div class="row">
+  <div class="col-lg-12">
+    <center>
+      <h3>
+        CHI TIẾT HOÁ ĐƠN
+      </h3>
+      <p style='color: #777; font-size: 20px; margin-top: 10px'><%= sale['invoice_number'] %></p>
+    </center>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-lg-12">
+    <table class='table table-bordered'>
+      <thead style="background-color: #428bca; color: #fff; border: 1px solid #428bca;">
+        <tr>
+          <th>Món</th>
+          <th>SL</th>
+          <th>Giá</th>
+          <th>State</th>
+          <th>Maker</th>
+          <th>Cooking At</th>
+          <th>Done At</th>
+          <th>Deliverer</th>
+          <th>Delivering At</th>
+          <th>Delivered At</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% sale['food_sale_menu_items_details'].each do |item| %>
+        <tr>
+          <td style="width: 60%">
+            <%= item['menu_item_details']['name'] %>
+          </td>
+          <td style="width: 5%">
+            <%= item['quantity'].to_i %>
+          </td>
+          <td style="width: 15%">
+            <%= number_with_delimiter(item['menu_item_details']['unit_price'].to_i) %> đ
+          </td>
+          <td><%= item['state'] %></td>
+          <td><%= link_to(item['maker_id'], user_path(item['maker_id']), remote: true) if item['maker_id'] %></td>
+          <td><%= Time.parse(item['cooking_at']).in_time_zone(7) if item['cooking_at'] %></td>
+          <td><%= Time.parse(item['done_at']).in_time_zone(7) if item['done_at'] %></td>
+          <td><%= link_to(item['deliverer_id'], user_path(item['deliverer_id']), remote: true) if item['deliverer_id'] %></td>
+          <td><%= Time.parse(item['delivering_at']).in_time_zone(7) if item['delivering_at'] %></td>
+          <td><%= Time.parse(item['delivered_at']).in_time_zone(7) if item['delivered_at'] %></td>
+        </tr>
+        <% end %>
+        <% sale['drink_sale_menu_items_details'].each do |item| %>
+        <tr class="info">
+          <td style="width: 60%">
+            <%= item['menu_item_details']['name'] %>
+          </td>
+          <td style="width: 5%">
+            <%= item['quantity'].to_i %>
+          </td>
+          <td style="width: 15%">
+            <%= number_with_delimiter(item['menu_item_details']['unit_price'].to_i) %> đ
+          </td>
+          <td><%= item['state'] %></td>
+          <td><%= link_to(item['maker_id'], user_path(sale['maker_id']), remote: true) if sale['maker_id'] %></td>
+          <td><%= Time.parse(item['cooking_at']).in_time_zone(7) if sale['cooking_at'] %></td>
+          <td><%= Time.parse(item['done_at']).in_time_zone(7) if item['done_at'] %></td>
+          <td><%= link_to(item['deliverer_id'], user_path(item['deliverer_id']), remote: true) if item['deliverer_id'] %></td>
+          <td><%= Time.parse(item['delivering_at']).in_time_zone(7) if item['delivering_at'] %></td>
+          <td><%= Time.parse(item['delivered_at']).in_time_zone(7) if item['delivered_at'] %></td>
+        </tr>
+        <% end %>
+        <% sale['service_sale_menu_items_details'].each do |item| %>
+        <tr class="warning">
+          <td style="width: 60%">
+            <%= item['menu_item_details']['name'] %>
+          </td>
+          <td style="width: 5%">
+            <%= item['quantity'].to_i %>
+          </td>
+          <td style="width: 15%">
+            <%= number_with_delimiter(item['menu_item_details']['unit_price'].to_i) %> đ
+          </td>
+          <td><%= item['state'] %></td>
+          <td><%= link_to(item['maker_id'], user_path(item['maker_id']), remote: true) if item['maker_id'] %></td>
+          <td><%= Time.parse(item['cooking_at']).in_time_zone(7) if item['cooking_at'] %></td>
+          <td><%= Time.parse(item['done_at']).in_time_zone(7) if item['done_at'] %></td>
+          <td><%= link_to(item['deliverer_id'], user_path(item['deliverer_id']), remote: true) if item['deliverer_id'] %></td>
+          <td><%= Time.parse(item['delivering_at']).in_time_zone(7) if item['delivering_at'] %></td>
+          <td><%= Time.parse(item['delivered_at']).in_time_zone(7) if item['delivered_at'] %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="pull-right">
+      <h4>Tổng: <b><%= number_with_delimiter((sale['food_sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0) + (sale['drink_sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0) + (sale['service_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0)) %> đ</b></h4>
+    </div>
+  </div>
+</div>

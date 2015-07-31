@@ -1,15 +1,8 @@
 class CashierPagesController < ApplicationController
+  before_action :filter_role
   layout "cashier_layout"
 
   def sale_list
-    @sales = Ckfapi::API::Sale.index(current_token,detail: true)['sales'] rescue []
-    @sales = @sales.sort{|a, b| b['updated_at'].to_datetime <=> a['updated_at'].to_datetime}
-    @sales_not_saved = @sales.select{|m| m['state'] != 'saved'}
-    @sales_init     = @sales.select{|m| m['state'] == 'init'}.count
-    @sales_delivered     = @sales.select{|m| m['state'] == 'delivered'}.count
-    respond_to do |format|
-      format.html
-    end
   end
 
   def save_sale
@@ -17,7 +10,7 @@ class CashierPagesController < ApplicationController
       @sale = update_next_state_sale(current_token,params[:sale_id],"saved")
       @sale['sale']['format_created_at'] = (@sale['sale']['created_at'].to_datetime + 7.hours).strftime("%d/%m/%Y")
       @sale['sale']['order_created_at'] = (@sale['sale']['created_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S")
-      @sale['sale']['format_updated_at'] = (@sale['sale']['updated_at'].to_datetime + 7.hours).strftime("%d/%m/%Y <b>%H:%M</b>").html_safe
+      @sale['sale']['format_updated_at'] = (@sale['sale']['updated_at'].to_datetime + 7.hours).strftime("<b>%H:%M</b> %d/%m/%Y").html_safe
       @sale['sale']['order_updated_at'] = (@sale['sale']['updated_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S")
       WebsocketRails[:staff].trigger 'next_state_sale_menu_item',@sale
       respond_to do |format|
@@ -43,6 +36,18 @@ class CashierPagesController < ApplicationController
   def saved_sales
     @sales = Ckfapi::API::Sale.index(current_token,detail: true)['sales'] rescue []
     @saved_sales = @sales.select{|m| m['state'] == 'saved'}
+  end
+
+  def not_saved_sales
+    @sales = Ckfapi::API::Sale.index(current_token,detail: true)['sales'] rescue []
+    @not_saved_sales = @sales.select{|m| m['state'] != 'saved'}
+  end
+
+  private
+
+  def filter_role
+    return true if ["Manager", "Cashier"].include? current_user['current_role']
+    redirect_to get_root_path(current_user)
   end
 
 end

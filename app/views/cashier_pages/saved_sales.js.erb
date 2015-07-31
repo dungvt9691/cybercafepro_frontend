@@ -1,15 +1,18 @@
 <% if @saved_sales.count > 0 %>
+$(".no-saved-orders").fadeOut(100)
 $('#table-order-saved tbody').html("");
 <% @saved_sales.each do |sale| %>
   $('#table-order-saved tbody').append("<%=j render partial: 'sale', locals: { sale: sale} %>");
 <% end %>
 <% else %>
+$(".no-saved-orders").fadeIn(100)
 $('#table-order-saved tbody').html("");
 <% end %>
 
 var saved_table = $("#table-order-saved").dataTable({
   "sDom": "<'row'<'col-lg-6'l><'col-lg-6'f>r>t<'row'<'col-lg-2'i><'col-lg-10'p>>",
   "sPaginationType": "full_numbers",
+  "order": [[ 3, "desc" ]],
   "oLanguage": {
     "sLengthMenu": "<%= t('datatable.length_menu') %>",
     "sSearch": "",

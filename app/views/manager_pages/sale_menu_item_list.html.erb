@@ -1,0 +1,58 @@
+<div class="content">
+  <h1> Orders </h1>
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#sale-list" aria-controls="sale-list" role="tab" data-toggle="tab">Index</a></li>
+    <li role="presentation"><a href="#sale-menu-item-list" aria-controls="sale-menu-item-list" role="tab" data-toggle="tab">Create</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="sale-list">
+      <table id="sales-table" class="display table table-bordered">
+        <thead>
+          <th>Id</th>
+          <th>Action</th>
+          <th>Invoice Number</th>
+          <th>State</th>
+          <th>Customer</th>
+          <th>Pender</th>
+          <th>Pending At</th>
+          <th>Processor</th>
+          <th>Processing At</th>
+          <th>Saver</th>
+          <th>Saving At</th>
+          <th>Updated At</th>
+          <th>Created At</th>
+        </thead>
+        <tbody>
+          <% if @sales %>
+            <% @sales.each do |sale| %>
+              <%= render partial: 'sale_row', locals: { sale: sale } %>
+            <% end %>
+          <% end%>
+        </tbody>
+      </table>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="sale-menu-item-list">
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $('#sales-table').DataTable();
+  });
+  var showSale = function(id){
+    $('.launch-modal').html("<%=j render 'sales/modal_sale_details' %>");
+    $('#modal-sale-details').attr("sale-id", id);
+    $("#modal-sale-details").modal({
+      keyboard: true,
+      backdrop: 'static'
+    });
+  }
+  $('.nav-tabs a').click(function (e) {
+    e.preventDefault();
+    $(this).tab('show');
+  });
+</script>

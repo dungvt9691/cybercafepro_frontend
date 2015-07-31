@@ -29,7 +29,7 @@
 </div>
 <br>
 <div class="row">
-  <% if not sale['processor'].nil? %>
+  <% unless sale['processor'].nil? %>
   <div class="col-lg-4 col-md-4 col-sm-6">
     <p>
       <b>Nhân viên thu:</b> <%= "#{sale['processor']['last_name']} #{sale['processor']['first_name']}" %>
@@ -39,21 +39,15 @@
     </p>
   </div>
   <% end %>
-  <% if not sale['chef'].nil? %>
+  <% unless sale['done_at'].nil? %>
   <div class="col-lg-4 col-md-4 col-sm-6">
     <p>
-      <b>Nhân viên làm:</b> <%= "#{sale['chef']['last_name']} #{sale['chef']['first_name']}" %>
-    </p>
-    <p>
-      <b>Làm lúc:</b> <%= ((sale['cooking_at'].to_datetime rescue DateTime.now) + 7.hours).strftime("%H:%M %d/%m/%Y") %>
+      <b>Xong lúc:</b> <%= ((sale['done_at'].to_datetime rescue DateTime.now) + 7.hours).strftime("%H:%M %d/%m/%Y") %>
     </p>
   </div>
   <% end %>
-  <% if not sale['deliverer'].nil? %>
+  <% unless sale['delivered_at'].nil? %>
   <div class="col-lg-4 col-md-4 col-sm-6">
-    <p>
-      <b>Nhân viên giao:</b> <%= "#{sale['deliverer']['last_name']} #{sale['deliverer']['first_name']}" %>
-    </p>
     <p>
       <b>Giao lúc:</b> <%= ((sale['delivered_at'].to_datetime rescue DateTime.now) + 7.hours).strftime("%H:%M %d/%m/%Y") %>
     </p>
@@ -72,7 +66,8 @@
         </tr>
       </thead>
       <tbody>
-        <% sale['sale_menu_items_details'].each do |item| %>
+        <!-- FOOD -->
+        <% sale['food_sale_menu_items_details'].each do |item| %>
         <tr>
           <td style="width: 50%">
             <%= item['menu_item_details']['name'] %>
@@ -85,7 +80,22 @@
           </td>
         </tr>
         <% end %>
-        <% sale['nocook_sale_menu_items_details'].each do |item| %>
+        <!-- DRINK -->
+        <% sale['drink_sale_menu_items_details'].each do |item| %>
+        <tr>
+          <td style="width: 50%">
+            <%= item['menu_item_details']['name'] %>
+          </td>
+          <td style="width: 30%">
+            <%= item['quantity'].to_i %>
+          </td>
+          <td style="width: 20%">
+            <%= number_with_delimiter(item['menu_item_details']['unit_price'].to_i) %> đ
+          </td>
+        </tr>
+        <% end %>
+        <!-- SERVICE -->
+        <% sale['service_sale_menu_items_details'].each do |item| %>
         <tr class="row-nocook">
           <td style="width: 50%">
             <%= item['menu_item_details']['name'] %>
@@ -106,7 +116,7 @@
 <div class="row">
   <div class="col-lg-12">
     <div class="pull-right">
-      <h4>Tổng: <b><%= number_with_delimiter((sale['sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0) + (sale['nocook_sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0)) %> đ</b></h4>
+      <h4>Tổng: <b><%= number_with_delimiter(sum(sale)) %> đ</b></h4>
     </div>
   </div>
 </div>

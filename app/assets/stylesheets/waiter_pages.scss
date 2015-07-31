@@ -27,22 +27,20 @@
 }
 
 .waiter-salelist .container{
-  padding-left: 0px;
-  background: #fff;
-  padding-right: 0px;
 }
 
 .waiter-salelist .waiter-pages{
-  min-height: 1000px;
-  box-shadow: 0 1px 1px rgba(169,169,169,0.75);
-
+  
 }
 
 .waiter-salelist .tab-list{
-  height: 100px;
-  line-height: 100px;
-  border-right: 2px solid rgba(66, 139, 202, 0.4);
-  font-size: 18px;
+  height: 70px;
+  line-height: 70px;
+  border-right: 2px solid #fff;
+  font-size: 15px;
+  color: #aaa;
+  border-bottom: 2px solid #fff;
+  background-color: #e3e3e3;
   cursor: pointer;
   text-align: center;
 }
@@ -50,15 +48,26 @@
 .waiter-salelist .tab-list.active{
   background: #428bca;
   color: #fff;
-  border-color: #428bca;
 }
 
 .waiter-salelist .tabs-row .no-padding:first-child{
-  padding-left: 15px !important;
+}
+
+.waiter-salelist .tabs-row,
+.waiter-salelist .tabs-content{
+  width: 100%;
+  position: absolute;
+}
+
+.waiter-salelist .tabs-content{
+  min-height: 1000px;
+  background: #fff;
+  box-shadow: 0 1px 1px rgba(169,169,169,0.75);
+  margin-bottom: 100px;
+  top: 70px;
 }
 
 .waiter-salelist .tabs-row .no-padding:last-child{
-  padding-right: 15px !important;
 }
 
 .waiter-salelist .tabs-row .no-padding:last-child .tab-list:last-child{
@@ -66,57 +75,25 @@
 }
 
 .waiter-salelist .tab-list .badge-danger{
-  font-size: 17px;
-  margin-left: 8px;
+  background-color: #FFA3A3 !important;
+  font-size: 13px;
+  margin-left: 3px;
   cursor: pointer;
 }
 
+.waiter-salelist .tab-list.active .badge-danger{
+  background-color: red !important;
+}
+
 .waiter-salelist .notify-order{
-  display: none
+  /*display: none*/
 }
 
 .waiter-salelist .tab-list .badge{
-  padding: 5px 10px;
-  padding-top: 5px;
+  padding: 3px 6px;
+  padding-top: 3px;
+  padding-right: 7px;
   border-radius: 19px;
-}
-
-.marquee-notifications{
-  background: rgba(48, 48, 48, 0.8);
-  color: #fff;
-  height: 50px;
-  top: 100px;
-  width: 100%;
-  z-index: 100;
-  line-height: 50px;
-  margin-left: auto;
-  margin-right: auto;
-  left: 0;
-  right: 0;
-}
-
-div.marquee-notifications {
-  white-space:no-wrap;
-  overflow:hidden;
-}
-
-div.marquee-notifications > div.marquee-notifications-text {
-  white-space:nowrap;
-  display:inline;
-  width:auto;
-}
-
-div.marquee-notifications > div.marquee-notifications-text > span.notification-text{
-  margin-right: 100px;
-  font-size: 16px;
-  text-shadow: 0 5px 5px rgba(0,0,0,0.9);
-}
-
-div.marquee-notifications > div.marquee-notifications-text > span.notification-text:first-child{
-  -webkit-animation: glowing 800ms infinite;
-  -moz-animation: glowing 800ms infinite;
-  -o-animation: glowing 800ms infinite;
-  animation: glowing 800ms infinite;
 }
 
 .waiter-pages .tabs-content .tab-content{
@@ -153,104 +130,81 @@ div.marquee-notifications > div.marquee-notifications-text > span.notification-t
   text-align: center;
 }
 
-.waiter-pages .tabs-content .tab-content .table-order .order-row .label{
-  font-size: 15px;
-  padding: 5px 20px;
-  padding-bottom: 8px;
-}
-
-.waiter-pages .tabs-content .tab-content .table-order .order-row > .order-status,
-.waiter-pages .tabs-content .tab-content .table-order .order-row > .order-step{
+.waiter-pages .tabs-content .tab-content .table-order .order-row td{
   vertical-align: middle !important;
-  padding: 40px;
 }
 
-.waiter-pages .tabs-content .tab-content .table-order .order-row > .order-step{
+.waiter-pages .tabs-content .tab-content .table-order .order-row,
+{
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.table-order th{
+  font-size: 20px;
+}
+
+.table-order thead tr{
+  background-color: #428bca;
+  color: #fff;
+}
+
+.waiter-pages .tabs-content .tab-content .table-order .order-row .order-action .dropdown-menu li,
+.waiter-pages .tabs-content .tab-content .table-order .menu-item-row .item-action .dropdown-menu li{
+  font-size: 16px;
+}
+
+.waiter-pages .tabs-content .tab-content .table-order .order-row .order-action .dropdown-menu li.active a,
+.waiter-pages .tabs-content .tab-content .table-order .menu-item-row .item-action .dropdown-menu li.active a{
+  background-color: #fff;
+  color: #333;
+}
+
+.waiter-pages .tabs-content .tab-content .table-order .order-row .order-action .dropdown-menu li a:hover,
+.waiter-pages .tabs-content .tab-content .table-order .menu-item-row .item-action .dropdown-menu li a:hover{
+  background-color: #f5f5f5;
+}
+
+.waiter-pages .tabs-content .tab-content .table-order .order-row .order-action .dropdown-menu li > a,
+.waiter-pages .tabs-content .tab-content .table-order .menu-item-row .item-action .dropdown-menu li > a{
+  height: 40px;
+  line-height: 40px;
+  color: #ccc;
+  padding: 0px 20px;
+}
+
+.waiter-pages .tabs-content .tab-content .table-order .order-row .order-price .total-price,
+.waiter-pages .tabs-content .tab-content .table-order .menu-item-row .menu-item-name .item-name{
+  font-size: 18px;
   text-align: left;
-  padding: 15px;
-  vertical-align: top !important;
+  line-height: 34px;
+  font-weight: bold;
 }
 
-.waiter-pages .tabs-content .tab-content .table-order .order-row .order-number,
-.waiter-pages .tabs-content .tab-content .table-order .order-row .order-com{
-  padding-top: 15px;
+.waiter-pages .tabs-content .tab-content .table-order .order-row.select-now{
+  background-color: #f5f5f5
 }
 
-.waiter-pages .tabs-content .tab-content .table-order > tbody td.order-lists,
-.waiter-pages .tabs-content .tab-content .table-order > tbody td.order-lists .customer-table{
-  padding: 0px;
+.waiter-pages .tabs-content .tab-content .table-order .order-row.success.select-now td{
+  background-color: #D7EACF
 }
 
-.waiter-pages .tabs-content .tab-content .table-order > tbody td.order-lists{
-  width: 300px;
+.waiter-pages .tabs-content .tab-content .table-order .order-row .menu-item-name .item-quantity{
+  color: #777;
+  font-weight: normal
 }
 
-.waiter-pages .tabs-content .tab-content .table-order > tbody td.order-lists .customer-table{
-  width: 100%;
+.waiter-pages .no-orders{
+  display: none;
 }
 
-.waiter-pages .tabs-content .tab-content .table-order > tbody td.order-lists .customer-table .bootstrap-table .fixed-table-body table{
-  box-shadow: 0 9px 9px -6px rgba(0,0,0,0.0);
+.saved-row{
+  background-color: #f5f5f5;
 }
 
-.waiter-pages .tabs-content .tab-content .table-order > tbody td.order-lists .customer-table .fixed-table-body table tbody tr td{
-  border: none !important;
-  border-bottom: 1px solid #ccc !important;
-}
 
-.waiter-pages .tabs-content .tab-content .table-order > tbody td.order-lists .customer-table .fixed-table-body table tbody tr:last-child td{
-  border-bottom: none !important
-}
-
-.waiter-pages .tabs-content .tab-content .table-order > tbody td.order-lists .customer-table .fixed-table-body table tbody tr td:last-child{
-  border-right: none !important;
-}
-
-.waiter-pages .tabs-content .tab-content .table-order > tbody td.order-lists .customer-table .order-service-quantity .quantity-text{
-  top: 0px;
-}
-
-.waiter-pages .tabs-content .tab-content .table-order .customer-table table thead, .fixed-table-header{
-  background: #428bca
-}
-
-.waiter-pages .tabs-content .tab-content .table-order .customer-table table{
-  border-bottom: none;
-}
-
-.waiter-pages .tabs-content .tab-content .table-order .customer-table .order-service-quantity .quantity-text,
-.waiter-pages .tabs-content .tab-content .table-order .customer-table .order-service-price{
-  color: #666;
-}
-
-.waiter-pages .tabs-content .tab-content .table-order h3{
-   font-size: 17px;
-   color: #333
-}
-
-.waiter-pages .table-order .row-service .order-service-name .note-for-service{
-  font-size: 12px;
-  margin-bottom: 3px;
-  width: 90%
-}
-
-.waiter-pages .table-order .row-service .order-service-price,
-.waiter-pages .table-order .row-service .order-service-quantity{
-  font-size: 16px;
-}
-
-.waiter-pages .table-order .row-service .order-service-name{
-  font-size: 16px;
-}
-
-.btable-id{
-  width: 60%;
-}
-
-.btable-price{
-  width: 20%;
-}
-
-.btable-quantity{
-  width: 20%;
-}

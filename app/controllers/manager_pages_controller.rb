@@ -1,5 +1,5 @@
 class ManagerPagesController < ApplicationController
-  before_action :is_manager?
+  before_action :filter_role
   layout "manager_layout"
 
   def user_list
@@ -9,7 +9,9 @@ class ManagerPagesController < ApplicationController
 
   def menu_item_list
     @mg_page = "menu_item"
-    @menu_items = Ckfapi::API::MenuItem.index(current_token)['menu_items'] rescue []
+    @menu_items = Ckfapi::API::MenuItem.index(current_token, detail: true)['menu_items'] rescue []
+    @items = Ckfapi::API::Item.index(current_token, detail: true)['items'] rescue []
+    @categories = Ckfapi::API::Category.index(current_token)['categories'] rescue []
   end
 
   def payment_list
@@ -19,9 +21,18 @@ class ManagerPagesController < ApplicationController
 
   def sale_list
     @mg_page = "sale"
-    @sales = Ckfapi::API::Sale.index(current_token, detail: true)['sales'] rescue []
+    @sale_menu_items = Ckfapi::API::SaleMenuItem.index(current_token, detail: true)['sale_menu_items'] rescue []
+    @sales = Ckfapi::API::Sale.index(current_token)['sales'] rescue []
     respond_to do |format|
       format.html
+    end
+  end
+
+  def sale_menu_item_list
+    @mg_page = "sale"
+    @sale_menu_items = Ckfapi::API::SaleMenuItem.index(current_token, detail: true)['sale_menu_items'] rescue []
+    respond_to do |format|
+      format.js
     end
   end
 
@@ -30,15 +41,43 @@ class ManagerPagesController < ApplicationController
     @shifts = Ckfapi::API::Shift.index(current_token, detail: true)['shifts'] rescue []
   end
 
+  def report_list
+    @mg_page = "report"
+    @reports = Ckfapi::API::Report.index(current_token, detail: true)['reports'] rescue []
+  end
+
+  def accounting
+    @mg_page = "accounting"
+    @shifts = Ckfapi::API::Shift.index(current_token)['shifts'] rescue []
+  end
+
+  def stat
+    date = Time.parse(params[:date])
+    @sales = Ckfapi::API::Shift.stat(current_token, params[:shift_id], "sale", {
+      year: date.year,
+      month: date.month,
+      day: date.day
+    })['stats'] if date
+    @attendances = Ckfapi::API::Shift.stat(current_token, params[:shift_id], "attendance", {
+      year: date.year,
+      month: date.month,
+      day: date.day
+    })['stats'] if date
+    respond_to do |format|
+      format.js
+    end
+  end
+
   private
 
-  def is_manager?
-    if current_user && current_user['role'] == "Manager"
-      return true
+  def filter_role
+    case action_name
+    when 'menu_item_list'
+      return true if ["Manager", "Chef", "Bartender"].include?(current_user['current_role'])
     else
-      flash[:error] = "Only Manager can register new user"
-      redirect_to root_path
+      return true if ["Manager"].include? current_user['current_role']
     end
+    redirect_to get_root_path(current_user)
   end
 
 end

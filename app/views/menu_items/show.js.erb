@@ -1,0 +1,9 @@
+<% if @menu_item['menu_item'] %>
+  $('#launch-modal').html("<%=j render partial: 'menu_items/modal_menu_item', locals: { menu_item: @menu_item['menu_item'] } %>");
+  $("#modal-menu-item").modal({
+    keyboard: true,
+    backdrop: 'static'
+  });
+<% else %>
+  alert("<%= @menu_item.inspect  %>");
+<% end %>

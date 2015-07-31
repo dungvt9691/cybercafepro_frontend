@@ -1,0 +1,21 @@
+<% if @delivered_sales.count > 0 %>
+$(".no-histories-orders").fadeOut(100)
+$('.table-order-histories tbody tr.histories-loading').remove();
+<% @delivered_sales.each do |sale| %>
+$('.table-order-histories tbody .no-histories-orders').before("<%=j render partial: 'delivered_sale', locals: { sale: sale} %>");
+<% end %>
+<% else %>
+$('.table-order-histories tbody tr.histories-loading').remove();
+$(".no-histories-orders").fadeIn(100)
+<% end %>
+
+$(".btn-order-details").click(function(){
+  sale_id = $(this).attr("sale-id")
+  $('.launch-modal').html("<%=j render 'waiter_pages/modal_sale_details' %>")
+
+  $("#modal-sale-details").attr("sale-id", sale_id)
+  $("#modal-sale-details").modal({
+    keyboard: true,
+    backdrop: 'static'
+  })
+})

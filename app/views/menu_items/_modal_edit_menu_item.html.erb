@@ -1,0 +1,35 @@
+<div id="modal-edit-menu-item" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Menu Item</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_tag(menu_item_path(menu_item['id']), method: :patch, multipart: true, class: "form-horizontal", remote: true, id: "menu-item-edit-form") do %>
+
+          <div class="form-group">
+            <%= label_tag 'State', nil, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= select_tag 'menu_item[state]', options_for_select(["Available", "Sold", "Coming"], menu_item["state"]), class: "form-control" %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <%= submit_tag 'update', class: "btn btn-default", style: " visibility: hidden;" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="$('#menu-item-edit-form').submit()">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+  $('#menu-item-edit-form .submit-form').hide();
+</script>

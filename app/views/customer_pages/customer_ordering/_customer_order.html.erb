@@ -64,35 +64,53 @@
         </div>
         <div role="tabpanel" class="tab-pane fade" id="histories-tab">
           <div class="customer-table">
-            <table data-height="350" data-width="299">
+            <h4 style='font-size: 17px;'>ORDER GẦN ĐÂY NHẤT</h4>
+            <table data-height="290" data-width="299">
               <thead>
                 <tr>
-                  <th data-field="id" data-align="left">CÁC MÓN ĂN ĐÃ GỌI&nbsp; &nbsp;</th>
+                  <th data-field="id" data-align="left">CÁC MÓN ĂN ĐÃ CHỌN&nbsp; &nbsp;</th>
                   <th data-field="price" data-align="left">ĐƠN GIÁ&nbsp;</th>
                   <th data-field="name" data-align="left">SL &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                 </tr>
               </thead>
               <tbody>
+                <% if @lated_sale.blank? %>
                 <tr id="no-choice">
                   <td colspan="3">Chưa chọn món</td>
                 </tr>
+                <% else %>
+                <% @lated_sale['food_sale_menu_items_details'].each do |item| %>
+                <%= render 'sale_menu_item', item: item, not_services: true %>
+                <% end %>
+                <% @lated_sale['drink_sale_menu_items_details'].each do |item| %>
+                <%= render 'sale_menu_item', item: item, not_services: true %>
+                <% end %>
+                <% @lated_sale['service_sale_menu_items_details'].each do |item| %>
+                <%= render 'sale_menu_item', item: item, not_services: false %>
+                <% end %>
+                <% end %>
               </tbody>
             </table>
           </div>
-          <div style="padding: 15px; padding-top: 5px; padding-bottom: 0px">
+          <div style="padding: 15px; padding-top: 20px; padding-bottom: 0px">
+            <% if @lated_sale %>
+            <%= form_tag(report_sale_customer_pages_path, remote: true, method: :post, multipart: true, id: "report-sale-#{@lated_sale['id']}") do %>
             <div class="row">
               <div class="col-lg-12">
                 <h4 style='font-size: 17px;'>Đóng góp ý kiến</h4>
-                <textarea class='form-control' style="height: 100px; resize: none;" placeholder="Hãy để lại phản hồi của bạn về các món ăn... Thái độ phục vụ của nhân viên..."></textarea>
+                <%= text_area_tag "report[description]", nil, class: "form-control", style: "height: 100px; resize: none;", placeholder: "Hãy để lại phản hồi của bạn về các món ăn... Thái độ phục vụ của nhân viên..." %>
+                <%= hidden_field_tag "report[sale_id]", @lated_sale['id'] %>
               </div>
             </div>
             <div class="row" style="margin-top: 15px">
               <div class="col-lg-12">
-                <button id="order-now" class='btn btn-block btn-danger btn-lg'>
-                  <i class='fa fa-send' style="margin-right: 10px; font-size: 20px"></i> GỬI PHẢN HỒI
+                <button id="report-now" class='btn btn-block btn-danger btn-lg'>
+                  <i class='fa fa-send' style='margin-right: 10px; font-size: 20px'></i> GỬI PHẢN HỒI
                 </button>
               </div>
             </div>
+            <% end %>
+	  <% end %>
           </div>
         </div>
       </div>
@@ -100,6 +118,13 @@
   </div>
 </div>
 <script type="text/javascript">
+$( document ).ready(function() {
+  history_order_row = $(".menu-item-row").length
+  if(history_order_row >= 5){
+    $("#histories-tab .customer-table .bootstrap-table").css("box-shadow", "0 9px 9px -6px rgba(0,0,0,0.5)")
+  }
+});
+
 $(".show-orders").click(function(){
   $('a[href="#orders-tab"]').tab('show')
 })
@@ -137,6 +162,12 @@ $('#order-now').click(function(){
       dataType: "json",
       data: { sale: sale_params},
       success: function(data){
+        if (data.sale.errors) {
+          alert(data.sale.errors);
+        } else {
+          var id = data.sale.sale.id;
+          $('form input#report_sale_id').val(id);
+        }
         console.log(data);
       }
     })
@@ -150,11 +181,17 @@ $("#reset-order").click(function(){
 })
 
 function resetOrder(){
+  $('#histories-tab .customer-table table tbody').html('');
   $('[id*=row-service]').each(function(){
-    $(this).remove()
-  })
+    $(this).removeAttr('id');
+    $(this).find('td.order-service-name').html($(this).find('td.order-service-name > b').text());
+    $(this).find('td.order-service-price').removeAttr('class');
+    $(this).find('td.order-service-quantity > span').removeAttr('class').siblings().remove();
+    $('#histories-tab .customer-table table tbody').append($(this));
+  });
   $("#no-choice").fadeIn(100)
   $("#orders-tab .customer-table .bootstrap-table").css("box-shadow", "0 9px 9px -6px rgba(0,0,0,0.0)")
+  $(".total-price").text(0)
   order_row = 0
 }
 // $(".fixed-table-body").niceScroll({horizrailenabled: false, cursorcolor:"rgba(0, 0, 0, 0.2)", cursorwidth: "9px"})
@@ -162,4 +199,5 @@ function resetOrder(){
 $(window).resize(function () {
   $('.customer-table table').bootstrapTable('resetView');
 });
+
 </script>

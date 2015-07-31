@@ -1,0 +1,28 @@
+<tr data-target="#order-action-dropdown-<%= sale['id'] %>" data-toggle="dropdown" class="<%= 'saved-row' if sale['state'] == 'saved' %> order-row <%= 'success' if sale['state'] == 'pending' %>" sale-id='<%= sale['id'] %>' id="sale-<%= sale['id'] %>">
+  <td class="order-com">
+    Máy <%= sale['customer_id'] %>
+  </td>
+  <td class="order-price">
+    <div id="order-action-dropdown-<%= sale['id'] %>" class="btn-group order-action pull-right" style="margin-top: 12px">
+      <button type="button" data-target="#order-action-dropdown-<%= sale['id'] %>" style="padding-bottom: 2px;" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+        <i class='fa fa-caret-down' style='font-size: 18px'></i>
+      </button>
+      <ul class="dropdown-menu">
+        <li class='active'><a href="javascript:;" class="btn-order-details" sale-id="<%= sale['id'] %>">Xem chi tiết</a></li>
+      </ul>
+    </div>
+    <div class="total-price" style="">
+      <span class='price'>
+        <%= number_with_delimiter((sale['food_sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0) + (sale['drink_sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0) + (sale['service_sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0)) %>
+      </span>
+      <span style='color: #999'>đ</span>
+    </div>
+    <small class="pull-left order-created-at" style='margin-top: 3px; margin-left: 1px'>
+      <% if sale['state'] == "delivered" %>
+      Giao xong lúc: <%= ((sale['delivered_at'].to_datetime + 7.hours) rescue DateTime.now).strftime("<b>%H:%M</b> %d/%m/%Y").html_safe %>
+      <% else %>
+      Đã lưu lúc: <%= ((sale['updated_at'].to_datetime + 7.hours) rescue DateTime.now).strftime("<b>%H:%M</b> %d/%m/%Y").html_safe %> 
+      <% end %>
+    </small>
+  </td>
+</tr>

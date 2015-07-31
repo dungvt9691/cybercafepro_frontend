@@ -7,11 +7,20 @@ class RegistrationsController < ApplicationController
 
   def edit
     @user = Ckfapi::API::User.get(current_token, params[:id])['user']
+    respond_to do |format|
+      format.js
+      format.html
+    end
   end
 
   def update
     @user = Ckfapi::API::User.update(current_token, params[:id], params[:user])
-    redirect_to edit_registration_path(@user['user']['id'])
+    respond_to do |format|
+      format.html {
+        redirect_to edit_registration_path(params[:id])
+      }
+      format.js
+    end
   end
 
   def create
@@ -23,10 +32,18 @@ class RegistrationsController < ApplicationController
     end
   end
 
+  def destroy
+    @user_id = params[:id]
+    @user = Ckfapi::API::User.remove(current_token, params[:id])
+    respond_to do |format|
+      format.js
+    end
+  end
+
   private
 
   def is_manager?
-    if current_user && current_user['role'] == "Manager"
+    if current_user && current_user['current_role'] == "Manager"
       return true
     else
       flash[:error] = "Only Manager can register new user"

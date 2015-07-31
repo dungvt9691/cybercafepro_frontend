@@ -2,86 +2,26 @@
 var staff_channel = dispatcher.subscribe('staff');
 var stack_context = {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 5, "spacing2": 5}
 </script>
-<div class="container">
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="chef-pages">
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="marquee-notifications">
-              <div class="marquee-notifications-text">
-                <% @sales.each do |sale| %>
-                <% case sale['state'] %>
-                <% when "processing" %>
-                <span sale-id="<%= sale['id'] %>" class="notification-text">Máy <%= sale['customer_id'] %> vừa có order, chuẩn bị để làm cho khách</span>
-                <% end %>
-                <% end %>
-              </div>
-            </div>
-          </div>
-        </div>
-        <br>
-        <div class="no-orders" style='padding-left: 15px; padding-right: 15px'>
-          <div class="alert alert-warning">
-            Tạm thời không có ORDER mới
-          </div>
-          <br>
-        </div>
-        <div style='padding-left: 15px;'>
-          <section id="pinBoot">
-            <%= render 'order_cooking' %>
-            <%= render 'order_processing' %>
-            <%= render 'order_template' %>
-          </section>
-        </div>
-      </div>
+<div class="chef-pages">
+  <br>
+  <div class="no-orders" style='padding-left: 15px; padding-right: 15px'>
+    <div class="alert alert-warning">
+      Tạm thời không có ORDER mới
     </div>
+    <br>
   </div>
-</div>
-<div class='container copyright'>
-  <small>Copyright <i class='fa fa-copyright'></i> ABCDEF</small>
-</div>
-<div class="panel-notifications <%= 'active' if @sales_cooking.count + @sales_processing.count > 0 %> <%= 'minimize' if @sales_cooking.count + @sales_processing.count == 0 %>">
-  <div class='panel-notification-heading'>
-    <label class="badge badge-danger notify-order notify-order-all"><%= @sales_processing.count %></label>
-    <span class="heading-title">Thông báo</span>
-    <i class="fa fa-caret-down"></i>
-  </div>
-  <div class="panel-notification-body">
-    <% @sales.each do |sale| %>
-    <% if ['processing'].include?(sale['state']) %>
-    <div sale-id='<%= sale['id'] %>' class='notification-content'>
-      <div class='row'>
-        <div class='col-lg-3 col-md-3 col-sm-3'>
-          <center>
-            <i class='fa fa-desktop'></i>
-            <br>
-            <label class='label label-primary computer-name'>Máy <%= sale['customer_id'] %>
-            </label>
-          </center>
-        </div>
-        <div class='col-lg-9 col-md-9 col-sm-9'>
-          <div class='alert alert-info'>
-            Có <b>ORDER MỚI</b>, chuẩn bị để <b>làm</b> cho khách.
-          </div>
-        </div>
-      </div>
-    </div>
-    <% end %>
-    <% end %>
+  <div style='padding-left: 15px;'>
+    <section id="pinBoot">
+      <%= render 'order_processing' %>
+      <%= render 'order_template' %>
+    </section>
   </div>
 </div>
 <script>
 $(document).ready(function () {
-  set_notifications_number()
-
-  columns = 3;
-
-  if(bootstrap_env() == "sm")
-    columns = 2;
-
+  check_has_order()
   $('#pinBoot').pinterest_grid({
-    no_columns: columns,
+    no_columns: 3,
     padding_x: 15,
     padding_y: 20,
     margin_bottom: 100,
@@ -89,246 +29,155 @@ $(document).ready(function () {
   });
 });
 
-$(".panel-notification-body").niceScroll({horizrailenabled: false, cursorcolor:"rgba(0, 0, 0, 0.5)", cursorwidth: "9px"})
 
-var marquee = $('div.marquee-notifications');
-marquee.each(function() {
-  var mar = $(this),indent = mar.width();
-  mar.marquee = function() {
-    indent--;
-    mar.css('text-indent',indent);
-    if (indent < -1 * mar.children('div.marquee-notifications-text').width()) {
-      indent = mar.width();
-    }
-  };
-  mar.data('interval',setInterval(mar.marquee, 8));
-});
 
-$(".panel-notification-heading").click(function(){
-  if($(this).parents(".panel-notifications").hasClass("minimize")){
-    $(this).children(".fa").addClass("fa-caret-down").removeClass("fa-caret-up")
-    $(this).parents('.panel-notifications').removeClass("minimize")
-  }
-  else{
-    $(".panel-notification-heading .fa").parents(".panel-notifications").addClass("minimize")
-    $(this).children(".fa").removeClass("fa-caret-down").addClass("fa-caret-up")
-    $(this).parents('.panel-notifications').addClass("minimize")
+$("#pinBoot").on('click', '.order-processing .service-cooking', function(){
+  var checked = $(this).children(".row").children(".col-lg-10").children(".check-service-done").prop("checked")
+
+  sale_id = $(this).parents(".order-processing").attr("sale-id")
+
+  id = $(this).attr('service-id')
+
+  $.ajax({
+    type: "GET",
+    url: "/chief_pages/done_cooking?sale_menu_id=" + id
+  });
+
+  $(".service-cooking[service-id="+id+"]").remove()
+
+  done = $(".order-processing[sale-id="+sale_id+"] .service-cooking").length == 0
+
+  if(done){
+    $(".order-processing[sale-id="+sale_id+"]").remove()
+    check_has_order()
+    $(function(){
+      var notice = pop_notify({
+        text: "Order " + sale_id + " đã làm xong",
+      });
+    });
   }
 })
 
-$("#pinBoot").on('click', '.order-cooking .service', function(){
-  var checked = $(this).children(".row").children(".col-lg-10").children(".check-service-done").prop("checked")
-
-  sale_id = $(this).parents(".order-cooking").attr("sale-id")
-  com_name = $(".order-cooking[sale-id="+sale_id+"] .sale-name").html()
-
-  if(checked) {
-    $(this).children(".row").children(".col-lg-10").children(".check-service-done").prop('checked', false); 
-  }
-  else {
-    $(this).children(".row").children(".col-lg-10").children(".check-service-done").prop('checked', true); 
-  }
-
-  done = true
-
-  $(".order-cooking[sale-id="+sale_id+"] .check-service-done").each( function(){
-    if(!$(this).prop("checked"))
-      done = false
+$("#pinBoot").on('click', '.btn-done-cooking', function(){
+  $(this).parents(".order-processing").children(".service-lists").children(".col-lg-12").children(".services").children(".service").each(function(){
+    id = $(this).attr('service-id')
+    $.ajax({
+      type: "GET",
+      url: "/chief_pages/done_cooking?sale_menu_id=" + id
+    });
   })
 
-  if(done){
-    $(function(){
-      var notice = pop_notify({
-        title: "test",
-        text: "Order " + sale_id + " đã làm xong",
-        type: 'success',
-        stack: stack_context,
-      });
+  $(this).parents(".order-processing").remove()
+  check_has_order()
+})
 
-      notice.get().click(function(e) {
-        notice.remove();
-      });
-      
+$("#pinBoot").on('click', '.btn-start-cooking', function(){
+  sale_id = $(this).attr('sale-id')
+  $(".order-processing[sale-id="+sale_id+"]").children(".service-lists").children(".col-lg-12").children(".services").children(".service.service-processing").each(function(){
+    id = $(this).attr('service-id')
+    $.ajax({
+      type: "GET",
+      url: "/chief_pages/start_cooking?sale_menu_id=" + id
     });
-    $(".order-cooking[sale-id="+sale_id+"]").addClass("order-done")
-  }
-  else{
-    $(".order-cooking[sale-id="+sale_id+"]").removeClass("order-done")
-  }
+
+    $(".service-processing[service-id="+id+"] .list-style").remove()
+    $(".service-processing[service-id="+id+"] .service-name").before("<input type='checkbox' class='check-service-done'>")
+    $(".service-processing[service-id="+id+"]").removeClass("order-processing").addClass("service-cooking")
+  })
+
+  $(".order-processing[sale-id="+sale_id+"] .btn-start-cooking").addClass("disabled")      
 })
 
 staff_channel.bind("next_state_sale",function(data) {
   if(data['sale']['state'] == 'processing') {
-    $(function(){
-      var notice = pop_notify({
-        title: "test",
-        text: "Order mới từ máy " + data['sale']['customer_id'],
-        type: 'info',
-        stack: stack_context,
-      });
+    if(data['sale']['is_food_sale']){
+      $(function(){
+        var notice = pop_notify({
+          text: "Order mới từ máy " + data['sale']['customer_id'],
+        });
 
-      notice.get().click(function(e) {
-        if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
-          return;
-        notice.remove();
-        //move to element
+        append_processing_order(data)
+        check_has_order()
       });
-      
-      append_processing_order(data)
-      set_marquee_notifications_processing(data)
-      set_stack_notifications(data, "processing")
-      set_notifications_number()
-      set_display_stack_notifications()
-    });
+    }
   }
 });
 
-staff_channel.bind("next_state_sale",function(data) {
-  if(data['sale']['state'] == "done") {
-    $(function(){
-      var notice = pop_notify({
-        title: "test",
-        text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "làm xong",
-        type: 'success',
-        stack: stack_context,
-      });
-      notice.get().click(function(e) {
-        notice.remove();
-      });
-      
-      sale_id = data['sale']['id']
+staff_channel.bind("next_state_sale_menu_item", function(data) {
+  sale_id = data['sale_menu_item']['sale_id']
+  if(data['sale_menu_item']['state'] == 'processing') {
+    if(data['sale_menu_item']['sale']['is_food_sale']){
+      $(function(){
+        var notice = pop_notify({
+          text: "Yêu cầu làm lại từ máy " + data['sale_menu_item']['sale']['customer_id'] + " với lý do: <b>" + data['sale_menu_item']['reason'] + "</b>",
+        });
 
-      $(".order-cooking[sale-id="+sale_id+"]").remove()
-    });
+        params = {}
+        params['sale'] = data['sale_menu_item']['sale']
+        params['sale']['food_sale_menu_items_details'] = [data['sale_menu_item']]
+        params['is_redo'] = true
+        if($(".order-processing[sale-id="+sale_id+"]").length == 0){
+          append_processing_order(params)
+          check_has_order()
+        }
+        else{
+          append_service_list(params)
+          $(".order-processing[sale-id="+sale_id+"] .btn-start-cooking").removeClass("disabled")
+        }
+      });
+    }
   }
-  else if(data['sale']['state'] == "cooking") {
-    $(function(){
-      var notice = pop_notify({
-        title: "test",
-        text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + "đang được làm",
-        stack: stack_context,
-      });
-      notice.get().click(function(e) {
-        notice.remove();
-      });
-
-      sale_id = data['sale']['id']
-
-      $(".order-processing[sale-id="+sale_id+"] .list-style").remove()
-      $(".order-processing[sale-id="+sale_id+"] .service-name").before("<input type='checkbox' class='check-service-done'>")
-
-      href = "<%= done_cooking_chief_pages_path %>?sale_id="+sale_id
-      $(".order-processing[sale-id="+sale_id+"] .btn-start-cooking").attr("href", href).text("Làm Xong")
-
-      $(".order-processing[sale-id="+sale_id+"] .btn-start-cooking").addClass("btn-danger").removeClass("btn-primary")
-
-      $(".order-processing[sale-id="+sale_id+"] .btn-start-cooking").addClass("btn-done-cooking").removeClass("btn-start-cooking")      
-
-      template = $(".order-processing[sale-id="+sale_id+"]").html()
-
-      article = '<article class="order order-cooking" sale-id="'+sale_id+'"></article>'
-
-      $(".order-processing[sale-id="+sale_id+"]").remove()
-
-      if($(".order.order-cooking").length > 0)
-        $('.order.order-cooking').last().after(article)
-      else
-        $("#pinBoot").prepend(article)
-
-      $(".order-cooking[sale-id="+sale_id+"]").html(template)
-
-      $(".notification-text[sale-id="+sale_id+"]").remove()
-      $(".notification-content[sale-id="+sale_id+"]").remove()
-      set_notifications_number()
-      set_display_stack_notifications()
-    });
-}
 });
-
-function set_notifications_number(){
-  notifications_number = $("#pinBoot .order.order-processing").length
-  if(notifications_number > 0)
-  {
-    $(".notify-order-all").fadeIn(0)
-    $(".notify-order-all").text(notifications_number)
-  }
-  else{
-    $(".notify-order-all").fadeOut(0)
-  }
-  if($("#pinBoot .order").length > 1)
-    $(".no-orders").fadeOut(0)
-  else
-    $(".no-orders").fadeIn(0)
-}
-
-function set_display_stack_notifications(){
-  notifications_number = $("#pinBoot .order.order-processing").length
-  if(notifications_number > 0)
-  {
-    $(".panel-notifications").removeClass("minimize")
-    $(".panel-notifications").addClass("active")
-  }
-  else{
-    $(".panel-notifications").addClass("minimize")
-    $(".panel-notifications").removeClass("active")
-  }
-}
 
 function append_processing_order(params){
   sale_id = params['sale']['id']
   template = $(".order-template").html()
   article = '<article class="order order-processing" sale-id="'+sale_id+'"></article>'
-  console.log(article)
-  $(".order-template").before(article)
+  if(params['is_redo']){
+    $("#pinBoot").prepend(article)
+  }
+  else{
+    $(".order-template").before(article)
+  }
   $(".order-processing[sale-id="+sale_id+"]").html(template)
   $(".order-processing[sale-id="+sale_id+"] .sale-name").html("<i class='fa fa-desktop'></i>Máy "+params['sale']['customer_id'])
   $(".order-processing[sale-id="+sale_id+"] .sale-code.sale-created-at").html("MÃ HĐ: "+params['sale']['invoice_number']+"<br>NGÀY: "+params['sale']['format_created_at'])
-  href = $(".order-processing[sale-id="+sale_id+"] .btn-start-cooking").attr("href")
-  href += "?sale_id="+sale_id
-  $(".order-processing[sale-id="+sale_id+"] .btn-start-cooking").attr("href", href)
+
+  $(".order-processing[sale-id="+sale_id+"] .btn-start-cooking").attr("sale-id", sale_id)
   append_service_list(params)
 }
 
 function append_service_list(params){
   sale_id = params['sale']['id']
-  params['sale']['sale_menu_items_details'].forEach(function(data){
+  console.log(params['sale']['food_sale_menu_items_details'])
+  params['sale']['food_sale_menu_items_details'].forEach(function(data){
     menu_item = data['menu_item_details']
 
-    template = $(".order-processing[sale-id="+sale_id+"] .service-template").html()
+    template = $(".order-template .service-template").html()
 
-    service  = "<li class='service' service-id='"+menu_item['id']+"'></li>"
+    service  = "<li class='service service-processing' service-id='"+data['id']+"'></li>"
 
     $(".order-processing[sale-id="+sale_id+"] .services").append(service)
 
-    $(".order-processing[sale-id="+sale_id+"] .services .service[service-id="+menu_item['id']+"]").html(template)
+    $(".order-processing[sale-id="+sale_id+"] .services .service[service-id="+data['id']+"]").html(template)
 
-    $(".order-processing[sale-id="+sale_id+"] .service[service-id="+menu_item['id']+"] .service-name").text(menu_item['name'])
-    $(".order-processing[sale-id="+sale_id+"] .service[service-id="+menu_item['id']+"] .service-quantity").text(parseInt(data['quantity']))
+    $(".order-processing[sale-id="+sale_id+"] .service[service-id="+data['id']+"] .service-name").text(menu_item['name'])
+    $(".order-processing[sale-id="+sale_id+"] .service[service-id="+data['id']+"] .service-quantity").text(parseInt(data['quantity']))
     if(data['description'] === null)
       data['description'] = ""
-    $(".order-processing[sale-id="+sale_id+"] .service[service-id="+menu_item['id']+"] .service-description").text(data['description'])
+    $(".order-processing[sale-id="+sale_id+"] .service[service-id="+data['id']+"] .service-description").text(data['description'])
   })
   $(".order-processing[sale-id="+sale_id+"] .services .service-template").remove()
 }
 
-function set_marquee_notifications_processing(params){
-  params['sale']['com_name'] = "Máy 1"
-  marquee_text = '<span sale-id="'+ params['sale']['id'] +'" class="notification-text">'+ params['sale']['com_name'] +' vừa có order, kiểm tra và bắt đầu làm</span>'
-  $('.marquee-notifications-text').append(marquee_text)
-}
-
-function set_stack_notifications(params, type){
-  params['sale']['com_name'] = "Máy " + params['sale']['customer_id']
-  com_name = params['sale']['com_name']
-  sale_id  = params['sale']['id']
-  if(type == "processing"){
-    append_data = "<div sale-id='"+sale_id+"' class='notification-content'><div class='row'><div class='col-lg-3 col-md-3 col-sm-3 no-padding'><center><i class='fa fa-desktop'></i><br><label class='label label-primary computer-name'>"+ com_name +"</label></center></div><div class='col-lg-9 col-md-9 col-sm-9 no-padding'><div class='alert alert-info'>Có <b>ORDER MỚI</b>, chuẩn bị để <b>làm</b> cho khách</div></div></div></div>"
-    $(".panel-notification-body").append(append_data)
+function check_has_order(){
+  order_processing = $(".order.order-processing").length
+  order_cooking    = $(".order.order-processing").length
+  if(order_cooking + order_processing == 0){
+    $(".no-orders").fadeIn(100)
   }
   else{
-    append_data = "<div sale-id='"+sale_id+"' class='notification-content'><div class='row'><div class='col-lg-3 col-md-3 col-sm-3 no-padding'><center><i class='fa fa-desktop'></i><br><label class='label label-primary computer-name'>"+ com_name +"</label></center></div><div class='col-lg-9 col-md-9 col-sm-9 no-padding'><div class='alert alert-danger'>Đã <b>làm xong ORDER</b> của khách.</div></div></div></div>"
-    $(".panel-notification-body").append(append_data)
+    $(".no-orders").fadeOut(100) 
   }
-  
 }
 </script>

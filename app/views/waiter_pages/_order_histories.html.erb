@@ -1,121 +1,26 @@
 <table class="table table-bordered table-order-histories table-order">
   <thead>
     <tr>
-      <th style="width: 15%">
-        Tên
+      <th style="width: 25%">
+        <i class='fa fa-desktop' style='font-size: 25px; padding-top: 10px; position: relative'></i>
       </th>
-      <th style="width: 57%">Khách gọi</th>
-      <th style="width: 28%">Quá trình</th>
+      <th style="width: 75%;">
+        Số tiền đã thu
+      </th>
     </tr>
   </thead>
   <tbody>
-    <% @sales_delivered.each do |sale| %>
-    <tr class="order-row" sale-id='<%= sale['id'] %>' id="sale-<%= sale['id'] %>">
-      <td class="order-com">
-        <br>
-        <i class='fa fa-desktop' style="font-size: 50px"></i>
-        <br><br>
-        <label class="label label-primary">
-          Máy <%= sale['customer_id'] %>
-        </label>
-      </td>
-      <td class="order-lists">
-        <div class='customer-table'>
-          <table>
-            <thead>
-              <tr>
-                <th data-class="btable-id" data-field='id' data-align='left'>MÓN ĂN</th>
-                <th data-class="btable-price" data-field='price' data-align='left'>ĐƠN GIÁ</th>
-                <th data-class="btable-quantity" data-field='quantity' data-align='left'>SL</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% total_price = 0 %>
-              <% sale['sale_menu_items_details'].each do |data| %>
-              <% item_detail = data['menu_item_details'] %>
-              <% total_price += data['sum'].to_i %>
-              <tr id="row-service-<%= data['id'] %>" menu-item-id="<%= data['id'] %>" class="row-service">
-                <td class="order-service-name">
-                  <b><%= item_detail['name'] %></b>
-                  <br>
-                  <p class="note-for-service">
-                    <%= data['description'] || "Không có" %>
-                  </p>
-                </td>
-                <td class='order-service-price' data-price='<%= item_detail['unit_price'] %>'>
-                  <%= number_with_delimiter(item_detail['unit_price'].to_i) %>
-                </td>
-                <td class='order-service-quantity'>
-                  <span class='quantity-text'>
-                    <%= data['quantity'].to_i %>
-                  </span>
-                </td>
-              </tr>
-              <% end %>
-              <% sale['nocook_sale_menu_items_details'].each do |data| %>
-              <% item_detail = data['menu_item_details'] %>
-              <% total_price += data['sum'].to_i %>
-              <tr id="row-service-<%= data['id'] %>" menu-item-id="<%= data['id'] %>" class="row-service row-nocook">
-                <td class="order-service-name">
-                  <b><%= item_detail['name'] %></b>
-                  <br>
-                  <p class="note-for-service">
-                    <%= data['description'] || "Không có" %>
-                  </p>
-                </td>
-                <td class='order-service-price' data-price='<%= item_detail['unit_price'] %>'>
-                  <%= number_with_delimiter(item_detail['unit_price'].to_i) %>
-                </td>
-                <td class='order-service-quantity'>
-                  <span class='quantity-text'>
-                    <%= data['quantity'].to_i %>
-                  </span>
-                </td>
-              </tr>
-              <% end %>
-            </tbody>
-          </table>
-          <div class='col-lg-12' style='border-top: 1px solid #ccc'>
-            <div class='pull-right' style='margin-right: 3px'>
-              <h3 style='margin-top: 10px'>Tổng: <span class='total-price'><%= number_with_delimiter(total_price.to_i) %></span> đ</h3>
-            </div>
-          </div>
-        </div>
-      </td>
-      <td class="order-step">
-        <p style="width: 100%">
-          <b>Thu tiền:</b> 10h30'
-        </p>
-        <p style="width: 100%">
-          <b>Thu xong:</b> 10h35'
-        </p>
-        <p style="width: 100%">
-          <b>Mang cho khách:</b> 10h50'
-        </p>  
-        <p style="width: 100%">
-          <b>Mang xong:</b> 10h55'
-        </p>
+    <tr class="histories-loading" style="display: none">
+      <td colspan="2">
+        <center>
+          <i class="fa fa-spin fa-spinner" style="margin-right: 5px"></i> Đang tải dữ liệu
+        </center>
       </td>
     </tr>
-    <script type="text/javascript">
-    $("#sale-<%= sale['id'] %> .customer-table table").bootstrapTable();
-    </script>
-    <% end %>
-    <tr class="no-histories-orders no-orders">
+    <tr class="no-histories-orders">
       <td colspan="3">
         <div class="alert alert-warning">Tạm thời không có order mới.</div>
       </td>
     </tr>
   </tbody>
 </table>
-
-<script type="text/javascript">
-$(document).ready(function () {
-  if($(".table-order-histories .order-row").length > 0){
-    $(".no-histories-orders").fadeOut(0)
-  }
-  else{
-    $(".no-histories-orders").fadeIn(0)
-  }
-});
-</script>

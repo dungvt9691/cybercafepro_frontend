@@ -1,0 +1,31 @@
+<div class="modal fade" id="modal-sale-details" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="width: 90%;">
+    <div class="modal-content">
+      <div class="modal-body">
+        <center>
+          <i class='fa fa-spin fa-spinner' style="font-size: 40px"></i>
+          <br><br>
+          Đang tải dữ liệu ...
+        </center>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">
+          <i class="fa fa-times-circle">
+          </i>
+          Đóng
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script type="text/javascript">
+$('#modal-sale-details').on('shown.bs.modal', function (e) {
+  sale_id = $(this).attr("sale-id")
+
+  $.ajax({
+    type: "GET",
+    dataType: "script",
+    url: "/sales/"+sale_id
+  });
+})
+</script>

@@ -4,7 +4,7 @@ module SessionsHelper
 
   def get_token(email, password)
     token = Ckfapi::API::User.get_token(email, password)
-    if token['token']['user']
+    if token['token']
       session[:token] = token
     else
       session[:token] = nil
@@ -12,14 +12,19 @@ module SessionsHelper
   end
 
   def remove_token(token)
-    dtoken = Ckfapi::API::User.remove_token(token)
-    session[:token] = nil if dtoken["message"].include? "Session deleted"
-    session[:token]
+    # dtoken = Ckfapi::API::User.remove_token(token)
+    session[:token] = nil
+  end
+
+  def auth?(token)
+    auth = Ckfapi::API::User.auth(token)
+    return true if auth['message'] == 'success'
+    return false
   end
 
   def current_token
-    if !CustomerDb.find_by_ip(request.remote_ip).nil?
-      get_token("ductm310@live.com",123123123)
+    if !(customer = CustomerDb.find_by_ip(request.remote_ip)).nil?
+      session[:token] ||= get_token(customer.cs_email,123123123)
     else
       session[:token]
     end
@@ -38,15 +43,17 @@ module SessionsHelper
   end
 
   def get_root_path user
-    case user['role']
+    case user['current_role']
     when "Waiter"
       sale_list_waiter_pages_path
     when "Cashier"
       sale_list_cashier_pages_path
     when "Chef"
       cooking_list_chief_pages_path
+    when "Bartender"
+      cooking_list_bartender_pages_path
     when "Manager"
-      user_list_manager_pages_path
+      accounting_manager_pages_path
     else
       customer_ordering_customer_pages_path
     end

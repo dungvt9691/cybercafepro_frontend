@@ -1,0 +1,11 @@
+<tr id="report-<%= report['id'] %>">
+<td><%= report['id'] %></td>
+<td><%= report['title'] %></td>
+<td><%= report['description'] %></td>
+<td><%= link_to(report['user_id'], user_path(report['user_id']), remote: true) if report['user_id'] %></td>
+<td><%= link_to(report['reported_user_id'], user_path(report['reported_user_id']), remote: true) if report['reported_user_id'] %></td>
+<td><%= report['model'] %></td>
+<td><%= report['model_id'] %></td>
+<td><%= report['model_dump'] %></td>
+<td><%= Time.parse(report['created_at']).in_time_zone(7) %></td>
+</tr>

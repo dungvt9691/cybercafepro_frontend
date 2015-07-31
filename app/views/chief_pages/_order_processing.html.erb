@@ -11,14 +11,19 @@
       <br><br>
     </div>
   </div>
-  <div class="row services-lists">
+  <div class="row service-lists">
     <div class="col-lg-12">
       <ul class="services">
-        <% sale['sale_menu_items_details'].each do |data| %>
-        <li class='service' service-id="<%= data['id'] %>">
+        <% sale['food_sale_menu_items_details'].each do |data| %>
+        <% if ['processing', 'cooking'].include? data['state'] %>
+        <li class="service <%= data['state'] == 'cooking' ? 'service-cooking' : 'service-processing' %>" service-id="<%= data['id'] %>">
           <div class="row">
             <div class="col-lg-10 col-md-10 col-sm-10">
+              <% if data['state'] == 'processing' %>
               <span class='list-style'>-</span>
+              <% elsif data['state'] == 'cooking' %>
+              <input type='checkbox' class='check-service-done'>
+              <% end %>
               <span class='service-name'>
                 <%= data['menu_item_details']['name'] %>
               </span>
@@ -38,6 +43,7 @@
           </div>
         </li>
         <% end %>
+        <% end %>
       </ul>
     </div>
   </div>
@@ -50,7 +56,7 @@
   </div>
   <div class="row order-actions">
     <div class="col-lg-12">
-      <a data-remote='true' href="<%= start_cooking_chief_pages_path(sale_id: sale['id'].to_s) %>" class="btn btn-primary btn-block btn-start-cooking">
+      <a href="javascript:;" sale-id="<%= sale['id'] %>" class="btn btn-primary btn-block btn-start-cooking <%= 'disabled' if not sale['food_sale_menu_items_details'].any?{|f| f['state'] == 'processing'} %>">
         Bắt Đầu Làm
       </a>
     </div>

@@ -52,6 +52,7 @@ gem 'sinatra', :require => nil
 
 # Datatable
 gem 'jquery-datatables-rails'
+# gem 'best_in_place'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

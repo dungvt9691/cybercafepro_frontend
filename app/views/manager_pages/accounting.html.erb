@@ -1,0 +1,161 @@
+<div class="content">
+  <h1> Accounting </h1>
+  <%= form_tag(stat_manager_pages_path, remote: true, method: :get, multipart: true, class: "form-inline", id: "registrations-edit-form") do %>
+    <div class="form-group">
+      <%= label_tag 'shift' %>
+      <%= select_tag 'shift_id', options_for_select(@shifts.collect { |p| [ "#{Time.parse(p['start_time']).in_time_zone(7).strftime("%H:%M:%S")} -- #{Time.parse(p['end_time']).in_time_zone(7).strftime("%H:%M:%S")}", p['id']] }), class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= label_tag 'date' %>
+      <%= text_field_tag 'date', nil, class: "form-control timepicker" %>
+    </div>
+    <%= submit_tag "Get", class: "btn btn-default" %>
+  <% end %>
+  <br />
+  <div id="stat-attendance">
+    <h2>Attendances</h2>
+    <div class="container">
+      <div class="col-xs-4 col-ms-4 col-md-4 col-lg-4">
+        <div id="customer-stat">
+          <h2>0<small> Customer</small></h2>
+        </div>
+        <div id="waiter-stat">
+          <h2>0<small> Waiter</small></h2>
+        </div>
+      </div>
+      <div class="col-xs-4 col-ms-4 col-md-4 col-lg-4">
+        <div id="chef-stat">
+          <h2>0<small> Chef</small></h2>
+        </div>
+        <div id="bartender-stat">
+          <h2>0<small> Bartender</small></h2>
+        </div>
+      </div>
+      <div class="col-xs-4 col-ms-4 col-md-4 col-lg-4">
+        <div id="cashier-stat">
+          <h2>0<small> Cashier</small></h2>
+        </div>
+        <div id="manager-stat">
+          <h2>0<small> Manager</small></h2>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <table id="stat-attendance-table" class="display table table-bordered">
+    <thead>
+      <th>Id</th>
+      <th>Action</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+      <th>Gender</th>
+      <th>Role</th>
+      <th>Current Role</th>
+      <th>Phone Number</th>
+      <th>Address</th>
+      <th>City</th>
+      <th>State</th>
+      <th>Zip</th>
+      <th>Country</th>
+    </thead>
+  <tbody>
+  </tbody>
+  <tfoot>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th><input type="text" name="search_role" placeholder="Search roles" class="search_init"></th>
+    <th><input type="text" name="search_current_role" placeholder="Search current roles" class="search_init"></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tfoot>
+  </table>
+  </div>
+  <div id="stat-sale">
+  </div>
+</div>
+
+<div id="stat-sale">
+  <h2>Sales</h2>
+  <table id="stat-sale-table" class="display table table-bordered">
+    <thead>
+      <th>Id</th>
+      <th>Invoice Number</th>
+      <th>Name</th>
+      <th>Quantity</th>
+      <th>State</th>
+      <th>Customer</th>
+      <th>Pender</th>
+      <th>Pending At</th>
+      <th>Processor</th>
+      <th>Processing At</th>
+      <th>Maker</th>
+      <th>Making At</th>
+      <th>Done At</th>
+      <th>Deliverer</th>
+      <th>Delivering At</th>
+      <th>Delivered At</th>
+      <th>Saver</th>
+      <th>Saved At</th>
+    </thead>
+    <tbody>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th><input type="text" name="search_id" placeholder="Search ids" class="search_init"></th>
+        <th><input type="text" name="search_invoice" placeholder="Search invoices" class="search_init"></th>
+        <th><input type="text" name="search_name" placeholder="Search names" class="search_init"></th>
+        <th></th>
+        <th><input type="text" name="search_state" placeholder="Search states" class="search_init"></th>
+        <th><input type="text" name="search_customer" placeholder="Search customers" class="search_init"></th>
+        <th><input type="text" name="search_pender" placeholder="Search penders" class="search_init"></th>
+        <th></th>
+        <th><input type="text" name="search_processor" placeholder="Search processors" class="search_init"></th>
+        <th></th>
+        <th><input type="text" name="search_maker" placeholder="Search makers" class="search_init"></th>
+        <th></th>
+        <th></th>
+        <th><input type="text" name="search_deliverer" placeholder="Search deliverers" class="search_init"></th>
+        <th></th>
+        <th></th>
+        <th><input type="text" name="search_saver" placeholder="Search savers" class="search_init"></th>
+        <th></th>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<script>
+  $('.timepicker').datepicker( {
+    orientation: "top auto",
+    format: "yyyy-mm-dd",
+    autoclose: true,
+    weekStart: 1
+  });
+$('.timepicker').datepicker("setDate", new Date());
+$(document).ready(function(){
+  $('#stat-attendance-table').dataTable();
+  $('#stat-sale-table').dataTable();
+});
+var showSale = function(id){
+  $('.launch-modal').html("<%=j render 'sales/modal_sale_details' %>");
+  $('#modal-sale-details').attr("sale-id", id);
+  $("#modal-sale-details").modal({
+    keyboard: true,
+    backdrop: 'static'
+  });
+}
+</script>
+
+<style>
+  tfoot th input {
+    width: 100%;
+  }
+</style>

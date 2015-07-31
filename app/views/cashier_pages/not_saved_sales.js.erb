@@ -1,0 +1,38 @@
+<% if @not_saved_sales.count > 0 %>
+$(".no-not-saved-orders").fadeOut(100)
+$('#table-order-not-saved tbody').html("");
+<% @not_saved_sales.each do |sale| %>
+  $('#table-order-not-saved tbody').append("<%=j render partial: 'not_saved_sale', locals: { sale: sale} %>");
+<% end %>
+<% else %>
+$(".no-not-saved-orders").fadeIn(100)
+$('#table-order-not-saved tbody').html("");
+<% end %>
+
+var not_saved_table = $("#table-order-not-saved").dataTable({
+  "sDom": "<'row'<'col-lg-6'l><'col-lg-6'f>r>t<'row'<'col-lg-2'i><'col-lg-10'p>>",
+  "sPaginationType": "full_numbers",
+  "order": [[ 3, "desc" ]],
+  "oLanguage": {
+    "sLengthMenu": "<%= t('datatable.length_menu') %>",
+    "sSearch": "",
+    "sInfo": "<%= t('datatable.info') %>",
+    "oPaginate": {
+      "sNext": "<%= t('datatable.paginate_next') %>",
+      "sPrevious": "<%= t('datatable.paginate_previous') %>",
+      "sFirst": "<%= t('datatable.paginate_first') %>",
+      "sLast": "<%= t('datatable.paginate_last') %>",
+    }
+  },
+  "aaSorting": [],
+  "aoColumnDefs" : [ {
+    'bSortable' : false,
+    'aTargets' : []
+  } ]
+});
+$('.dataTables_filter input').addClass('form-control').attr('placeholder',"<%= t('datatable.search') %>");
+$('.dataTables_length select').addClass('form-control');
+
+$(".btn-saved-order").click(function(){
+  $(this).parents('.row-sale').remove()
+})

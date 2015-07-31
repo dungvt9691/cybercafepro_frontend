@@ -1,0 +1,76 @@
+<div class="content">
+  <h1> Danh sách report </h1>
+  <table id="reports-table" class="display table table-bordered">
+    <thead>
+      <th>Id</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>User</th>
+      <th>Reported User</th>
+      <th>Model</th>
+      <th>Model ID</th>
+      <th>Model Dump</th>
+      <th>Created At</th>
+    </thead>
+  <tbody>
+    <% if @reports %>
+      <% @reports.each do |report| %>
+        <%= render partial: 'report_row', locals: { report: report } %>
+      <% end %>
+    <% end%>
+  </tbody>
+  <tfoot>
+    <th><input type="text" name="search_name" placeholder="Search names" class="search_init"></th>
+    <th><input type="text" title="search_title" placeholder="Search titles" class="search_init"></th>
+    <th><input type="text" description="search_description" placeholder="Search descriptions" class="search_init"></th>
+    <th><input type="text" user="search_user" placeholder="Search users" class="search_init"></th>
+    <th><input type="text" user="search_reported_user" placeholder="Search reported users" class="search_init"></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tfoot>
+  </table>
+
+  <script>
+    $(document).ready(function(){
+      var reportTable = $('#reports-table').dataTable();
+      var asInitReportVals = new Array();
+
+      $("#reports-table tfoot input").keyup( function () {
+        /* Filter on the column (the index) of this element */
+        reportTable.fnFilter( this.value, $("#reports-table tfoot th").index($(this).parent()) );
+      } );
+
+      /*
+       * Support functions to provide a little bit of 'user friendlyness' to the textboxes in
+       * the footer
+       */
+      $("#reports-table tfoot input").each( function (i) {
+        asInitReportVals[i] = this.value;
+      } );
+
+      $("#reports-table tfoot input").focus( function () {
+        if ( this.className == "search_init" )
+        {
+          this.className = "";
+          this.value = "";
+        }
+      } );
+
+      $("#reports-table tfoot input").blur( function (i) {
+        if ( this.value == "" )
+        {
+          this.className = "search_init";
+          this.value = asInitReportVals[$("#reports-table tfoot th").index($(this).parent())];
+        }
+      } );
+    });
+  </script>
+</div>
+
+<style>
+  tfoot th input {
+    width: 100%;
+  }
+</style>
