@@ -16,6 +16,7 @@
     <tr class="order-row <%= sale['has_ready_sale_menu_item'] ? 'visible' : 'hidden' %>" sale-id='<%= sale['id'] %>' id="sale-<%= sale['id'] %>">
       <td class="order-com">
         Máy <%= sale['customer_id'] %>
+        <%= render partial: 'order_com' %>
       </td>
       <td class='order-lists'>
         <table class="table table-bordered">
@@ -109,7 +110,7 @@ staff_channel.bind("next_state_sale_menu_item",function(data) {
 });
 
 $(".table-order-ready").on("click", ".btn-redo", function(){
-  item_id = $(this).parents(".menu-item-row").attr("item-id")
+  var item_id = $(this).parents(".menu-item-row").attr("item-id")
   $('.launch-modal').html("<%=j render 'waiter_pages/modal_redo_sale_item' %>")
   $('#modal-redo-sale-item').attr("item-id", item_id)
   $("#modal-redo-sale-item").modal({
@@ -119,9 +120,8 @@ $(".table-order-ready").on("click", ".btn-redo", function(){
 })
 
 function set_order_done_row(data){
-  sale_item_id = data['sale_menu_item']['id']
-  sale_id = data['sale_menu_item']['sale_id']
-
+  var sale_item_id = data['sale_menu_item']['id']
+  var sale_id = data['sale_menu_item']['sale_id']
   $(".order-row[sale-id="+sale_id+"]").removeClass("hidden").addClass("visible")
 
   $(".menu-item-row[item-id="+sale_item_id+"]").addClass("danger")
@@ -138,8 +138,8 @@ function set_order_done_row(data){
 }
 
 function set_order_processing_row(data){
-  sale_item_id = data['sale_menu_item']['id']
-  sale_id = data['sale_menu_item']['sale_id']
+  var sale_item_id = data['sale_menu_item']['id']
+  var sale_id = data['sale_menu_item']['sale_id']
 
   $(".menu-item-row[item-id="+sale_item_id+"]").removeClass().addClass("menu-item-row")
 
@@ -155,7 +155,7 @@ function set_order_processing_row(data){
 }
 
 function set_order_delivering_row(data){
-  sale_item_id = data['sale_menu_item']['id']
+  var sale_item_id = data['sale_menu_item']['id']
   $(".menu-item-row[item-id="+sale_item_id+"]").removeClass("danger").addClass("warning")
 
   $(".menu-item-row[item-id="+sale_item_id+"] .item-action-at").html("Đi Giao lúc: " + data['sale_menu_item']['format_delivering_at'])
@@ -178,8 +178,8 @@ function set_order_delivering_row(data){
 
 function set_order_delivered_row(data){
 
-  sale_item_id = data['sale_menu_item']['id']
-  sale_id = data['sale_menu_item']['sale_id']
+  var sale_item_id = data['sale_menu_item']['id']
+  var sale_id = data['sale_menu_item']['sale_id']
 
   $(".menu-item-row[item-id="+sale_item_id+"]").removeClass("warning").addClass("success")
 
@@ -189,17 +189,19 @@ function set_order_delivered_row(data){
 
   if($(".order-row[sale-id="+sale_id+"] .menu-item-row").length == $(".order-row[sale-id="+sale_id+"] .menu-item-row.success").length){
     $(".order-row[sale-id="+sale_id+"]").remove()
-    alert("Order " + sale_id + " từ máy " + data['sale_menu_item']['sale']['customer_id'] + " đã mang hết lên cho khách")
+    // TODO double alert here
+    //alert("Order " + sale_id + " từ máy " + data['sale_menu_item']['sale']['customer_id'] + " đã mang hết lên cho khách")
   }
 }
 
 function append_order_processing_row(data){
-  sale_id = data['sale']['id']
-  html = "<%=j render 'order_ready_template' %>"
+  var sale_id = data['sale']['id']
+  var html = "<%=j render 'order_ready_template' %>"
   $(".no-ready-orders").before(html)
   $(".order-ready-template").attr("id", "sale-" + sale_id)
   $(".order-ready-template").attr("sale-id", sale_id)
   $(".order-ready-template .order-com").text("Máy " + data['sale']['customer_id'])
+  $(".order-ready-template .order-com").append("<%=j render partial: 'order_com' %>")
   if(data['sale']['has_ready_sale_menu_item'])
     $(".order-ready-template").addClass("visible")
   else
@@ -221,10 +223,10 @@ function append_order_processing_row(data){
 }
 
 function set_sale_menu_item(item){
-  item_id = item['id']
-  menu_item_template = "<%=j render 'sale_menu_item_template' %>"
-  class_menu_item = get_class_menu_item(item['state'])
-  class_item_action = "hidden"
+  var item_id = item['id']
+  var menu_item_template = "<%=j render 'sale_menu_item_template' %>"
+  var class_menu_item = get_class_menu_item(item['state'])
+  var class_item_action = "hidden"
   if(["done", "delivering"].indexOf(item['state']) > -1){
     class_item_action = "visible"
   }
