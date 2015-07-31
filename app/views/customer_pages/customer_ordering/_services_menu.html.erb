@@ -21,8 +21,13 @@
           <% @services['menu_items'].each do |service| %>
           <% if service['mtype'] == type %>
           <center>
-          <div class="col-lg-4 col-md-4 col-sm-6 customer-service <%= 'Còn' == 'Còn' ? 'active' : '' %>" data-service-name="<%= service['name'] %>" data-service-id="<%= service['id'] %>" data-service-price="<%= service['unit_price'].to_i %>" data-service-type="service" data-service-price-format="<%= number_with_delimiter(service['unit_price'].to_i) %>">
-              <div class="limited"></div>
+          <div class="col-lg-4 col-md-4 col-sm-6 customer-service <%= service['state'].downcase == 'available' ? 'active' : '' %>" data-service-name="<%= service['name'] %>" data-service-id="<%= service['id'] %>" data-service-price="<%= service['unit_price'].to_i %>" data-service-type="service" data-service-price-format="<%= number_with_delimiter(service['unit_price'].to_i) %>">
+              <% case service['state'].downcase %>
+              <% when 'coming'%>
+                <div class="cooming-soon"></div>
+              <% when 'sold' %>
+                <div class="limited"></div>
+              <% end %>
               <div class="customer-service-img" style="background: url('<%= service['image']['url'] %>') no-repeat center center; background-color: #fff; background-size: 100%;"></div>
               <br>
               <div class='service-name'>
@@ -33,6 +38,7 @@
               </div>
               <div class="col-lg-12">
                 <h4 class='service-price'><%= number_with_delimiter(service['unit_price'].to_i) %> đ</h4>
+                <h5><%= service['name'] %></h5>
               </div>
             </div>
           </center>
