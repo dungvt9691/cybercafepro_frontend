@@ -159,7 +159,9 @@ function set_order_delivering_row(data){
   $(".menu-item-row[item-id="+sale_item_id+"]").removeClass("danger").addClass("warning")
 
   $(".menu-item-row[item-id="+sale_item_id+"] .item-action-at").html("Đi Giao lúc: " + data['sale_menu_item']['format_delivering_at'])
-
+  if ("<%= current_user['id'] %>" != data['sale_menu_item']['deliverer_id']) {
+    $(".menu-item-row[item-id="+sale_item_id+"] [id*=item-action-dropdown]").remove()
+  }
   $(".menu-item-row[item-id="+sale_item_id+"] .btn-go-deliver").parent("li").removeClass("active")
 
   $(".menu-item-row[item-id="+sale_item_id+"] .btn-go-deliver").attr("href", "javascript:;")

@@ -1,5 +1,6 @@
 <tr data-target="#item-action-dropdown-<%= item['id'] %>" data-toggle="dropdown" class='menu-item-row <%= get_class_menu_item(item['state']) %>' item-id="<%= item['id'] %>" id="<%= item['id'] %>">
   <td class='menu-item-name'>
+    <% if item['deliverer_id'].to_i <= 0 ||  item['deliverer_id'].to_i == current_user['id'].to_i %>
     <div id="item-action-dropdown-<%= item['id'] %>" class="btn-group item-action pull-right <%= ['done', 'delivering'].include?(item['state']) ? 'visible' : 'hidden' %>" style="margin-top: 12px">
       <button type="button" style="padding-bottom: 2px;" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" role="button" data-target="#item-action-dropdown-<%= item['id'] %>" aria-haspopup="true" aria-expanded="false">
         <i class='fa fa-caret-down' style='font-size: 18px'></i>
@@ -19,6 +20,7 @@
         <% end %>
       </ul>
     </div>
+    <% end %>
     <div class='item-name'>
       <%= item['menu_item_details']['name'] %>
       <strong class='item-quantity'>
