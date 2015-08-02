@@ -15,7 +15,7 @@
     <% @sales_ready.each do |sale| %>
     <tr class="order-row <%= sale['has_ready_sale_menu_item'] ? 'visible' : 'hidden' %>" sale-id='<%= sale['id'] %>' id="sale-<%= sale['id'] %>">
       <td class="order-com">
-        Máy <%= sale['customer_id'] %>
+        Máy <%= sale['customer']['email'] %>
         <%= render partial: 'order_com' %>
       </td>
       <td class='order-lists'>
@@ -59,7 +59,7 @@ staff_channel.bind("next_state_sale",function(data) {
   if(data['sale']['state'] == "processing") {
     $(function(){
       var notice = pop_notify({
-        text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer_id'] + " đã thu tiền",
+        text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer']['email'] + " đã thu tiền",
       });
       append_order_processing_row(data)
       set_notifications_number()
@@ -79,7 +79,7 @@ staff_channel.bind("next_state_sale_menu_item",function(data) {
   if(data['sale_menu_item']['state'] == "done") {
     $(function(){
       var notice = pop_notify({
-        text: "Máy " + data['sale_menu_item']['sale']['customer_id'] + " đã làm xong <b>" + parseInt(data['sale_menu_item']['quantity']) + " " + data['sale_menu_item']['menu_item_details']['name'] + "</b>",
+        text: "Máy " + data['sale_menu_item']['customer']['email'] + " đã làm xong <b>" + parseInt(data['sale_menu_item']['quantity']) + " " + data['sale_menu_item']['menu_item_details']['name'] + "</b>",
       });
 
       set_order_done_row(data)
@@ -89,7 +89,7 @@ staff_channel.bind("next_state_sale_menu_item",function(data) {
   else if(data['sale_menu_item']['state'] == "delivering") {
     $(function(){
       var notice = pop_notify({
-        text: "Đang mang <b>" + parseInt(data['sale_menu_item']['quantity']) + " " + data['sale_menu_item']['menu_item_details']['name']+ "</b> lên cho máy " + data['sale_menu_item']['sale']['customer_id'],
+        text: "Đang mang <b>" + parseInt(data['sale_menu_item']['quantity']) + " " + data['sale_menu_item']['menu_item_details']['name']+ "</b> lên cho máy " + data['sale_menu_item']['customer']['email'],
       });
 
       set_order_delivering_row(data)
@@ -99,7 +99,7 @@ staff_channel.bind("next_state_sale_menu_item",function(data) {
   else if(data['sale_menu_item']['state'] == "delivered") {
     $(function(){
       var notice = pop_notify({
-        text: "Đã giao <b>" + parseInt(data['sale_menu_item']['quantity']) + " " + data['sale_menu_item']['menu_item_details']['name']+ "</b> cho máy " + data['sale_menu_item']['sale']['customer_id'],
+        text: "Đã giao <b>" + parseInt(data['sale_menu_item']['quantity']) + " " + data['sale_menu_item']['menu_item_details']['name']+ "</b> cho máy " + data['sale_menu_item']['customer']['email'],
       });
 
       set_order_delivered_row(data)
@@ -200,7 +200,7 @@ function append_order_processing_row(data){
   $(".no-ready-orders").before(html)
   $(".order-ready-template").attr("id", "sale-" + sale_id)
   $(".order-ready-template").attr("sale-id", sale_id)
-  $(".order-ready-template .order-com").text("Máy " + data['sale']['customer_id'])
+  $(".order-ready-template .order-com").text("Máy " + data['sale']['customer']['email'])
   $(".order-ready-template .order-com").append("<%=j render partial: 'order_com' %>")
   if(data['sale']['has_ready_sale_menu_item'])
     $(".order-ready-template").addClass("visible")
