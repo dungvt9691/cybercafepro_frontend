@@ -1,5 +1,9 @@
 <% if @menu_item %>
-  alert("MenuItem name <%= @menu_item['name'] %> is updated");
+  <% if @menu_item['menu_item'] %>
+    alert("MenuItem name <%= @menu_item['menu_item']['name'] %> is updated");
+  <% else %>
+    alert("<%= @menu_item.inspect %>");
+  <% end %>
 <% else %>
-  alert("<%= @menu_item.errors %>");
 <% end %>
+enableFields();

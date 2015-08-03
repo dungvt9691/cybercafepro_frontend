@@ -65,7 +65,7 @@ function truncate (string, length) {
 // }
 
 function pop_desktop_notify(options) {
-  
+
 }
 
 function pop_notify(options){
@@ -79,7 +79,7 @@ function pop_notify(options){
     onClose : function() {
       console.log('bar closed');
     },
-    onOpen : function() { 
+    onOpen : function() {
       $($(".ns-effect-slidetop")[1]).fadeOut(300)
       setTimeout( function() {
         $($(".ns-effect-slidetop")[1]).remove()
@@ -106,3 +106,13 @@ function bootstrap_env() {
   };
 }
 
+  function MarkAsChanged(){
+      $(this).addClass("changed");
+  }
+  function disableUnchangedFields(){
+    $(':input:not(.changed):not([name=_method])').attr('disabled', 'disabled');
+  }
+
+  function enableFields(){
+    $(':input:not(.changed):not([name=_method])').prop('disabled', false);
+  }

@@ -9,9 +9,43 @@
         <%= form_tag(menu_item_path(menu_item['id']), method: :patch, multipart: true, class: "form-horizontal", remote: true, id: "menu-item-edit-form") do %>
 
           <div class="form-group">
+            <%= label_tag 'Name', nil, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= text_field_tag 'menu_item[name]', menu_item["name"], class: "form-control" %>
+            </div>
+          </div>
+
+          <div class="form-group">
             <%= label_tag 'State', nil, class: "col-sm-2 control-label" %>
             <div class="col-sm-10">
               <%= select_tag 'menu_item[state]', options_for_select(["Available", "Sold", "Coming"], menu_item["state"]), class: "form-control" %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= label_tag 'Menu Type', nil, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= text_field_tag 'menu_item[mtype]', menu_item["mtype"], class: "form-control" %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= label_tag 'Unit', nil, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= text_field_tag 'menu_item[unit]', menu_item["unit"], class: "form-control" %>
+            </div>
+          </div>
+          <div class="form-group">
+            <%= label_tag 'Price per unit', nil, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= number_field_tag 'menu_item[unit_price]', menu_item["unit_price"], class: "form-control" %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= label_tag 'Image', nil, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= text_field_tag 'menu_item[remote_image_url]', menu_item["image"]["url"], class: "form-control" %>
             </div>
           </div>
 
@@ -24,7 +58,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="$('#menu-item-edit-form').submit()">Save changes</button>
+        <button type="button" class="btn btn-primary" onclick="disableUnchangedFields();$('#menu-item-edit-form').submit()">Save changes</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -32,4 +66,5 @@
 
 <script>
   $('#menu-item-edit-form .submit-form').hide();
+  $(":input").blur(MarkAsChanged).change(MarkAsChanged);
 </script>

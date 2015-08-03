@@ -76,6 +76,7 @@
       <%= form_tag(menu_items_path, method: 'post', remote: true) do %>
         <div class="menu-item-manage">
           <div class="col-xs-4 col-ms-4 col-md-4 col-lg-4" style="border-right: 1px #CCC2C2 solid">
+            <h3 class="text-center">1. Chọn thành phần</h3><hr>
             <ul id="items-list-select" class="btn-group" data-toggle="buttons" style="width: 100%">
               <% @items.each do |item| %>
                 <li id="item-<%= item['id'] %>-select" class="item-name item-row" style="width: 100%">
@@ -87,6 +88,7 @@
             </ul>
           </div>
           <div class="col-xs-4 col-ms-4 col-md-4 col-lg-4">
+            <h3 class="text-center">2. Xác đinh lượng</h3><hr>
             <ul id="items-list-form">
               <% @items.each do |item| %>
                 <li id="item-<%= item['id'] %>-form" data-price="<%= item['unit_price']%>" class="item-name item-row" style="display: none;">
@@ -105,13 +107,22 @@
             </ul>
           </div>
           <div class="col-xs-4 col-ms-4 col-md-4 col-lg-4" style="border-left: 1px #CCC2C2 solid">
-            <%= file_field_tag 'menu_item[image]' %><br />
+            <h3 class="text-center">3. Chi tiết món ăn</h3><hr>
+            <%= label_tag 'Image URL' %><br />
+            <%= text_field_tag 'menu_item[remote_image_url]', nil, class: 'form-control' %><br />
+            <%= label_tag 'Name' %><br />
             <%= text_field_tag 'menu_item[name]', nil, placeholder: "Name", class: 'form-control' %><br />
+            <%= label_tag 'Description' %><br />
             <%= text_field_tag 'menu_item[description]', nil, placeholder: "Description", class: 'form-control' %><br />
+            <%= label_tag 'Unit' %><br />
             <%= text_field_tag 'menu_item[unit]', nil, placeholder: "Unit", class: 'form-control' %><br />
+            <%= label_tag 'Price per Unit' %><br />
             <%= text_field_tag 'menu_item[unit_price]', nil, placeholder: "Price by unit", class: 'form-control' %><br />
+            <%= label_tag 'Category' %><br />
             <%= select_tag 'menu_item[category_id]', options_for_select(@categories.collect { |p| [ p['name'] , p['id']] }), class: "form-control" %><br />
+            <%= label_tag 'Menu Type' %><br />
             <%= text_field_tag 'menu_item[mtype]', nil, placeholder: "Menu Type (bread, soft drink, ...)", class: 'form-control' %><br />
+            <%= label_tag 'Klass (Ex: Food to chef, Drink to Bartender)' %><br />
             <%= select_tag 'menu_item[klass]', options_for_select(['food', 'drink', 'service']), class: "form-control" %><br />
 
             <%= submit_tag 'Create', class: 'btn btn-default btn-large' %>
