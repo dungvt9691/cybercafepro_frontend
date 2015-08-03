@@ -37,8 +37,8 @@ class RegistrationsController < ApplicationController
   end
 
   def destroy
-    @user_id = params[:id]
-    @user = Ckfapi::API::User.remove(current_token, params[:id])
+    @menu_item_id = params[:id]
+    @menu_item = Ckfapi::API::User.remove(current_token, params[:id])
     respond_to do |format|
       format.js
     end

@@ -22,6 +22,11 @@ class MenuItemsController < ApplicationController
   end
 
   def destroy
+    @menu_item_id = params[:id]
+    @user = Ckfapi::API::MenuItem.remove(current_token, params[:id])
+    respond_to do |format|
+      format.js
+    end
   end
 
   def edit

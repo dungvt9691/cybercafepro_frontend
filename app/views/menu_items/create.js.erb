@@ -1,5 +1,6 @@
 <% if @menu_item['menu_item'] %>
   alert('successful');
+  location.reload();
 <% else %>
   alert('<%= @menu_item.inspect %>')
 <% end %>
