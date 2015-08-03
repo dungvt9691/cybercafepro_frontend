@@ -1,0 +1,6 @@
+<% if @item['item'] %>
+  alert('successful');
+  location.reload();
+<% else %>
+  alert('<%= @item.inspect %>')
+<% end %>

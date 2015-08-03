@@ -50,7 +50,7 @@
       <% if ["Manager", "Chef", "Bartender"].include?(current_user['current_role']) %>
       <li class="<%= 'active' if @mg_page == 'menu_item' rescue ''%> ">
         <a class="href" href="<%= menu_item_list_manager_pages_path %>">
-          Menu phục vụ
+          Quản lý món ăn
         </a>
       </li>
       <% end %>

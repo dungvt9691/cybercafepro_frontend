@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :registrations
 
   resources :menu_items
+  resources :items
   resources :sales
   resources :shifts
 
