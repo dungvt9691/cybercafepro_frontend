@@ -24,7 +24,7 @@ module SessionsHelper
 
   def current_token
     if !(customer = CustomerDb.find_by_ip(request.remote_ip)).nil?
-      get_token(customer.cs_email,123123123)
+      get_token(customer.cs_email,"nkZ26Tpm3q73")
     else
       session[:token]
     end
