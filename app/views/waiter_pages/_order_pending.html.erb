@@ -13,7 +13,7 @@
     <% @sales_pending.each do |sale| %>
     <tr data-target="#order-action-dropdown-<%= sale['id'] %>" data-toggle="dropdown" class="order-row <%= 'success' if sale['state'] == 'pending' %>" sale-id='<%= sale['id'] %>' id="sale-<%= sale['id'] %>">
       <td class="order-com">
-        Máy <%= sale['customer']['email'] %>
+        <%= sale['customer']['email'] %>
       </td>
       <td class="order-price">
         <div id="order-action-dropdown-<%= sale['id'] %>" class="btn-group order-action pull-right" style="margin-top: 12px">
@@ -92,7 +92,7 @@ $(".table-order-pending").on("click", ".active .btn-verify-payment", function(){
 staff_channel.bind("create_sale",function(data) {
   $(function(){
     var notice = pop_notify({
-      text: "Order mới từ máy " + data['sale']['customer']['email'],
+      text: "Order mới từ " + data['sale']['customer']['email'],
     });
 
     append_order_init_row(data)
@@ -104,7 +104,7 @@ staff_channel.bind("next_state_sale",function(data) {
   if(data['sale']['state'] == "pending") {
     $(function(){
       var notice = pop_notify({
-        text: "Order " + data['sale']['id'] + " từ máy " + data['sale']['customer']['email'] + " đang được đi lấy tiền",
+        text: "Order " + data['sale']['id'] + " từ " + data['sale']['customer']['email'] + " đang được đi lấy tiền",
       });
 
       set_order_pending_row(data)
@@ -135,7 +135,7 @@ function append_order_init_row(data){
   $(".no-pending-orders").before(html)
   $(".order-init-template").attr("id", "sale-" + sale_id)
   $(".order-init-template").attr("sale-id", sale_id)
-  $(".order-init-template .order-com").text("Máy " + data['sale']['customer']['email'])
+  $(".order-init-template .order-com").text(data['sale']['customer']['email'])
 
   $(".order-init-template .btn-go-to-payment").parent("li").addClass("active")
 

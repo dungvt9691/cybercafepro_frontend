@@ -93,7 +93,7 @@ staff_channel.bind("next_state_sale",function(data) {
     if(data['sale']['is_food_sale']){
       $(function(){
         var notice = pop_notify({
-          text: "Order mới từ máy " + data['sale']['customer_id'],
+          text: "Order mới từ " + data['sale']['customer']['email'],
         });
 
         append_processing_order(data)
@@ -109,7 +109,7 @@ staff_channel.bind("next_state_sale_menu_item", function(data) {
     if(data['sale_menu_item']['sale']['is_food_sale']){
       $(function(){
         var notice = pop_notify({
-          text: "Yêu cầu làm lại từ máy " + data['sale_menu_item']['sale']['customer_id'] + " với lý do: <b>" + data['sale_menu_item']['reason'] + "</b>",
+          text: "Yêu cầu làm lại từ " + data['sale_menu_item']['customer']['email'] + " với lý do: <b>" + data['sale_menu_item']['reason'] + "</b>",
         });
 
         params = {}
@@ -140,7 +140,7 @@ function append_processing_order(params){
     $(".order-template").before(article)
   }
   $(".order-processing[sale-id="+sale_id+"]").html(template)
-  $(".order-processing[sale-id="+sale_id+"] .sale-name").html("<i class='fa fa-desktop'></i>Máy "+params['sale']['customer_id'])
+  $(".order-processing[sale-id="+sale_id+"] .sale-name").html("<i class='fa fa-desktop'></i>Máy "+params['sale']['customer']['email'])
   $(".order-processing[sale-id="+sale_id+"] .sale-code.sale-created-at").html("MÃ HĐ: "+params['sale']['invoice_number']+"<br>NGÀY: "+params['sale']['format_created_at'])
 
   $(".order-processing[sale-id="+sale_id+"] .btn-start-cooking").attr("sale-id", sale_id)
