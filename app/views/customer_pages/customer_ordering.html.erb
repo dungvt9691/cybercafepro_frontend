@@ -13,7 +13,7 @@
         <h4 class="customer-food-label">DỊCH VỤ</h4>
       </div>
       <div class="customer-food-type customer-support" data-type="support">
-        <h4 class="customer-food-label">HỖ TRỢ</h4>
+        <h4 class="customer-food-label">NẠP TK</h4>
       </div>
     </center>
   </div>
@@ -42,6 +42,9 @@ $(".customer-food-type").click(function(){
     break;
     case "drinks":
     $(".menu-lists").html("<%=j render 'customer_ordering/drinks_menu' %>")
+    break;
+    case "support":
+    $(".menu-lists").html("<%=j render 'customer_ordering/support_menu' %>");
     break;
     default:
     $(".menu-lists").html("<%=j render 'customer_ordering/services_menu' %>")
@@ -118,7 +121,6 @@ function get_total_price(){
   })
   $(".total-price").text(number_format(sum))
 }
-
 
 function check_count_service_order(){
   if($(".row-service").length == 0)
