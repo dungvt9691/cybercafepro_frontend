@@ -93,13 +93,12 @@
             </table>
           </div>
           <div style="padding: 15px; padding-top: 20px; padding-bottom: 0px">
-            <% if @lated_sale %>
-            <%= form_tag(report_sale_customer_pages_path, remote: true, method: :post, multipart: true, id: "report-sale-#{@lated_sale['id']}") do %>
+            <%= form_tag(report_sale_customer_pages_path, remote: true, method: :post, multipart: true, id: "report-lated-sale") do %>
             <div class="row">
               <div class="col-lg-12">
                 <h4 style='font-size: 17px;'>Đóng góp ý kiến</h4>
                 <%= text_area_tag "report[description]", nil, class: "form-control", style: "height: 100px; resize: none;", placeholder: "Hãy để lại phản hồi của bạn về các món ăn... Thái độ phục vụ của nhân viên..." %>
-                <%= hidden_field_tag "report[sale_id]", @lated_sale['id'] %>
+                <%= hidden_field_tag "report[sale_id]", (@lated_sale['id'] rescue nil) %>
               </div>
             </div>
             <div class="row" style="margin-top: 15px">
@@ -109,7 +108,6 @@
                 </button>
               </div>
             </div>
-            <% end %>
             <% end %>
           </div>
         </div>
