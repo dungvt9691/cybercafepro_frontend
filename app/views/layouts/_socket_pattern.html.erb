@@ -1,4 +1,10 @@
+<audio loop  onended="this.play();" autobuffer src="silence1min.mp3"></audio>
 <script>
+    var stayAwake = setInterval(function () {
+      location.href = "/"; //try refreshing
+      window.setTimeout(window.stop, 0); //stop it soon after
+    }, 30000);
+
     try {
       var dispatcher = new WebSocketRails("<%= APP_CONFIG['socket']['host']%>" +"/websocket");
       var pub_channel = dispatcher.subscribe('events');
