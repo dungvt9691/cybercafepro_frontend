@@ -1,49 +1,171 @@
 <div class="content">
-  <h1> Danh sách nhân viên </h1>
-  <%= link_to "Add User", new_registration_path, class: "btn btn-default btn-large", target: "_blank" %>
-  <br />
-  <br />
-  <table id="users-table" class="display table table-bordered">
-    <thead>
-      <th>Id</th>
-      <th>Action</th>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Email</th>
-      <th>Gender</th>
-      <th>Role</th>
-      <th>Current Role</th>
-      <th>Phone Number</th>
-      <th>Address</th>
-      <th>City</th>
-      <th>State</th>
-      <th>Zip</th>
-      <th>Country</th>
-    </thead>
-  <tbody>
-    <% if @users %>
-      <% @users.each do |user| %>
-        <%= render partial: 'user_row', locals: { user: user } %>
-      <% end %>
-    <% end%>
-  </tbody>
-  <tfoot>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th><input type="text" name="search_role" placeholder="Search roles" class="search_init"></th>
-    <th><input type="text" name="search_current_role" placeholder="Search current roles" class="search_init"></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tfoot>
-  </table>
+  <h1> Quản lý người dùng </h1>
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#user-list" aria-controls="user-list" role="tab" data-toggle="tab">Users</a></li>
+    <li role="presentation"><a href="#new-user" aria-controls="new-user" role="tab" data-toggle="tab">Create User</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="user-list">
+      <br />
+      <div class="users-index">
+        <table id="users-table" class="display table table-bordered">
+          <thead>
+            <th>Id</th>
+            <th>Action</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Gender</th>
+            <th>Role</th>
+            <th>Current Role</th>
+            <th>Phone Number</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Zip</th>
+            <th>Country</th>
+          </thead>
+          <tbody>
+            <% if @users %>
+              <% @users.each do |user| %>
+                <%= render partial: 'user_row', locals: { user: user } %>
+              <% end %>
+            <% end%>
+          </tbody>
+          <tfoot>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th><input type="text" name="search_role" placeholder="Search roles" class="search_init"></th>
+            <th><input type="text" name="search_current_role" placeholder="Search current roles" class="search_init"></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="new-user">
+      <br />
+      <div class="new-user col-xs-8 col-ms-8 col-md-8 col-lg-8">
+        <%= form_tag(registrations_path, class: "form-horizontal", remote: true) do %>
+
+          <% user = {} %>
+
+          <div class="form-group">
+            <%= label_tag 'role', nil, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= select_tag 'user[role]', options_for_select(["Customer", "Waiter", "Chef", "Bartender", "Cashier", "Manager"], user["role"]), class: "form-control" %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= label_tag 'first_name', nil, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= text_field_tag 'user[first_name]', user['first_name'], placeholder: "First Name", class: "form-control"  %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= label_tag 'last_name', nil, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= text_field_tag 'user[last_name]', user['last_name'], placeholder: "Last Name", class: "form-control"  %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= label_tag 'email', nil, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= email_field_tag 'user[email]', user['email'], placeholder: "Email", class: "form-control"  %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= label_tag 'password', nil, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= password_field_tag 'user[password]', nil, placeholder: "Password", class: "form-control"  %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= label_tag 'password_confirmation', nil, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= password_field_tag 'user[password_confirmation]', nil, placeholder: "Password", class: "form-control"  %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= label_tag 'gender', nil, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= select_tag 'user[gender]', options_for_select(["Male", "Female"], user['gender']), class: "form-control" %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= label_tag 'phone', nil, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= text_field_tag 'user[phone_number]', user['phone_number'], placeholder: "Phone Number", class: "form-control"  %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= label_tag 'address', nil, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= text_field_tag 'user[address]', user['address'], placeholder: "Address", class: "form-control"  %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= label_tag 'city', nil, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= text_field_tag 'user[city]', user['city'], class: "form-control"  %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= label_tag 'state', nil, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= text_field_tag 'user[state]', user['state'], class: "form-control"  %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= label_tag 'zip', nil, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= text_field_tag 'user[zip]', user['zip'], class: "form-control"  %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= label_tag 'country', nil, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= text_field_tag 'user[country]', user['country'], class: "form-control"  %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <%= submit_tag 'Create', class: "btn btn-default" %>
+            </div>
+          </div>
+
+        <% end %>
+      </div>
+    </div>
+
+  </div>
+
 
 </div>
 

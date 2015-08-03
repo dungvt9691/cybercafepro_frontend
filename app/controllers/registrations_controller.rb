@@ -29,16 +29,21 @@ class RegistrationsController < ApplicationController
 
   def create
     @user = Ckfapi::API::User.create(current_token, params[:user])
-    if @user['user']
-      redirect_to edit_registration_path(@user['user']['id'])
-    else
-      render 'new'
+    respond_to do |format|
+      format.html {
+        if @user['user']
+          redirect_to edit_registration_path(@user['user']['id'])
+        else
+          render 'new'
+        end
+      }
+      format.js
     end
   end
 
   def destroy
-    @menu_item_id = params[:id]
-    @menu_item = Ckfapi::API::User.remove(current_token, params[:id])
+    @user_id = params[:id]
+    @user = Ckfapi::API::User.remove(current_token, params[:id])
     respond_to do |format|
       format.js
     end
