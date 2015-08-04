@@ -16,6 +16,11 @@ var stack_context = {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1
       <%= render 'order_template' %>
     </section>
   </div>
+  <br>
+  <center>
+    <a data-method="DELETE" href="/sessions">Đăng xuất</a>
+  </center>
+  <br>
 </div>
 <script>
 $(document).ready(function () {
@@ -115,6 +120,7 @@ staff_channel.bind("next_state_sale_menu_item", function(data) {
         params = {}
         params['sale'] = data['sale_menu_item']['sale']
         params['sale']['drink_sale_menu_items_details'] = [data['sale_menu_item']]
+        params['sale']['customer'] = data['sale_menu_item']['customer']
         params['is_redo'] = true
         if($(".order-processing[sale-id="+sale_id+"]").length == 0){
           append_processing_order(params)
@@ -140,7 +146,7 @@ function append_processing_order(params){
     $(".order-template").before(article)
   }
   $(".order-processing[sale-id="+sale_id+"]").html(template)
-  $(".order-processing[sale-id="+sale_id+"] .sale-name").html("<i class='fa fa-desktop'></i>Máy "+params['sale']['customer_id'])
+  $(".order-processing[sale-id="+sale_id+"] .sale-name").html("<i class='fa fa-desktop'></i>Máy "+params['sale']['customer']['email'])
   $(".order-processing[sale-id="+sale_id+"] .sale-code.sale-created-at").html("MÃ HĐ: "+params['sale']['invoice_number']+"<br>NGÀY: "+params['sale']['format_created_at'])
 
   $(".order-processing[sale-id="+sale_id+"] .btn-start-cooking").attr("sale-id", sale_id)

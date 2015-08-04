@@ -107,7 +107,7 @@ body.customer-ordering .customer-wrapper{
 }
 
 .customer-tab{
-  height: 450px;
+  height: 350px;
   position: absolute;
   padding-right: 20px;
   top: 200px;
@@ -116,6 +116,10 @@ body.customer-ordering .customer-wrapper{
   bottom: 0px;
   overflow-y: scroll;
   overflow-x: hidden;
+}
+
+.customer-ordering .customer-service{
+  min-height: 210px;
 }
 
 .customer-service .customer-service-img{
@@ -196,7 +200,7 @@ body.customer-ordering .customer-wrapper{
 }
 
 .notice-customer-scroll{
-  margin-top: 470px;
+  margin-top: 410px;
   display: none;
   background: #666;
   color: #fff;

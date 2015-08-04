@@ -16,6 +16,11 @@ var stack_context = {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1
       <%= render 'order_template' %>
     </section>
   </div>
+  <br>
+  <center>
+    <a data-method="DELETE" href="/sessions">Đăng xuất</a>
+  </center>
+  <br>
 </div>
 <script>
 $(document).ready(function () {
@@ -114,6 +119,7 @@ staff_channel.bind("next_state_sale_menu_item", function(data) {
 
         params = {}
         params['sale'] = data['sale_menu_item']['sale']
+        params['sale']['customer'] = data['sale_menu_item']['customer']
         params['sale']['food_sale_menu_items_details'] = [data['sale_menu_item']]
         params['is_redo'] = true
         if($(".order-processing[sale-id="+sale_id+"]").length == 0){
