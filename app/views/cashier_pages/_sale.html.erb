@@ -3,7 +3,7 @@
     <a href="javascript:;" sale-id="<%= sale['id'] %>" class='show-sale-details'><%= sale['invoice_number'] %></a>
   </td>
   <td>
-    Máy <%= sale['customer_id'] %>
+    <%= sale['customer']['email'] %>
   </td>
   <td>
     <span style='display:none'><%= (sale['created_at'].to_datetime + 7.hours).strftime("%Y%m%d%H%M%S") %></span>
