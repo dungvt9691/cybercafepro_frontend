@@ -3,7 +3,7 @@
     var stayAwake = setInterval(function () {
       location.href = location.href; //try refreshing
       //window.setTimeout(window.stop, 0); //stop it soon after
-    }, 120000);
+    }, 60000);
 
     try {
       var dispatcher = new WebSocketRails("<%= APP_CONFIG['socket']['host']%>" +"/websocket");
