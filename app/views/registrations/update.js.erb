@@ -1,5 +1,10 @@
-<% if @user['user'] %>
-  $("#registrations-edit").modal('hide');
+<% if @user %>
+  <% if @user['user'] %>
+    $("#registrations-edit").modal('hide');
+  <% else %>
+    alert('<%= @user.inspect %>');
+  <% end %>
 <% else %>
-  alert('<%= @user['message'] %>');
+
 <% end %>
+enableFields();

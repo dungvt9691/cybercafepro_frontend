@@ -22,6 +22,11 @@ class MenuItemsController < ApplicationController
   end
 
   def destroy
+    @menu_item_id = params[:id]
+    @menu_item = Ckfapi::API::MenuItem.remove(current_token, params[:id])
+    respond_to do |format|
+      format.js
+    end
   end
 
   def edit
@@ -32,7 +37,11 @@ class MenuItemsController < ApplicationController
   end
 
   def update
-    @menu_item = Ckfapi::API::MenuItem.update(current_token, params[:id], params[:menu_item])['menu_item']
+    if params[:menu_item]
+      @menu_item = Ckfapi::API::MenuItem.update(current_token, params[:id], params[:menu_item])
+    else
+      @menu_item = nil
+    end
     respond_to do |format|
       format.js
       format.html {

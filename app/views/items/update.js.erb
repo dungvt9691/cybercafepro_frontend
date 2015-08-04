@@ -1,0 +1,9 @@
+<% if @item %>
+  <% if @item['item'] %>
+    alert("Item name <%= @item['item']['name'] %> is updated");
+  <% else %>
+    alert("<%= @item.inspect %>");
+  <% end %>
+<% else %>
+<% end %>
+enableFields();

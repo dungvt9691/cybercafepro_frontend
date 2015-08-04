@@ -14,7 +14,11 @@ class RegistrationsController < ApplicationController
   end
 
   def update
-    @user = Ckfapi::API::User.update(current_token, params[:id], params[:user])
+    if params[:user]
+      @user = Ckfapi::API::User.update(current_token, params[:id], params[:user])
+    else
+      @user = nil
+    end
     respond_to do |format|
       format.html {
         redirect_to edit_registration_path(params[:id])
@@ -25,10 +29,15 @@ class RegistrationsController < ApplicationController
 
   def create
     @user = Ckfapi::API::User.create(current_token, params[:user])
-    if @user['user']
-      redirect_to edit_registration_path(@user['user']['id'])
-    else
-      render 'new'
+    respond_to do |format|
+      format.html {
+        if @user['user']
+          redirect_to edit_registration_path(@user['user']['id'])
+        else
+          render 'new'
+        end
+      }
+      format.js
     end
   end
 

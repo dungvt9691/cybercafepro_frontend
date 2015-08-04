@@ -1,0 +1,6 @@
+<% if @user['user'] %>
+  alert('successful');
+  location.reload();
+<% else %>
+  alert('<%= @user.inspect %>')
+<% end %>
