@@ -2,7 +2,7 @@
 <td><%= user['id'] %></td>
 <td>
   <%= link_to "Edit", edit_registration_path(user['id']), remote: true %>
-  <%= link_to 'Remove', registration_path(user['id']), :confirm => 'Are you sure?', :method => :delete, remote: true %>
+  <%#= link_to 'Remove', registration_path(user['id']), :confirm => 'Are you sure?', :method => :delete, remote: true %>
 </td>
 <td><%= user['first_name'] %></td>
 <td><%= user['last_name'] %></td>

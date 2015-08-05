@@ -24,6 +24,11 @@ module SessionsHelper
 
   def current_token
     if !(customer = CustomerDb.find_by_ip(request.remote_ip)).nil?
+      #if session[:token] && session[:token][:user]
+      #  session[:token]
+      #else
+      #  session[:token] ||=  Ckfapi::API::User.get_token(customer.cs_email, "nkZ26Tpm3q73")
+      #end
       get_token(customer.cs_email,"nkZ26Tpm3q73")
     else
       session[:token]
