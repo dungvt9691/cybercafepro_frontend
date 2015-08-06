@@ -2,8 +2,24 @@
 <td><%= report['id'] %></td>
 <td><%= report['title'] %></td>
 <td><%= report['description'] %></td>
-<td><%= link_to(report['user_id'], user_path(report['user_id']), remote: true) if report['user_id'] %></td>
-<td><%= link_to(report['reported_user_id'], user_path(report['reported_user_id']), remote: true) if report['reported_user_id'] %></td>
+<td>
+  <% begin %>
+    <%= link_to report['user']['email'], user_path(report['user_id']), remote: true %>
+    <br />
+    <%= report['user']['first_name'] %> <%= report['user']['last_name'] %>
+  <% rescue %>
+    N/A
+  <% end %>
+</td>
+<td>
+  <% begin %>
+    <%= link_to report['reported_user']['email'], reported_user_path(report['reported_user_id']), remote: true %>
+    <br />
+    <%= report['reported_user']['first_name'] %> <%= report['reported_user']['last_name'] %>
+  <% rescue %>
+    N/A
+  <% end %>
+</td>
 <td><%= report['model'] %></td>
 <td><%= report['model_id'] %></td>
 <td><%= report['model_dump'] %></td>

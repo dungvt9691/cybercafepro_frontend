@@ -1,7 +1,7 @@
 <% notice = sale['service_sale_menu_items_details'].map { |e| e['menu_item_details']['mtype'] }.uniq %>
 <tr class='row-sale <%= notice.length > 0 ? "danger" : "" %> <%= "sale-init" if sale['state'] == "init" %> <%=  "sale-delivered" if sale['state'] == "delivered" %>'  sale-id="<%= sale['id'] %>">
   <td>
-    <a href="javascript:;" data-toggle="tooltip" data-placement="top" title='<%= notice.join(", ") %>' sale-id="<%= sale['id'] %>" class='show-sale-details'><%= sale['invoice_number'] %></a>
+    <a href="javascript:;" data-toggle="tooltip" data-placement="top" title='<%= notice.join(", ") %>' sale-id="<%= sale['id'] %>" class='show-sale-details' onclick="showSale(<%= sale['id'] %>)" ><%= sale['invoice_number'] %></a>
     <% if sale['state'] == 'delivered' %>
     <a data-remote='true' href='<%= save_sale_cashier_pages_path(sale_id: sale['id']) %>' class='btn-saved-order btn btn-danger btn-xs pull-right'>Lưu lại</a>
     <% end %>

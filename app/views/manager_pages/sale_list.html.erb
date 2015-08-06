@@ -57,9 +57,14 @@
       <table id="sale-menu-items-table" class="display table table-bordered">
         <thead>
           <th>Id</th>
+          <th>Action</th>
           <th>Invoice Number</th>
           <th>Name</th>
+          <th>Category</th>
+          <th>Klass</th>
+          <th>Menu Type</th>
           <th>Quantity</th>
+          <th>Total Price</th>
           <th>State</th>
           <th>Customer</th>
           <th>Pender</th>
@@ -72,8 +77,10 @@
           <th>Deliverer</th>
           <th>Delivering At</th>
           <th>Delivered At</th>
+          <!--
           <th>Saver</th>
           <th>Saved At</th>
+          -->
         </thead>
         <tbody>
           <% if @sale_menu_items %>
@@ -85,8 +92,13 @@
         <tfoot>
           <tr>
             <th><input type="text" name="search_id" placeholder="Search ids" class="search_init"></th>
+            <th></th>
             <th><input type="text" name="search_invoice" placeholder="Search invoices" class="search_init"></th>
             <th><input type="text" name="search_name" placeholder="Search names" class="search_init"></th>
+            <th><input type="text" name="search_category" placeholder="Search categories" class="search_category"></th>
+            <th><input type="text" name="search_klass" placeholder="Search klass" class="search_klass"></th>
+            <th><input type="text" name="search_menutype" placeholder="Search Meny Types" class="search_menutype"></th>
+            <th></th>
             <th></th>
             <th><input type="text" name="search_state" placeholder="Search states" class="search_init"></th>
             <th><input type="text" name="search_customer" placeholder="Search customers" class="search_init"></th>
@@ -100,8 +112,10 @@
             <th><input type="text" name="search_deliverer" placeholder="Search deliverers" class="search_init"></th>
             <th></th>
             <th></th>
+            <!--
             <th><input type="text" name="search_saver" placeholder="Search savers" class="search_init"></th>
             <th></th>
+            -->
           </tr>
         </tfoot>
       </table>

@@ -85,15 +85,6 @@ $(".tab-list").click(function(){
   }
 })
 
-$(".cashier-pages").on("click", ".show-sale-details", function(){
-  sale_details_id = $(this).attr("sale-id")
-  $('.launch-modal').html("<%=j render 'cashier_pages/modal_sale_details' %>")
-  $("#modal-sale-details").modal({
-    keyboard: true,
-    backdrop: 'static'
-  })
-})
-
 function render_label_state(state){
   switch(state) {
     case "init":
@@ -133,4 +124,13 @@ function set_notifications_number(){
     $(".notify-order-all").fadeOut(0)
   }
 }
+
+var showSale = function(id){
+    $('.launch-modal').html("<%=j render 'sales/modal_sale_details' %>");
+    $('#modal-sale-details').attr("sale-id", id);
+    $("#modal-sale-details").modal({
+      keyboard: true,
+      backdrop: 'static'
+    });
+  }
 </script>
