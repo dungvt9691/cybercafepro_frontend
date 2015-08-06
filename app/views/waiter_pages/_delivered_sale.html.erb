@@ -1,6 +1,6 @@
 <tr data-target="#order-action-dropdown-<%= sale['id'] %>" data-toggle="dropdown" class="<%= 'saved-row' if sale['state'] == 'saved' %> order-row <%= 'success' if sale['state'] == 'pending' %>" sale-id='<%= sale['id'] %>' id="sale-<%= sale['id'] %>">
   <td class="order-com">
-    <%= sale['customer_id'] %>
+    <%= sale['customer']['email'] %>
   </td>
   <td class="order-price">
     <div id="order-action-dropdown-<%= sale['id'] %>" class="btn-group order-action pull-right" style="margin-top: 12px">
