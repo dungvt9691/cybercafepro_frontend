@@ -61,6 +61,7 @@
       <thead style="background-color: #428bca; color: #fff; border: 1px solid #428bca;">
         <tr>
           <th>Món</th>
+          <th>Trạng Thái</th>
           <th>Số lượng</th>
           <th>Đơn giá</th>
         </tr>
@@ -69,10 +70,13 @@
         <!-- FOOD -->
         <% sale['food_sale_menu_items_details'].each do |item| %>
         <tr>
-          <td style="width: 50%">
+          <td style="width: 30%">
             <%= item['menu_item_details']['name'] %>
           </td>
-          <td style="width: 30%">
+	  <td style="width: 30%">
+            <%= item['state'] %>
+          </td>
+          <td style="width: 20%">
             <%= item['quantity'].to_i %>
           </td>
           <td style="width: 20%">
@@ -83,10 +87,13 @@
         <!-- DRINK -->
         <% sale['drink_sale_menu_items_details'].each do |item| %>
         <tr>
-          <td style="width: 50%">
+          <td style="width: 30%">
             <%= item['menu_item_details']['name'] %>
           </td>
-          <td style="width: 30%">
+	  <td style="width: 30%">
+            <%= item['state'] %>
+          </td>
+          <td style="width: 20%">
             <%= item['quantity'].to_i %>
           </td>
           <td style="width: 20%">
@@ -97,10 +104,13 @@
         <!-- SERVICE -->
         <% sale['service_sale_menu_items_details'].each do |item| %>
         <tr class="row-nocook">
-          <td style="width: 50%">
+          <td style="width: 30%">
             <%= item['menu_item_details']['name'] %>
           </td>
-          <td style="width: 30%">
+	  <td style="width: 30%">
+            <%= item['state'] %>
+          </td>
+          <td style="width: 20%">
             <%= item['quantity'].to_i %>
           </td>
           <td style="width: 20%">

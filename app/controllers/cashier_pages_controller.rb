@@ -34,12 +34,26 @@ class CashierPagesController < ApplicationController
   end
 
   def saved_sales
-    @sales = Ckfapi::API::Sale.index(current_token,detail: true)['sales'] rescue []
+    shifts = Ckfapi::API::Shift.index(current_token, detail: true)['shifts'] rescue []
+    now = Time.now.getutc
+    nowp = now.change({year: 1970, month: 1, day: 1})
+    current_shift = shifts.select { |p| Time.parse(p['start_time']) < nowp && Time.parse(p['end_time']) > nowp }[0]
+    diff = Time.parse(current_shift['start_time']).change({year: now.year, month: now.month, day: now.day}).to_i - Time.parse(current_shift['start_time']).to_i
+    start_time = Time.parse(current_shift['start_time']) + diff
+    end_time = Time.parse(current_shift['end_time']) + diff
+    @sales = Ckfapi::API::Sale.index(current_token, {detail: true, filter: { from: start_time, to: end_time } })['sales'] rescue []
     @saved_sales = @sales.select{|m| m['state'] == 'saved'}
   end
 
   def not_saved_sales
-    @sales = Ckfapi::API::Sale.index(current_token,detail: true)['sales'] rescue []
+    shifts = Ckfapi::API::Shift.index(current_token, detail: true)['shifts'] rescue []
+    now = Time.now.getutc
+    nowp = now.change({year: 1970, month: 1, day: 1})
+    current_shift = shifts.select { |p| Time.parse(p['start_time']) < nowp && Time.parse(p['end_time']) > nowp }[0]
+    diff = Time.parse(current_shift['start_time']).change({year: now.year, month: now.month, day: now.day}).to_i - Time.parse(current_shift['start_time']).to_i
+    start_time = Time.parse(current_shift['start_time']) + diff
+    end_time = Time.parse(current_shift['end_time']) + diff
+    @sales = Ckfapi::API::Sale.index(current_token, {detail: true, filter: { from: start_time, to: end_time } })['sales'] rescue []
     @not_saved_sales = @sales.select{|m| m['state'] != 'saved'}
   end
 
