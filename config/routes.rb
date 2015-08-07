@@ -12,7 +12,8 @@ Rails.application.routes.draw do
 
   resources :menu_items
   resources :items
-  resources :sales
+  resources :sales, only: [:show, :destroy]
+  resources :sale_menu_items, only: [:show, :destroy]
   resources :shifts
 
   resources :manager_pages,only: [] do
