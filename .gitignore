@@ -23,3 +23,5 @@ public/images/*
 public/assets/*
 !public/silence1min.mp3
 Gemfile.lock
+.DS_Store
+*~
