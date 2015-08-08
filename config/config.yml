@@ -1,9 +1,0 @@
-development: &base
-  socket:
-    host: "localhost:3001"
-
-
-production:
-  <<: *base
-  socket:
-    host: "192.168.2.20:3001"
