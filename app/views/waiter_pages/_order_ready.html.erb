@@ -13,7 +13,7 @@
   </thead>
   <tbody>
     <% @sales_ready.each do |sale| %>
-    <tr class="order-row <%= sale['has_ready_sale_menu_item'] ? 'visible' : 'hidden' %>" sale-id='<%= sale['id'] %>' id="sale-<%= sale['id'] %>">
+    <tr class="order-row visible <%#= sale['has_ready_sale_menu_item'] ? 'visible' : 'hidden' %>" sale-id='<%= sale['id'] %>' id="sale-<%= sale['id'] %>">
       <td class="order-com">
         <%= sale['customer']['email'] %> <br />
         <%= sale['invoice_number'] %>
@@ -203,10 +203,10 @@ function append_order_processing_row(data){
   $(".order-ready-template").attr("sale-id", sale_id)
   $(".order-ready-template .order-com").text(data['sale']['customer']['email'])
   $(".order-ready-template .order-com").append("<%=j render partial: 'order_com' %>")
-  if(data['sale']['has_ready_sale_menu_item'])
-    $(".order-ready-template").addClass("visible")
-  else
-    $(".order-ready-template").addClass("hidden")
+  //if(data['sale']['has_ready_sale_menu_item'])
+  //  $(".order-ready-template").addClass("visible")
+  //else
+   // $(".order-ready-template").addClass("hidden")
 
   data['sale']['food_sale_menu_items_details'].forEach(function(item){
     set_sale_menu_item(item)

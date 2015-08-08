@@ -41,7 +41,7 @@ class CashierPagesController < ApplicationController
     diff = Time.parse(current_shift['start_time']).change({year: now.year, month: now.month, day: now.day}).to_i - Time.parse(current_shift['start_time']).to_i
     start_time = Time.parse(current_shift['start_time']) + diff
     end_time = Time.parse(current_shift['end_time']) + diff
-    @sales = Ckfapi::API::Sale.index(current_token, {detail: true, filter: { from: start_time, to: end_time } })['sales'] rescue []
+    @sales = Ckfapi::API::Sale.index(current_token, {detail: true, filter: { from: (start_time - 43200), to: end_time } })['sales'] rescue []
     @saved_sales = @sales.select{|m| m['state'] == 'saved'}
   end
 
@@ -53,7 +53,7 @@ class CashierPagesController < ApplicationController
     diff = Time.parse(current_shift['start_time']).change({year: now.year, month: now.month, day: now.day}).to_i - Time.parse(current_shift['start_time']).to_i
     start_time = Time.parse(current_shift['start_time']) + diff
     end_time = Time.parse(current_shift['end_time']) + diff
-    @sales = Ckfapi::API::Sale.index(current_token, {detail: true, filter: { from: start_time, to: end_time } })['sales'] rescue []
+    @sales = Ckfapi::API::Sale.index(current_token, {detail: true, filter: { from: (start_time - 43200), to: end_time } })['sales'] rescue []
     @not_saved_sales = @sales.select{|m| m['state'] != 'saved'}
   end
 

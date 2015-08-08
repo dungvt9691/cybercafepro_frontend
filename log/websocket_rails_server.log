@@ -1,0 +1,64 @@
+Writing PID to /home/vknt/cybercafepro_frontend/tmp/pids/websocket_rails.pid
+Thin web server (v1.6.3 codename Protein Powder)
+Maximum connections set to 1024
+Listening on 0.0.0.0:3001, CTRL+C to stop
+Exiting!
+/home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/redis-3.2.1/lib/redis/client.rb:331:in `rescue in establish_connection': Error connecting to Redis on 127.0.0.1:6379 (Errno::ECONNREFUSED) (Redis::CannotConnectError)
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/redis-3.2.1/lib/redis/client.rb:317:in `establish_connection'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/redis-3.2.1/lib/redis/client.rb:94:in `block in connect'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/redis-3.2.1/lib/redis/client.rb:279:in `with_reconnect'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/redis-3.2.1/lib/redis/client.rb:93:in `connect'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/redis-3.2.1/lib/redis/client.rb:350:in `ensure_connected'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/redis-3.2.1/lib/redis/client.rb:207:in `block in process'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/redis-3.2.1/lib/redis/client.rb:292:in `logging'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/redis-3.2.1/lib/redis/client.rb:206:in `process'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/redis-3.2.1/lib/redis/client.rb:112:in `call'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/redis-3.2.1/lib/redis.rb:1254:in `block in srem'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/redis-3.2.1/lib/redis.rb:37:in `block in synchronize'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/2.2.0/monitor.rb:211:in `mon_synchronize'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/redis-3.2.1/lib/redis.rb:37:in `synchronize'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/redis-3.2.1/lib/redis.rb:1253:in `srem'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/bundler/gems/websocket-rails-712fd4e35325/lib/websocket_rails/synchronization.rb:145:in `remove_server'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/bundler/gems/websocket-rails-712fd4e35325/lib/websocket_rails/synchronization.rb:126:in `shutdown!'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/bundler/gems/websocket-rails-712fd4e35325/lib/websocket_rails/synchronization.rb:33:in `shutdown!'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/bundler/gems/websocket-rails-712fd4e35325/lib/websocket_rails/connection_manager.rb:38:in `block (3 levels) in initialize'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/eventmachine-1.0.7/lib/eventmachine.rb:190:in `call'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/eventmachine-1.0.7/lib/eventmachine.rb:190:in `run'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/thin-1.6.3/lib/thin/backends/base.rb:73:in `start'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/thin-1.6.3/lib/thin/server.rb:162:in `start'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/thin-1.6.3/lib/thin/controllers/controller.rb:87:in `start'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/bundler/gems/websocket-rails-712fd4e35325/lib/rails/tasks/websocket_rails.tasks:14:in `block (3 levels) in <top (required)>'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/bundler/gems/websocket-rails-712fd4e35325/lib/rails/tasks/websocket_rails.tasks:13:in `fork'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/bundler/gems/websocket-rails-712fd4e35325/lib/rails/tasks/websocket_rails.tasks:13:in `block (2 levels) in <top (required)>'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/2.2.0/rake/task.rb:240:in `call'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/2.2.0/rake/task.rb:240:in `block in execute'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/2.2.0/rake/task.rb:235:in `each'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/2.2.0/rake/task.rb:235:in `execute'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/2.2.0/rake/task.rb:179:in `block in invoke_with_call_chain'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/2.2.0/monitor.rb:211:in `mon_synchronize'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/2.2.0/rake/task.rb:172:in `invoke_with_call_chain'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/2.2.0/rake/task.rb:165:in `invoke'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/2.2.0/rake/application.rb:150:in `invoke_task'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/2.2.0/rake/application.rb:106:in `block (2 levels) in top_level'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/2.2.0/rake/application.rb:106:in `each'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/2.2.0/rake/application.rb:106:in `block in top_level'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/2.2.0/rake/application.rb:115:in `run_with_threads'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/2.2.0/rake/application.rb:100:in `top_level'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/2.2.0/rake/application.rb:78:in `block in run'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/2.2.0/rake/application.rb:176:in `standard_exception_handling'
+	from /home/vknt/.rbenv/versions/2.2.2/lib/ruby/2.2.0/rake/application.rb:75:in `run'
+	from /home/vknt/.rbenv/versions/2.2.2/bin/rake:33:in `<main>'
+Writing PID to /home/vknt/cybercafepro_frontend/tmp/pids/websocket_rails.pid
+Thin web server (v1.6.3 codename Protein Powder)
+Maximum connections set to 1024
+Listening on 0.0.0.0:3001, CTRL+C to stop
+Exiting!
+Writing PID to /home/vknt/cybercafepro_frontend/tmp/pids/websocket_rails.pid
+Thin web server (v1.6.3 codename Protein Powder)
+Maximum connections set to 1024
+Listening on 0.0.0.0:3001, CTRL+C to stop
+Exiting!
+Writing PID to /home/vknt/cybercafepro_frontend/tmp/pids/websocket_rails.pid
+Thin web server (v1.6.3 codename Protein Powder)
+Maximum connections set to 1024
+Listening on 0.0.0.0:3001, CTRL+C to stop
