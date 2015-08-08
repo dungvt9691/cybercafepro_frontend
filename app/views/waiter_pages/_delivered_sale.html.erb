@@ -1,6 +1,6 @@
 <tr data-target="#order-action-dropdown-<%= sale['id'] %>" data-toggle="dropdown" class="<%= 'saved-row' if sale['state'] == 'saved' %> order-row <%= 'success' if sale['state'] == 'pending' %>" sale-id='<%= sale['id'] %>' id="sale-<%= sale['id'] %>">
   <td class="order-com">
-    Máy <%= sale['customer_id'] %>
+    <%= sale['customer']['email'] %>
   </td>
   <td class="order-price">
     <div id="order-action-dropdown-<%= sale['id'] %>" class="btn-group order-action pull-right" style="margin-top: 12px">
@@ -21,7 +21,7 @@
       <% if sale['state'] == "delivered" %>
       Giao xong lúc: <%= ((sale['delivered_at'].to_datetime + 7.hours) rescue DateTime.now).strftime("<b>%H:%M</b> %d/%m/%Y").html_safe %>
       <% else %>
-      Đã lưu lúc: <%= ((sale['updated_at'].to_datetime + 7.hours) rescue DateTime.now).strftime("<b>%H:%M</b> %d/%m/%Y").html_safe %> 
+      Đã lưu lúc: <%= ((sale['updated_at'].to_datetime + 7.hours) rescue DateTime.now).strftime("<b>%H:%M</b> %d/%m/%Y").html_safe %>
       <% end %>
     </small>
   </td>

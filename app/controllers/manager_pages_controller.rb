@@ -22,7 +22,7 @@ class ManagerPagesController < ApplicationController
   def sale_list
     @mg_page = "sale"
     @sale_menu_items = Ckfapi::API::SaleMenuItem.index(current_token, detail: true)['sale_menu_items'] rescue []
-    @sales = Ckfapi::API::Sale.index(current_token)['sales'] rescue []
+    @sales = Ckfapi::API::Sale.index(current_token, { detail: true })['sales'] rescue []
     respond_to do |format|
       format.html
     end

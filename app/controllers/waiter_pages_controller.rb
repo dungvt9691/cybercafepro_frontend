@@ -181,6 +181,7 @@ class WaiterPagesController < ApplicationController
           @sale_menu_item['sale_menu_item']['sale']['is_food_sale'] = @sale_menu_item['sale_menu_item']['menu_item_details']['klass'] == "food"
           @sale_menu_item['sale_menu_item']['sale']['is_drink_sale'] = @sale_menu_item['sale_menu_item']['menu_item_details']['klass'] == "drink"
           @sale_menu_item['sale_menu_item']['reason'] = params[:reason]
+          @sale_menu_item['sale_menu_item']['sale']['format_created_at'] = (@sale_menu_item['sale_menu_item']['sale']['created_at'].to_datetime + 7.hours).strftime("%d/%m/%Y")
           WebsocketRails[:staff].trigger 'next_state_sale_menu_item', @sale_menu_item
         }
       end

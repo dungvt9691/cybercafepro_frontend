@@ -81,4 +81,9 @@
       this.value = asInitSaleMenuItemVals[$("#stat-sale-table tfoot th").index($(this).parent())];
     }
   } );
+$('#food-stat h2').html("<%=  @sales['sales'].values.sum.select{|m| m['menu_item_details']['category_id'] == 1}.inject(0) {|sum,m| sum += (m['quantity'].to_f*m['menu_item_details']['unit_price'].to_f rescue 0) } %><small> VND (Foods)</small>");
+$('#drink-drink-stat h2').html("<%=  @sales['sales'].values.sum.select{|m| m['menu_item_details']['category_id'] == 2 && m['menu_item_details']['mtype'] != 'Giải Khát'}.inject(0) {|sum,m| sum += (m['quantity'].to_f*m['menu_item_details']['unit_price'].to_f rescue 0) } %><small> VND (Drinks - Pha Chế)</small>");
+$('#drink-service-stat h2').html("<%=  @sales['sales'].values.sum.select{|m| m['menu_item_details']['category_id'] == 2 && m['menu_item_details']['mtype'] == 'Giải Khát'}.inject(0) {|sum,m| sum += (m['quantity'].to_f*m['menu_item_details']['unit_price'].to_f rescue 0) } %><small> VND (Drinks - Đóng Chai)</small>");
+$('#service-stat h2').html("<%=  @sales['sales'].values.sum.select{|m| m['menu_item_details']['category_id'] == 3 && m['menu_item_details'] == ''}.inject(0) {|sum,m| sum += (m['quantity'].to_f*m['menu_item_details']['unit_price'].to_f rescue 0) } %><small> VND (Services)</small>");
+$('#naptk-stat h2').html("<%=  @sales['sales'].values.sum.select{|m| m['menu_item_details']['category_id'] == 4}.inject(0) {|sum,m| sum += (m['quantity'].to_f*m['menu_item_details']['unit_price'].to_f rescue 0) } %><small> VND (NAPTK)</small>");
 <% end %>

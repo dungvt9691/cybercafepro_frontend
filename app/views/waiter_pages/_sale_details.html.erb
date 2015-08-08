@@ -4,6 +4,7 @@
       <h3>
         CHI TIẾT HOÁ ĐƠN
       </h3>
+      <p style='color: #777; font-size: 20px; margin-top: 10px'><%= sale['invoice_number'] %></p>
     </center>
   </div>
 </div>
@@ -66,7 +67,7 @@
 <div class="row">
   <div class="col-lg-12">
     <div class="pull-right">
-      <h4>Tổng: <b><%= number_with_delimiter((sale['food_sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0) + (sale['drink_sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0) + (sale['service_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0)) %> đ</b></h4>
+      <h4>Tổng: <b><%= number_with_delimiter((sale['food_sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0) + (sale['drink_sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0) + (sale['service_sale_menu_items_details'].map{|a| a['sum'].to_i}.reduce(:+) || 0 rescue 0)) %> đ</b></h4>
     </div>
   </div>
 </div>
