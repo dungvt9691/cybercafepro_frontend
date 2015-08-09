@@ -42,10 +42,10 @@
           <%= submit_tag "Get", class: "btn btn-default", id: "stat-sale-now" %>
         <% end %>
         <br />
-        <p><b>Lưu ý:</b> Hệ thống sẽ tự động thống kê cho ca hiện tại, tuy nhiên bạn có thể chọn ca và ngày để thống kê riêng</p>
 
         <div id="stat-sale">
           <h2>Sales</h2>
+          <p><b>Ghi chú:</b> Số tiền đã thu / Tổng tiền </p>
           <div class="container">
             <div class="col-xs-4 col-ms-4 col-md-4 col-lg-4">
               <div id="food-stat">
@@ -70,6 +70,7 @@
             </div>
           </div>
           <hr>
+          <h3>Thống kê theo món ăn</h3>
           <table id="stat-menu-item-table" class="display table table-bordered">
             <thead>
               <th>Name</th>
@@ -83,6 +84,7 @@
             </tbody>
           </table>
           <hr>
+          <h3>Thống kê chi tiết</h3>
           <table id="stat-sale-table" class="display table table-bordered">
             <thead>
               <th>Id</th>
@@ -174,7 +176,6 @@
           <%= submit_tag "Get", class: "btn btn-default", id: "stat-attendance-now" %>
         <% end %>
         <br />
-        <p><b>Lưu ý:</b> Hệ thống sẽ tự động thống kê cho ca hiện tại, tuy nhiên bạn có thể chọn ca và ngày để thống kê riêng</p>
 
         <div id="stat-attendance">
           <h2>Attendances</h2>

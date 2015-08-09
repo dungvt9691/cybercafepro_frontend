@@ -7,5 +7,6 @@
   </td>
   <td>
     <%= item['quantity'].to_i %>
+    <%= link_to 'Huỷ', sale_menu_item_path(item['id']), data: {:confirm => 'Are you sure?'}, :method => :delete, remote: true, "sale-menu-item-id" => item['id'] %>
   </td>
 </tr>

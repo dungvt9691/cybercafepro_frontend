@@ -165,13 +165,46 @@ $('#order-now').click(function(){
         } else {
           var id = data.sale.sale.id;
           $('form input#report_sale_id').val(id);
+          updateHistories();
+          resetOrder();
+          var i;
+          for (i = 0; i < data.sale.sale.drink_sale_menu_items_details.length; i++) {
+            var menu_item_id = data.sale.sale.drink_sale_menu_items_details[i].menu_item_id;
+            var sale_menu_item_id = data.sale.sale.drink_sale_menu_items_details[i].id;
+            $('#histories-tab .customer-table table tbody .row-service[menu-item-id='+ menu_item_id + '] td.order-service-quantity > a').attr('href', '/sale_menu_items/' + sale_menu_item_id);
+            $('#histories-tab .customer-table table tbody .row-service[menu-item-id='+ menu_item_id + '] td.order-service-quantity > a').attr('sale-menu-item-id', sale_menu_item_id);
+          }
+          for (i = 0; i < data.sale.sale.food_sale_menu_items_details.length; i++) {
+            var menu_item_id = data.sale.sale.food_sale_menu_items_details[i].menu_item_id;
+            var sale_menu_item_id = data.sale.sale.food_sale_menu_items_details[i].id;
+            $('#histories-tab .customer-table table tbody .row-service[menu-item-id='+ menu_item_id + '] td.order-service-quantity > a').attr('href', '/sale_menu_items/' + sale_menu_item_id);
+            $('#histories-tab .customer-table table tbody .row-service[menu-item-id='+ menu_item_id + '] td.order-service-quantity > a').attr('sale-menu-item-id', sale_menu_item_id);
+          }
+          for (i = 0; i < data.sale.sale.service_sale_menu_items_details.length; i++) {
+            var menu_item_id = data.sale.sale.service_sale_menu_items_details[i].menu_item_id;
+            var sale_menu_item_id = data.sale.sale.service_sale_menu_items_details[i].id;
+            $('#histories-tab .customer-table table tbody .row-service[menu-item-id='+ menu_item_id + '] td.order-service-quantity > a').attr('href', '/sale_menu_items/' + sale_menu_item_id);
+            $('#histories-tab .customer-table table tbody .row-service[menu-item-id='+ menu_item_id + '] td.order-service-quantity > a').attr('sale-menu-item-id', sale_menu_item_id);
+          }
+          $('[href=#histories-tab]').click();
         }
         console.log(data);
       }
     })
-    resetOrder()
   }
 });
+
+function updateHistories(){
+  $('#histories-tab .customer-table table tbody').html('');
+  $('[id*=row-service]').each(function(){
+    $(this).removeAttr('id');
+    $(this).find('td.order-service-name').html($(this).find('td.order-service-name > b').text());
+    $(this).find('td.order-service-price').removeAttr('class');
+    $(this).find('td.order-service-quantity > span').removeAttr('class').siblings().remove();
+    $(this).find('td.order-service-quantity').append(" <%=j link_to 'Huỷ', sale_menu_item_path(0), data: {:confirm => 'Are you sure?'}, :method => :delete, remote: true %>");
+    $('#histories-tab .customer-table table tbody').append($(this));
+  });
+}
 
 
 $("#reset-order").click(function(){
@@ -179,13 +212,8 @@ $("#reset-order").click(function(){
 })
 
 function resetOrder(){
-  $('#histories-tab .customer-table table tbody').html('');
   $('[id*=row-service]').each(function(){
-    $(this).removeAttr('id');
-    $(this).find('td.order-service-name').html($(this).find('td.order-service-name > b').text());
-    $(this).find('td.order-service-price').removeAttr('class');
-    $(this).find('td.order-service-quantity > span').removeAttr('class').siblings().remove();
-    $('#histories-tab .customer-table table tbody').append($(this));
+    $(this).remove();
   });
   $("#no-choice").fadeIn(100)
   $("#orders-tab .customer-table .bootstrap-table").css("box-shadow", "0 9px 9px -6px rgba(0,0,0,0.0)")

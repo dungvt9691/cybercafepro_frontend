@@ -1,0 +1,8 @@
+<% if @sale_menu_item.blank? %>
+  $('#histories-tab .customer-table table tbody a[sale-menu-item-id=<%= @sale_menu_item_id %>]').parent().parent().remove();
+  if ($('#histories-tab .customer-table').length > 0 && $('#histories-tab .customer-table table tbody tr').length <= 0) {
+    location.reload();
+  }
+<% else %>
+  alert("<%= @sale_menu_item['errors'] %>");
+<% end %>

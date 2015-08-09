@@ -66,7 +66,7 @@ $(document).ready(function () {
 $(".table-order-pending").on("click", ".order-row", function(){
   $(".order-row").removeClass("select-now")
   if($(this).hasClass("select-now"))
-  { 
+  {
     $(this).addClass("remove-now")
   }
   else{
@@ -100,6 +100,16 @@ staff_channel.bind("create_sale",function(data) {
   });
 });
 
+staff_channel.bind("destroy_sale_menu_item",function(data) {
+  $(function(){
+    var notice = pop_notify({
+      text: "Order từ " + data['sale_menu_item']['customer']['email'] + ' có thay đổi',
+    });
+    remove_sale_menu_item(data)
+    set_notifications_number()
+  });
+});
+
 staff_channel.bind("next_state_sale",function(data) {
   if(data['sale']['state'] == "pending") {
     $(function(){
@@ -128,6 +138,18 @@ staff_channel.bind("next_state_sale",function(data) {
     set_notifications_number()
   }
 });
+
+function remove_sale_menu_item(data){
+  var sale_menu_item_id = data['sale_menu_item']['id'];
+  var sale_id = data['sale_menu_item']['sale_id'];
+  var price = parseFloat($('#tab-order-pending tbody tr#sale-'+ sale_id + ' .total-price .price').text().replace(/\,/g, ''));
+  var sub_price = parseFloat(data['sale_menu_item']['quantity'])*parseFloat(data['sale_menu_item']['menu_item_details']['unit_price']);
+  if ((price-sub_price) <= 0) {
+    $('#tab-order-pending tbody tr#sale-'+ sale_id).remove();
+  } else {
+    $('#tab-order-pending tbody tr#sale-'+ sale_id + ' .total-price .price').text(number_format(price-sub_price));
+  }
+}
 
 function append_order_init_row(data){
   sale_id = data['sale']['id']
@@ -158,7 +180,7 @@ function append_order_init_row(data){
   $(".order-row[sale-id="+sale_id+"]").click(function(){
     $(".order-row").removeClass("select-now")
     if($(this).hasClass("select-now"))
-    { 
+    {
       $(this).addClass("remove-now")
     }
     else{
