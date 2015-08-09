@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   include ApplicationHelper
   include SessionsHelper
 
+  before_filter :maintain_mode
   before_filter :authenticate_user!
 
   protected
@@ -14,6 +15,18 @@ class ApplicationController < ActionController::Base
       return true
     else
       redirect_to new_sessions_path
+    end
+  end
+
+  def maintain_mode
+    _open_maintance = false
+    _temp_close_file = "/tmp/.closecyber"
+
+    _open_maintance = true if File.exist?(_temp_close_file)
+
+    if _open_maintance
+      render text: "Hệ thống đang nâng cấp, xin vui lòng quay lại sau"
+      return
     end
   end
 
