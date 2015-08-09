@@ -1,5 +1,9 @@
 <% if @sale_menu_item.blank? %>
   $('#histories-tab .customer-table table tbody a[sale-menu-item-id=<%= @sale_menu_item_id %>]').parent().parent().remove();
+  if ($('#stat-sale-table').length > 0) {
+    $('#stat-sale-table').dataTable().fnDeleteRow($("tr#sale-menu-item-<%= @sale_menu_item_id %>")[0], null, true);
+    alert('Xoá Thành công');
+  }
   if ($('#histories-tab .customer-table').length > 0 && $('#histories-tab .customer-table table tbody tr').length <= 0) {
     location.reload();
   }

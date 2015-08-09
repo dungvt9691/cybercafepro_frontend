@@ -34,7 +34,9 @@
 
   <script>
     $(document).ready(function(){
-      var reportTable = $('#reports-table').dataTable();
+      var reportTable = $('#reports-table').dataTable({
+        "order": [[ 0, "desc" ]]
+      });
       var asInitReportVals = new Array();
 
       $("#reports-table tfoot input").keyup( function () {

@@ -24,20 +24,23 @@ module SessionsHelper
 
   def current_token
     if !(customer = CustomerDb.find_by_ip(request.remote_ip)).nil?
-      if session[:token] && session[:token][:user] && session[:token][:user]['current_role'] == "Customer"
-        session[:token]
-      else
-        session[:token] ||=  get_token(customer.cs_email,"nkZ26Tpm3q73")
-       # get_token(customer.cs_email,"nkZ26Tpm3q73")
+      begin
+        if  session[:token]['token']['user']['current_role'] == "Customer"
+          session[:token]
+        else
+          get_token(customer.cs_email,"nkZ26Tpm3q73")
+          # get_token(customer.cs_email,"nkZ26Tpm3q73")
+        end
+      rescue
+        get_token(customer.cs_email,"nkZ26Tpm3q73")
       end
-      #get_token(customer.cs_email,"nkZ26Tpm3q73")
     else
       session[:token]
     end
     # if mobile_device?
-      # Ckfapi::API::User.get_token("dungvt9691@gmail.com", 123123123)
+    # Ckfapi::API::User.get_token("dungvt9691@gmail.com", 123123123)
     # else
-      # Ckfapi::API::User.get_token("doankien.bui@gmail.com", 123123123)
+    # Ckfapi::API::User.get_token("doankien.bui@gmail.com", 123123123)
     # end
   end
 
@@ -45,7 +48,7 @@ module SessionsHelper
     current_token["token"]["user"] ||= Ckfapi::API::User.index(
       current_token,
       {email: current_token["user"]["email"] }
-      )["users"][0] rescue nil
+    )["users"][0] rescue nil
   end
 
   def get_root_path user

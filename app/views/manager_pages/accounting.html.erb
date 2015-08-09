@@ -262,6 +262,7 @@
 
   $('#stat-sale-datetimepicker-from').datetimepicker({
     format: 'YYYY-MM-DD HH:mm',
+    defaultDate: (new Date()).setHours(0,0,0,0),
     sideBySide: true
   });
   $('#stat-sale-datetimepicker-to').datetimepicker({
@@ -272,6 +273,7 @@
 
   $('#stat-attendance-datetimepicker-from').datetimepicker({
     format: 'YYYY-MM-DD HH:mm',
+    defaultDate: (new Date()).setHours(0,0,0,0),
     sideBySide: true
   });
   $('#stat-attendance-datetimepicker-to').datetimepicker({
@@ -289,6 +291,7 @@
       $('#stat-attendance-tab').show();
     }
   });
+  $('#stat-sale-now').click();
 </script>
 
 <style>

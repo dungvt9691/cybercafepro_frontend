@@ -1,12 +1,12 @@
 <% case sale_menu_item['menu_item_details']['klass'] %>
 <% when 'food' %>
-<tr >
+<tr id="sale-menu-item-<%= sale_menu_item['id'] %>">
 <% when 'drink' %>
-<tr class="info">
+<tr id="sale-menu-item-<%= sale_menu_item['id'] %>" class="info">
 <% when 'service' %>
-<tr class="warning">
+<tr id="sale-menu-item-<%= sale_menu_item['id'] %>" class="warning">
 <% else %>
-<tr >
+<tr id="sale-menu-item-<%= sale_menu_item['id'] %>" >
 <% end %>
 <td><%= sale_menu_item['id'] %></td>
 <td><%= link_to 'Remove', sale_menu_item_path(sale_menu_item['id']), data: {:confirm => 'Are you sure?'}, :method => :delete, remote: true %></td>

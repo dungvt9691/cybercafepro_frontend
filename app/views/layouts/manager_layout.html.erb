@@ -21,11 +21,13 @@
           Danh sách hoá đơn
         </a>
       </li>
+      <% if false %>
       <li class="<%= 'active' if @mg_page == 'sale' rescue ''%> ">
         <a class="href" href="<%= sale_list_manager_pages_path %>">
           Danh sách Order
         </a>
       </li>
+      <% end %>
       <li class="<%= 'active' if @mg_page == 'staff' rescue ''%> ">
         <a class="href" href="<%= user_list_manager_pages_path %>">
           Quản lý người dùng

@@ -16,7 +16,9 @@
   <% (@sales['sales'].values.sum).each do |s| %>
     $('#stat-sale-table tbody').append("<%=j render partial: 'sale_menu_item_row', locals: { sale_menu_item: s } %>");
   <% end %>
-  var saleMenuItemTable = $('#stat-sale-table').dataTable();
+  var saleMenuItemTable = $('#stat-sale-table').dataTable({
+    "order": [[ 0, "desc" ]]
+  });
   var asInitSaleMenuItemVals = new Array();
 
   $("#stat-sale-table tfoot input").keyup( function () {
