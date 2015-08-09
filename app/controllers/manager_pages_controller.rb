@@ -51,21 +51,52 @@ class ManagerPagesController < ApplicationController
     @shifts = Ckfapi::API::Shift.index(current_token)['shifts'] rescue []
   end
 
-  def stat
-    date = Time.parse(params[:date])
+  def stat_sale
+    from = Time.parse(params[:datetime][:from])
+    to = Time.parse(params[:datetime][:to])
     @sales = Ckfapi::API::Shift.stat(current_token, params[:shift_id], "sale", {
-      year: date.year,
-      month: date.month,
-      day: date.day
-    })['stats'] if date
-    @attendances = Ckfapi::API::Shift.stat(current_token, params[:shift_id], "attendance", {
-      year: date.year,
-      month: date.month,
-      day: date.day
-    })['stats'] if date
+      from: from,
+      to: to
+    })['stats'] if (!from.blank? && !to.blank?)
+
+    # get sales by menu item
+    sales_by_menu_item = @sales['sales'].values.sum.map { |e|
+      {
+        'id' => e['menu_item_details']['id'],
+        'name' => e['menu_item_details']['name'],
+        'category' => e['menu_item_details']['category']['name'],
+        'klass' => e['menu_item_details']['klass'],
+        'mtype' => e['menu_item_details']['mtype'],
+        'quantity' => e['quantity'].to_f,
+        'total_price' => e['quantity'].to_f*e['menu_item_details']['unit_price'].to_f
+      }
+    } if @sales
+    @sales_by_menu_item = []
+    sales_by_menu_item.each do |s|
+      if !(el = @sales_by_menu_item.select { |e| e['id'] == s['id'] }[0]).blank?
+        el['quantity'] += s['quantity']
+        el['total_price'] += s['total_price']
+      else
+        @sales_by_menu_item << s
+      end
+    end
+
     respond_to do |format|
       format.js
     end
+  end
+
+  def stat_attendance
+    from = Time.parse(params[:datetime][:from])
+    to = Time.parse(params[:datetime][:to])
+    @attendances = Ckfapi::API::Shift.stat(current_token, params[:shift_id], "attendance", {
+      from: from,
+      to: to
+    })['stats'] if (!from.blank? && !to.blank?)
+    respond_to do |format|
+      format.js
+    end
+
   end
 
   private

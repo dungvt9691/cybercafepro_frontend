@@ -1,204 +1,293 @@
 <div class="content">
   <h1> Accounting </h1>
-  <%= form_tag(stat_manager_pages_path, remote: true, method: :get, multipart: true, class: "form-inline", id: "registrations-edit-form") do %>
-    <div class="form-group">
-      <%= label_tag 'shift' %>
-      <% shift_arr = @shifts.collect { |p| [ "#{Time.parse(p['start_time']).in_time_zone(7).strftime("%H:%M:%S")} -- #{Time.parse(p['end_time']).in_time_zone(7).strftime("%H:%M:%S")}", p['id']] } %>
-      <% now = Time.now.getutc.change({year: 1970, month: 1, day: 1}) %>
-      <% begin %>
-        <% current_shift = @shifts.select { |p| Time.parse(p['start_time']) < now && Time.parse(p['end_time']) > now }[0] %>
-        <%= select_tag 'shift_id', options_for_select(shift_arr, [ "#{Time.parse(current_shift['start_time']).in_time_zone(7).strftime("%H:%M:%S")} -- #{Time.parse(current_shift['end_time']).in_time_zone(7).strftime("%H:%M:%S")}", current_shift['id']]), class: "form-control" %>
-      <% rescue %>
-        <%= select_tag 'shift_id', options_for_select(shift_arr), class: "form-control" %>
-      <% end %>
-    </div>
-    <div class="form-group">
-      <%= label_tag 'date' %>
-      <%= text_field_tag 'date', nil, class: "form-control timepicker" %>
-    </div>
-    <%= submit_tag "Get", class: "btn btn-default", id: "stat-now" %>
-  <% end %>
-  <br />
-  <p><b>Lưu ý:</b> Hệ thống sẽ tự động thống kê cho ca hiện tại, tuy nhiên bạn có thể chọn ca và ngày để thống kê riêng</p>
-  <div id="stat-attendance">
-    <h2>Attendances</h2>
-    <div class="container">
-      <div class="col-xs-4 col-ms-4 col-md-4 col-lg-4">
-        <div id="customer-stat">
-          <h2>0<small> Customer</small></h2>
-        </div>
-        <div id="waiter-stat">
-          <h2>0<small> Waiter</small></h2>
-        </div>
-      </div>
-      <div class="col-xs-4 col-ms-4 col-md-4 col-lg-4">
-        <div id="chef-stat">
-          <h2>0<small> Chef</small></h2>
-        </div>
-        <div id="bartender-stat">
-          <h2>0<small> Bartender</small></h2>
-        </div>
-      </div>
-      <div class="col-xs-4 col-ms-4 col-md-4 col-lg-4">
-        <div id="cashier-stat">
-          <h2>0<small> Cashier</small></h2>
-        </div>
-        <div id="manager-stat">
-          <h2>0<small> Manager</small></h2>
-        </div>
-      </div>
-    </div>
-    <hr>
-    <table id="stat-attendance-table" class="display table table-bordered">
-    <thead>
-      <th>Id</th>
-      <th>Action</th>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Email</th>
-      <th>Gender</th>
-      <th>Role</th>
-      <th>Current Role</th>
-      <th>Phone Number</th>
-      <th>Address</th>
-      <th>City</th>
-      <th>State</th>
-      <th>Zip</th>
-      <th>Country</th>
-    </thead>
-  <tbody>
-  </tbody>
-  <tfoot>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th><input type="text" name="search_role" placeholder="Search roles" class="search_init"></th>
-    <th><input type="text" name="search_current_role" placeholder="Search current roles" class="search_init"></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tfoot>
-  </table>
-  </div>
-  <div id="stat-sale">
-  </div>
-</div>
 
-<div id="stat-sale">
-  <h2>Sales</h2>
-    <div class="container">
-      <div class="col-xs-4 col-ms-4 col-md-4 col-lg-4">
-        <div id="food-stat">
-          <h2>0<small> VND (Foods)</small></h2>
-        </div>
-        <div id="naptk-stat">
-          <h2>0<small> VND (NAPTK)</small></h2>
-        </div>
-      </div>
-      <div class="col-xs-4 col-ms-4 col-md-4 col-lg-4">
-        <div id="drink-drink-stat">
-          <h2>0<small> VND (Drinks - Pha Chế)</small></h2>
-        </div>
-        <div id="drink-service-stat">
-          <h2>0<small> VND (Drinks - Đóng Chai)</small></h2>
-        </div>
-      </div>
-      <div class="col-xs-4 col-ms-4 col-md-4 col-lg-4">
-        <div id="service-stat">
-          <h2>0<small> VND (Services)</small></h2>
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#stat-sale-tab" aria-controls="stat-sale-tab" role="tab" data-toggle="tab">Sales</a></li>
+    <li role="presentation"><a href="#stat-attendance-tab" aria-controls="stat-attendance-tab" role="tab" data-toggle="tab">Users</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="stat-sale-tab">
+      <br />
+      <div class="stat-sale">
+        <%= form_tag(stat_sale_manager_pages_path, remote: true, method: :get, multipart: true, class: "form-inline", id: "registrations-edit-form") do %>
+          <% if false %>
+            <% shift_arr = @shifts.collect { |p| [ "#{Time.parse(p['start_time']).in_time_zone(7).strftime("%H:%M:%S")} -- #{Time.parse(p['end_time']).in_time_zone(7).strftime("%H:%M:%S")}", p['id']] } %>
+            <% now = Time.now.getutc.change({year: 1970, month: 1, day: 1}) %>
+            <% begin %>
+              <% current_shift = @shifts.select { |p| Time.parse(p['start_time']) < now && Time.parse(p['end_time']) > now }[0] %>
+            <% rescue %>
+            <% end %>
+          <% end %>
+          <div class="form-group">
+            <%= label_tag 'From' %>
+            <div class='input-group date' id='stat-sale-datetimepicker-from'>
+              <%= text_field_tag 'datetime[from]', nil, class: "form-control" %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <%= label_tag 'To' %>
+            <div class='input-group date' id='stat-sale-datetimepicker-to'>
+              <%= text_field_tag 'datetime[to]', nil, class: "form-control" %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+            </div>
+          </div>
+          <%= submit_tag "Get", class: "btn btn-default", id: "stat-sale-now" %>
+        <% end %>
+        <br />
+        <p><b>Lưu ý:</b> Hệ thống sẽ tự động thống kê cho ca hiện tại, tuy nhiên bạn có thể chọn ca và ngày để thống kê riêng</p>
+
+        <div id="stat-sale">
+          <h2>Sales</h2>
+          <div class="container">
+            <div class="col-xs-4 col-ms-4 col-md-4 col-lg-4">
+              <div id="food-stat">
+                <h2>0 / 0<small> VND (Foods)</small></h2>
+              </div>
+              <div id="naptk-stat">
+                <h2>0 / 0<small> VND (NAPTK)</small></h2>
+              </div>
+            </div>
+            <div class="col-xs-4 col-ms-4 col-md-4 col-lg-4">
+              <div id="drink-drink-stat">
+                <h2>0 / 0<small> VND (Drinks - Pha Chế)</small></h2>
+              </div>
+              <div id="drink-service-stat">
+                <h2>0 / 0<small> VND (Drinks - Đóng Chai)</small></h2>
+              </div>
+            </div>
+            <div class="col-xs-4 col-ms-4 col-md-4 col-lg-4">
+              <div id="service-stat">
+                <h2>0 / 0<small> VND (Services)</small></h2>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <table id="stat-menu-item-table" class="display table table-bordered">
+            <thead>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Klass</th>
+              <th>Menu Type</th>
+              <th>Quantity</th>
+              <th>Total Price</th>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+          <hr>
+          <table id="stat-sale-table" class="display table table-bordered">
+            <thead>
+              <th>Id</th>
+              <th>Action</th>
+              <th>Invoice Number</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Klass</th>
+              <th>Menu Type</th>
+              <th>Quantity</th>
+              <th>Total Price</th>
+              <th>State</th>
+              <th>Customer</th>
+              <th>Pender</th>
+              <th>Pending At</th>
+              <th>Processor</th>
+              <th>Processing At</th>
+              <th>Maker</th>
+              <th>Making At</th>
+              <th>Done At</th>
+              <th>Deliverer</th>
+              <th>Delivering At</th>
+              <th>Delivered At</th>
+              <!--
+                <th>Saver</th>
+                <th>Saved At</th>
+              -->
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th><input type="text" name="search_id" placeholder="Search ids" class="search_init"></th>
+                <th></th>
+                <th><input type="text" name="search_invoice" placeholder="Search invoices" class="search_init"></th>
+                <th><input type="text" name="search_name" placeholder="Search names" class="search_init"></th>
+                <th><input type="text" name="search_category" placeholder="Search category" class="search_category"></th>
+                <th><input type="text" name="search_klass" placeholder="Search klass" class="search_klass"></th>
+                <th><input type="text" name="search_menutype" placeholder="Search meny types" class="search_menutype"></th>
+                <th></th>
+                <th></th>
+                <th><input type="text" name="search_state" placeholder="Search states" class="search_init"></th>
+                <th><input type="text" name="search_customer" placeholder="Search customers" class="search_init"></th>
+                <th><input type="text" name="search_pender" placeholder="Search penders" class="search_init"></th>
+                <th></th>
+                <th><input type="text" name="search_processor" placeholder="Search processors" class="search_init"></th>
+                <th></th>
+                <th><input type="text" name="search_maker" placeholder="Search makers" class="search_init"></th>
+                <th></th>
+                <th></th>
+                <th><input type="text" name="search_deliverer" placeholder="Search deliverers" class="search_init"></th>
+                <th></th>
+                <th></th>
+                <!--
+                  <th><input type="text" name="search_saver" placeholder="Search savers" class="search_init"></th>
+                  <th></th>
+                -->
+              </tr>
+            </tfoot>
+          </table>
         </div>
       </div>
     </div>
-    <hr>
-  <table id="stat-sale-table" class="display table table-bordered">
-    <thead>
-      <th>Id</th>
-      <th>Action</th>
-      <th>Invoice Number</th>
-      <th>Name</th>
-      <th>Category</th>
-      <th>Klass</th>
-      <th>Menu Type</th>
-      <th>Quantity</th>
-      <th>Total Price</th>
-      <th>State</th>
-      <th>Customer</th>
-      <th>Pender</th>
-      <th>Pending At</th>
-      <th>Processor</th>
-      <th>Processing At</th>
-      <th>Maker</th>
-      <th>Making At</th>
-      <th>Done At</th>
-      <th>Deliverer</th>
-      <th>Delivering At</th>
-      <th>Delivered At</th>
-      <!--
-      <th>Saver</th>
-      <th>Saved At</th>
-      -->
-    </thead>
-    <tbody>
-    </tbody>
-    <tfoot>
-      <tr>
-        <th><input type="text" name="search_id" placeholder="Search ids" class="search_init"></th>
-        <th></th>
-        <th><input type="text" name="search_invoice" placeholder="Search invoices" class="search_init"></th>
-        <th><input type="text" name="search_name" placeholder="Search names" class="search_init"></th>
-        <th><input type="text" name="search_category" placeholder="Search category" class="search_category"></th>
-        <th><input type="text" name="search_klass" placeholder="Search klass" class="search_klass"></th>
-        <th><input type="text" name="search_menutype" placeholder="Search meny types" class="search_menutype"></th>
-        <th></th>
-        <th></th>
-        <th><input type="text" name="search_state" placeholder="Search states" class="search_init"></th>
-        <th><input type="text" name="search_customer" placeholder="Search customers" class="search_init"></th>
-        <th><input type="text" name="search_pender" placeholder="Search penders" class="search_init"></th>
-        <th></th>
-        <th><input type="text" name="search_processor" placeholder="Search processors" class="search_init"></th>
-        <th></th>
-        <th><input type="text" name="search_maker" placeholder="Search makers" class="search_init"></th>
-        <th></th>
-        <th></th>
-        <th><input type="text" name="search_deliverer" placeholder="Search deliverers" class="search_init"></th>
-        <th></th>
-        <th></th>
-        <!--
-        <th><input type="text" name="search_saver" placeholder="Search savers" class="search_init"></th>
-        <th></th>
-        -->
-      </tr>
-    </tfoot>
-  </table>
+  </div>
+
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane" id="stat-attendance-tab">
+      <br />
+      <div class="stat-attendance">
+        <%= form_tag(stat_attendance_manager_pages_path, remote: true, method: :get, multipart: true, class: "form-inline", id: "registrations-edit-form") do %>
+          <div class="form-group">
+            <%= label_tag 'From' %>
+            <div class='input-group date' id='stat-attendance-datetimepicker-from'>
+              <%= text_field_tag 'datetime[from]', nil, class: "form-control" %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <%= label_tag 'To' %>
+            <div class='input-group date' id='stat-attendance-datetimepicker-to'>
+              <%= text_field_tag 'datetime[to]', nil, class: "form-control" %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+            </div>
+          </div>
+          <%= submit_tag "Get", class: "btn btn-default", id: "stat-attendance-now" %>
+        <% end %>
+        <br />
+        <p><b>Lưu ý:</b> Hệ thống sẽ tự động thống kê cho ca hiện tại, tuy nhiên bạn có thể chọn ca và ngày để thống kê riêng</p>
+
+        <div id="stat-attendance">
+          <h2>Attendances</h2>
+          <div class="container">
+            <div class="col-xs-4 col-ms-4 col-md-4 col-lg-4">
+              <div id="customer-stat">
+                <h2>0<small> Customer</small></h2>
+              </div>
+              <div id="waiter-stat">
+                <h2>0<small> Waiter</small></h2>
+              </div>
+            </div>
+            <div class="col-xs-4 col-ms-4 col-md-4 col-lg-4">
+              <div id="chef-stat">
+                <h2>0<small> Chef</small></h2>
+              </div>
+              <div id="bartender-stat">
+                <h2>0<small> Bartender</small></h2>
+              </div>
+            </div>
+            <div class="col-xs-4 col-ms-4 col-md-4 col-lg-4">
+              <div id="cashier-stat">
+                <h2>0<small> Cashier</small></h2>
+              </div>
+              <div id="manager-stat">
+                <h2>0<small> Manager</small></h2>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <table id="stat-attendance-table" class="display table table-bordered">
+            <thead>
+              <th>Id</th>
+              <th>Action</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Gender</th>
+              <th>Role</th>
+              <th>Current Role</th>
+              <th>Phone Number</th>
+              <th>Address</th>
+              <th>City</th>
+              <th>State</th>
+              <th>Zip</th>
+              <th>Country</th>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th><input type="text" name="search_role" placeholder="Search roles" class="search_init"></th>
+              <th><input type="text" name="search_current_role" placeholder="Search current roles" class="search_init"></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
-  $('.timepicker').datepicker( {
-    orientation: "top auto",
-    format: "yyyy-mm-dd",
-    autoclose: true,
-    weekStart: 1
+
+  var showSale = function(id){
+    $('.launch-modal').html("<%=j render 'sales/modal_sale_details' %>");
+    $('#modal-sale-details').attr("sale-id", id);
+    $("#modal-sale-details").modal({
+      keyboard: true,
+      backdrop: 'static'
+    });
+  }
+
+  $('#stat-sale-datetimepicker-from').datetimepicker({
+    format: 'YYYY-MM-DD HH:mm',
+    sideBySide: true
   });
-$('.timepicker').datepicker("setDate", new Date());
-$(document).ready(function(){
-  $('#stat-attendance-table').dataTable();
-  $('#stat-sale-table').dataTable();
-  $('#stat-now').click();
-});
-var showSale = function(id){
-  $('.launch-modal').html("<%=j render 'sales/modal_sale_details' %>");
-  $('#modal-sale-details').attr("sale-id", id);
-  $("#modal-sale-details").modal({
-    keyboard: true,
-    backdrop: 'static'
+  $('#stat-sale-datetimepicker-to').datetimepicker({
+    format: 'YYYY-MM-DD HH:mm',
+    defaultDate: new Date(),
+    sideBySide: true
   });
-}
+
+  $('#stat-attendance-datetimepicker-from').datetimepicker({
+    format: 'YYYY-MM-DD HH:mm',
+    sideBySide: true
+  });
+  $('#stat-attendance-datetimepicker-to').datetimepicker({
+    format: 'YYYY-MM-DD HH:mm',
+    defaultDate: new Date(),
+    sideBySide: true
+  });
+  $('.nav-tabs a').click(function (e) {
+    e.preventDefault();
+    if ($(this).attr('href') == "#stat-sale-tab") {
+      $('#stat-attendance-tab').hide();
+      $('#stat-sale-tab').show();
+    } else {
+      $('#stat-sale-tab').hide();
+      $('#stat-attendance-tab').show();
+    }
+  });
 </script>
 
 <style>

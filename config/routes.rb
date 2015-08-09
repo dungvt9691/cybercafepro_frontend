@@ -26,7 +26,8 @@ Rails.application.routes.draw do
       get "shift_list"
       get "report_list"
       get "accounting"
-      get "stat"
+      get "stat_sale"
+      get "stat_attendance"
     end
   end
 

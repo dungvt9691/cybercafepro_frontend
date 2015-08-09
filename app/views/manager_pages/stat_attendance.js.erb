@@ -1,0 +1,45 @@
+<% if @attendances %>
+  $('#stat-attendance-table').dataTable().fnDestroy();;
+  $('#stat-attendance-table tbody').html('');
+  <% (@attendances['waiters'] | @attendances['chefs'] | @attendances['cashiers'] | @attendances['bartenders'] | @attendances['managers'] | @attendances['customers']).each do |user| %>
+    <% user['employee']['current_role'] = user['role'] %>
+    $('#stat-attendance-table tbody').append("<%=j render partial: 'user_row', locals: { user: user['employee'] } %>");
+  <% end %>
+  var userTable = $('#stat-attendance-table').dataTable();
+  var asInitUserVals = new Array();
+
+  $("#stat-attendance-table tfoot input").keyup( function () {
+    /* Filter on the column (the index) of this element */
+    userTable.fnFilter( this.value, $("#stat-attendance-table tfoot th").index($(this).parent()) );
+  } );
+
+  /*
+    * Support functions to provide a little bit of 'user friendlyness' to the textboxes in
+    * the footer
+    */
+  $("#stat-attendance-table tfoot input").each( function (i) {
+    asInitUserVals[i] = this.value;
+  } );
+
+  $("#stat-attendance-table tfoot input").focus( function () {
+    if ( this.className == "search_init" )
+    {
+      this.className = "";
+      this.value = "";
+    }
+  } );
+
+  $("#stat-attendance-table tfoot input").blur( function (i) {
+    if ( this.value == "" )
+    {
+      this.className = "search_init";
+      this.value = asInitUserVals[$("#stat-attendance-table tfoot th").index($(this).parent())];
+    }
+  } );
+  $('#customer-stat h2').html("<%= @attendances['customers'].length %><small> Customer</small>");
+  $('#waiter-stat h2').html("<%= @attendances['waiters'].length %><small> Waiter</small>");
+  $('#chef-stat h2').html("<%= @attendances['chefs'].length %><small> Chef</small>");
+  $('#bartender-stat h2').html("<%= @attendances['bartenders'].length %><small> Bartender</small>");
+  $('#cashier-stat h2').html("<%= @attendances['cashiers'].length %><small> Cashier</small>");
+  $('#manager-stat h2').html("<%= @attendances['managers'].length %><small> Manager</small>");
+<% end %>

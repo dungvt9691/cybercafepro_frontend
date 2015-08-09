@@ -13,10 +13,12 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require bootstrap.min
+//= require bootstrap
 //= require dataTables/jquery.dataTables
 //= require dataTables/extras/dataTables.tableTools
 //= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
+//= require moment
+//= require bootstrap-datetimepicker
 //= require_tree .
 //= require websocket_rails/main
 

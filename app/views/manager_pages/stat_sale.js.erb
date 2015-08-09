@@ -1,0 +1,65 @@
+<% if @sales %>
+  <% if @sales_by_menu_item %>
+    $('#stat-menu-item-table').dataTable().fnDestroy();;
+    $('#stat-menu-item-table tbody').html('');
+    <% @sales_by_menu_item.each do |s| %>
+      $('#stat-menu-item-table tbody').append("<%=j render partial: 'sale_by_menu_item_row', locals: { menu_item: s } %>");
+    <% end %>
+    $('#stat-menu-item-table').dataTable({
+      "order": [[ 4, "desc" ]]
+    });
+  <% end %>
+
+
+  $('#stat-sale-table').dataTable().fnDestroy();;
+  $('#stat-sale-table tbody').html('');
+  <% (@sales['sales'].values.sum).each do |s| %>
+    $('#stat-sale-table tbody').append("<%=j render partial: 'sale_menu_item_row', locals: { sale_menu_item: s } %>");
+  <% end %>
+  var saleMenuItemTable = $('#stat-sale-table').dataTable();
+  var asInitSaleMenuItemVals = new Array();
+
+  $("#stat-sale-table tfoot input").keyup( function () {
+    /* Filter on the column (the index) of this element */
+    saleMenuItemTable.fnFilter( this.value, $("#stat-sale-table tfoot th").index($(this).parent()) );
+  } );
+
+  /*
+    * Support functions to provide a little bit of 'user friendlyness' to the textboxes in
+    * the footer
+    */
+  $("#stat-sale-table tfoot input").each( function (i) {
+    asInitSaleMenuItemVals[i] = this.value;
+  } );
+
+  $("#stat-sale-table tfoot input").focus( function () {
+    if ( this.className == "search_init" )
+    {
+      this.className = "";
+      this.value = "";
+    }
+  } );
+
+  $("#stat-sale-table tfoot input").blur( function (i) {
+    if ( this.value == "" )
+    {
+      this.className = "search_init";
+      this.value = asInitSaleMenuItemVals[$("#stat-sale-table tfoot th").index($(this).parent())];
+    }
+  } );
+<% paid_food_money =  @sales['sales'].values.sum.select{|m| m['menu_item_details']['category_id'] == 1 && !['init','pending'].include?(m['sale']['state'])}.inject(0) {|sum,m| sum += (m['quantity'].to_f*m['menu_item_details']['unit_price'].to_f rescue 0) } %>
+<% food_money =  @sales['sales'].values.sum.select{|m| m['menu_item_details']['category_id'] == 1}.inject(0) {|sum,m| sum += (m['quantity'].to_f*m['menu_item_details']['unit_price'].to_f rescue 0) } %>
+$('#food-stat h2').html("<%= paid_food_money %> / <%= food_money  %><small> VND (Foods)</small>");
+<% paid_drink_drink_money = @sales['sales'].values.sum.select{|m| m['menu_item_details']['category_id'] == 2 && m['menu_item_details']['mtype'] != 'Giải Khát' && !['init','pending'].include?(m['sale']['state'])}.inject(0) {|sum,m| sum += (m['quantity'].to_f*m['menu_item_details']['unit_price'].to_f rescue 0) }%>
+<% drink_drink_money = @sales['sales'].values.sum.select{|m| m['menu_item_details']['category_id'] == 2 && m['menu_item_details']['mtype'] != 'Giải Khát'}.inject(0) {|sum,m| sum += (m['quantity'].to_f*m['menu_item_details']['unit_price'].to_f rescue 0) }%>
+$('#drink-drink-stat h2').html("<%= paid_drink_drink_money %> / <%= drink_drink_money %><small> VND (Drinks - Pha Chế)</small>");
+<% paid_drink_service_money = @sales['sales'].values.sum.select{|m| m['menu_item_details']['category_id'] == 2 && m['menu_item_details']['mtype'] == 'Giải Khát' && !['init','pending'].include?(m['sale']['state'])}.inject(0) {|sum,m| sum += (m['quantity'].to_f*m['menu_item_details']['unit_price'].to_f rescue 0) }%>
+<% drink_service_money = @sales['sales'].values.sum.select{|m| m['menu_item_details']['category_id'] == 2 && m['menu_item_details']['mtype'] == 'Giải Khát'}.inject(0) {|sum,m| sum += (m['quantity'].to_f*m['menu_item_details']['unit_price'].to_f rescue 0) }%>
+$('#drink-service-stat h2').html("<%= paid_drink_service_money %> / <%= drink_service_money %><small> VND (Drinks - Đóng Chai)</small>");
+<% paid_service_money = @sales['sales'].values.sum.select{|m| m['menu_item_details']['category_id'] == 3 && !['init','pending'].include?(m['sale']['state'])}.inject(0) {|sum,m| sum += (m['quantity'].to_f*m['menu_item_details']['unit_price'].to_f rescue 0) }%>
+<% service_money = @sales['sales'].values.sum.select{|m| m['menu_item_details']['category_id'] == 3}.inject(0) {|sum,m| sum += (m['quantity'].to_f*m['menu_item_details']['unit_price'].to_f rescue 0) }%>
+$('#service-stat h2').html("<%= paid_service_money %> / <%= service_money %><small> VND (Services)</small>");
+<% paid_naptk_money = @sales['sales'].values.sum.select{|m| m['menu_item_details']['category_id'] == 4 && !['init','pending'].include?(m['sale']['state'])}.inject(0) {|sum,m| sum += (m['quantity'].to_f*m['menu_item_details']['unit_price'].to_f rescue 0) }%>
+<% naptk_money = @sales['sales'].values.sum.select{|m| m['menu_item_details']['category_id'] == 4}.inject(0) {|sum,m| sum += (m['quantity'].to_f*m['menu_item_details']['unit_price'].to_f rescue 0) }%>
+$('#naptk-stat h2').html("<%= paid_naptk_money %> / <%= naptk_money %><small> VND (NAPTK)</small>");
+<% end %>

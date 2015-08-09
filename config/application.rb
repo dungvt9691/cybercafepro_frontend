@@ -24,6 +24,8 @@ module CybercafeproFrontend
     config.assets.enabled = true
     config.active_record.raise_in_transactional_callbacks = true
     config.middleware.delete Rack::Lock
+    config.assets.paths << Rails.root.join("vendor", "assets", "bootstrap", "fonts")
+    config.assets.precompile += %w( *.eot *.svg *.ttf *.woff *.woff2 )
     # config.web_console.whitelisted_ips = "118.71.184.39"
   end
 end
